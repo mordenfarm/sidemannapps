@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExamSidemann App Store</title>
+<!-- CHANGED: Favicon to blackgiftlogo.png -->
+<link rel="icon" href="images/blackgiftlogo.png">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07080f;
+    --bg2: #0d0f1a;
+    --bg3: #13162a;
+    --surface: #181c2e;
+    --surface2: #1e2340;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8eaf6;
+    --text2: #9fa8c7;
+    --text3: #5c6591;
+    --accent: #4f8aff;
+    --accent2: #7c4dff;
+    --accent3: #00d4aa;
+    --danger: #ff4f7b;
+    --warn: #ffb300;
+    --glow: rgba(79,138,255,0.25);
+    --glow2: rgba(124,77,255,0.2);
+    --r: 16px;
+    --r2: 24px;
+    --shadow: 0 8px 40px rgba(0,0,0,0.5);
+    --shadow2: 0 2px 12px rgba(0,0,0,0.3);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 999px; }
+
+  /* ===== LOADER ===== */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loader-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .loader-logo { width: 80px; height: 80px; object-fit: cover; border-radius: 20px; animation: pulse-logo 2s infinite; }
+  .loader-bar { width: 200px; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .loader-fill { width: 50%; height: 100%; background: var(--accent); animation: loader-anim 1.5s infinite ease-in-out; }
+  @keyframes loader-anim { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+  @keyframes pulse-logo { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.95); opacity: 0.8; } }
+
+  /* ===== GRADIENT MESH BG ===== */
+  .mesh-bg {
+    position: fixed; top:0; left:0;
+    width:100vw; height:100vh;
+    pointer-events:none; z-index:0;
+    overflow:hidden;
+  }
+  .mesh-blob {
+    position:absolute; border-radius:50%;
+    filter: blur(120px); opacity: 0.12;
+    animation: float-blob 20s ease-in-out infinite;
+  }
+  .mesh-blob:nth-child(1) { width:600px;height:600px; background:var(--accent); top:-10%;left:-10%; animation-delay:0s; }
+  .mesh-blob:nth-child(2) { width:500px;height:500px; background:var(--accent2); top:40%;right:-10%; animation-delay:-7s; }
+  .mesh-blob:nth-child(3) { width:400px;height:400px; background:var(--accent3); bottom:-5%;left:30%; animation-delay:-14s; }
+  @keyframes float-blob {
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(40px,-30px) scale(1.05)}
+    66%{transform:translate(-20px,40px) scale(0.95)}
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(7,8,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 68px;
+    display: flex; align-items:center; justify-content:space-between;
+  }
+  .nav-logo {
+    display:flex; align-items:center; gap:10px;
+    font-family:'Syne',sans-serif; font-weight:800;
+    font-size:1.15rem; letter-spacing:-0.02em;
+    color: var(--text); text-decoration:none;
+    cursor:pointer;
+  }
+  .nav-logo img { width:40px; height:40px; border-radius:10px; object-fit:cover; }
+  
+  .nav-center {
+    display:flex; align-items:center; gap:4px;
+  }
+  .nav-tab {
+    padding: 8px 16px; border-radius: 10px;
+    font-size: 0.875rem; font-weight:500;
+    color: var(--text2); cursor:pointer;
+    transition: all 0.2s ease;
+    background: transparent; border:none;
+    font-family:'DM Sans',sans-serif;
+  }
+  .nav-tab:hover { color:var(--text); background:var(--surface); }
+  .nav-tab.active { color:var(--accent); background:rgba(79,138,255,0.1); }
+  .nav-right { display:flex; align-items:center; gap:10px; }
+  .nav-search-btn {
+    width:40px; height:40px; border-radius:12px;
+    background:var(--surface); border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer; color:var(--text2); transition:all 0.2s;
+  }
+  .nav-search-btn:hover { color:var(--text); border-color:var(--border2); }
+  .btn-login {
+    padding:8px 20px; border-radius:12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color:#fff; font-weight:600; font-size:0.875rem;
+    border:none; cursor:pointer; transition:all 0.2s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-login:hover { opacity:0.9; transform:translateY(-1px); box-shadow:0 4px 20px var(--glow); }
+  .avatar-btn {
+    width:40px; height:40px; border-radius:12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer; font-weight:700; font-size:0.875rem; color:#fff;
+    border:2px solid rgba(79,138,255,0.3);
+    transition:all 0.2s;
+    overflow:hidden;
+  }
+  .avatar-btn:hover { transform:scale(1.05); border-color:var(--accent); }
+  .avatar-btn img { width:100%;height:100%;object-fit:cover; }
+
+  /* ===== HAMBURGER ===== */
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; z-index: 101; }
+  .hamburger span { width:22px;height:2px;background:var(--text2);border-radius:2px;transition:all 0.3s; }
+
+  /* ===== MOBILE NAV ===== */
+  .mobile-nav {
+    display:none; position:fixed; top:68px;left:0;right:0;
+    background:rgba(7,8,15,0.97); backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    z-index:99; padding:16px;
+    flex-direction:column; gap:4px;
+    animation: slide-down 0.3s ease forwards;
+  }
+  @keyframes slide-down { from{transform:translateY(-20px);opacity:0;}to{transform:translateY(0);opacity:1;} }
+
+  .mobile-nav.open { display:flex; }
+  .mobile-nav .nav-tab { width:100%; text-align:left; padding:12px 16px; display:flex; align-items: center; gap: 10px; }
+
+  /* ===== PAGES ===== */
+  .page { display:none; padding-top:88px; min-height:100vh; position:relative; z-index:1; }
+  .page.active { display:block; }
+
+  /* ===== HOME PAGE ===== */
+  .hero {
+    padding: 60px 24px 48px;
+    max-width: 1200px; margin: 0 auto;
+    text-align:center;
+    background: linear-gradient(rgba(7,8,15,0.55), rgba(7,8,15,0.55)), url('images/hero.png');
+    background-size: cover; background-position: center; border-radius: 16px; padding-top:80px;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    background: rgba(79,138,255,0.1);
+    border:1px solid rgba(79,138,255,0.25);
+    padding:6px 16px; border-radius:999px;
+    font-size:0.8rem; font-weight:600; color:var(--accent);
+    margin-bottom:24px;
+    animation: fade-up 0.6s ease both;
+  }
+  .hero-badge .dot { width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:blink 1.5s ease infinite; }
+  @keyframes blink {0%,100%{opacity:1}50%{opacity:0.3}}
+  .hero h1 {
+    font-family:'Syne',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
+    font-weight:800; line-height:1.05; letter-spacing:-0.03em;
+    margin-bottom:20px;
+    animation: fade-up 0.6s ease 0.1s both;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero p {
+    font-size:1.1rem; color:var(--text2); max-width:560px; margin:0 auto 36px;
+    line-height:1.7; animation: fade-up 0.6s ease 0.2s both;
+  }
+  .hero-actions { display:flex;gap:12px;justify-content:center;flex-wrap:wrap; animation: fade-up 0.6s ease 0.3s both; }
+  .btn-primary {
+    padding:14px 32px; border-radius:14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color:#fff; font-weight:600; font-size:1rem;
+    border:none; cursor:pointer; transition:all 0.25s;
+    box-shadow: 0 4px 24px var(--glow);
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 40px var(--glow); }
+  .btn-ghost {
+    padding:14px 32px; border-radius:14px;
+    background:transparent; border:1px solid var(--border2);
+    color:var(--text); font-weight:600; font-size:1rem;
+    cursor:pointer; transition:all 0.25s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-ghost:hover { background:var(--surface); border-color:var(--border2); }
+
+  .hero-stats {
+    display:flex; gap:40px; justify-content:center; margin-top:48px; flex-wrap:wrap;
+    animation: fade-up 0.6s ease 0.4s both;
+  }
+  .stat { text-align:center; }
+  .stat-num {
+    font-family:'Syne',sans-serif; font-size:2rem; font-weight:800;
+    background: linear-gradient(135deg, var(--text), var(--text2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .stat-label { font-size:0.8rem; color:var(--text3); margin-top:2px; font-weight:500; }
+
+  /* ===== SEARCH BAR ===== */
+  .search-container {
+    max-width:700px; margin:0 auto 48px; padding:0 24px;
+    animation: fade-up 0.6s ease 0.35s both;
+  }
+  .search-wrap {
+    position:relative; display:flex; align-items:center;
+    background:var(--surface); border:1px solid var(--border2);
+    border-radius:18px; overflow:hidden;
+    transition: all 0.25s; box-shadow:0 4px 24px rgba(0,0,0,0.2);
+  }
+  .search-wrap:focus-within {
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(79,138,255,0.15), 0 4px 24px rgba(0,0,0,0.2);
+  }
+  .search-wrap .search-icon-box { position:absolute;left:18px;color:var(--text3);flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .search-wrap input {
+    width:100%; padding:16px 60px 16px 52px;
+    background:transparent; border:none; outline:none;
+    color:var(--text); font-size:1rem; font-family:'DM Sans',sans-serif;
+  }
+  .search-wrap input::placeholder { color:var(--text3); }
+  .search-wrap .search-clear {
+    position:absolute;right:16px;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--surface2); border:none; cursor:pointer;
+    color:var(--text2); display:none;align-items:center;justify-content:center;
+    font-size:12px; transition:all 0.2s;
+  }
+  .search-wrap .search-clear:hover { background:var(--border2); }
+  .search-wrap input:not(:placeholder-shown) + .search-clear { display:flex; }
+
+  /* ===== CATEGORY PILLS ===== */
+  .category-row {
+    display:flex; gap:10px; padding:0 24px 32px;
+    max-width:1200px; margin:0 auto;
+    overflow-x:auto; scrollbar-width:none;
+    animation: fade-up 0.6s ease 0.4s both;
+  }
+  .category-row::-webkit-scrollbar { display:none; }
+  .cat-pill {
+    display:flex; align-items:center; gap:8px;
+    padding:10px 20px; border-radius:999px;
+    background:var(--surface); border:1px solid var(--border);
+    color:var(--text2); font-size:0.875rem; font-weight:500;
+    cursor:pointer; transition:all 0.2s; white-space:nowrap;
+    flex-shrink:0;
+  }
+  .cat-pill:hover { border-color:var(--border2); color:var(--text); }
+  .cat-pill.active { background:rgba(79,138,255,0.12); border-color:var(--accent); color:var(--accent); }
+  .cat-pill .cat-icon { font-size:1rem; }
+
+  /* ===== SECTION ===== */
+  .section { max-width:1200px; margin:0 auto; padding:0 24px 56px; }
+  .section-header {
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;
+  }
+  .section-title {
+    font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:700; letter-spacing:-0.02em; display:flex; align-items:center; gap:8px;
+  }
+  .section-link {
+    font-size:0.875rem; color:var(--accent); font-weight:600; cursor:pointer;
+    transition:opacity 0.2s;
+  }
+  .section-link:hover { opacity:0.8; }
+
+  /* ===== FEATURED BANNER ===== */
+  .featured-banner {
+    position:relative; border-radius:var(--r2);
+    background: linear-gradient(135deg, #0f1628, #1a0f3c);
+    border:1px solid var(--border);
+    padding:48px; overflow:hidden;
+    margin-bottom:24px;
+    animation: fade-up 0.6s ease 0.1s both;
+  }
+  .featured-banner::before {
+    content:''; position:absolute; top:-50%;right:-10%;
+    width:500px;height:500px;border-radius:50%;
+    background:radial-gradient(circle, rgba(124,77,255,0.25), transparent 70%);
+    pointer-events:none;
+  }
+  .featured-banner .feat-cat {
+    display:inline-block; padding:4px 12px; border-radius:6px;
+    background:rgba(0,212,170,0.15); color:var(--accent3);
+    font-size:0.75rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .featured-banner h2 { font-family:'Syne',sans-serif; font-size:2rem;font-weight:800;margin-bottom:10px; }
+  .featured-banner p { color:var(--text2); max-width:400px; margin-bottom:24px; line-height:1.6; }
+  .feat-app-icon {
+    position:absolute; right:48px; top:50%; transform:translateY(-50%);
+    width:120px;height:120px;border-radius:28px; overflow:hidden;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-size:3.5rem; box-shadow:0 20px 60px rgba(79,138,255,0.4);
+    animation:float 4s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(-50%) translateX(0)}50%{transform:translateY(calc(-50% - 8px)) translateX(0)}}
+  .feat-meta { display:flex;gap:16px;align-items:center;margin-bottom:24px; }
+  .feat-rating { display:flex;align-items:center;gap:4px;color:var(--warn);font-weight:600; }
+  .feat-dl { color:var(--text3);font-size:0.875rem; }
+
+  /* ===== APP GRID ===== */
+  .app-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+    gap:16px;
+  }
+  .app-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--r2); padding:20px;
+    cursor:pointer; transition:all 0.25s;
+    animation: fade-up 0.5s ease both;
+    position:relative; overflow:hidden;
+  }
+  .app-card::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(79,138,255,0.05),transparent);
+    opacity:0; transition:opacity 0.3s;
+    border-radius:inherit;
+  }
+  .app-card:hover { transform:translateY(-4px); border-color:var(--border2); box-shadow:var(--shadow); }
+  .app-card:hover::after { opacity:1; }
+  .app-icon {
+    width:64px;height:64px;border-radius:18px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.8rem; margin-bottom:14px;
+    flex-shrink:0; overflow:hidden;
+  }
+  .app-icon img { width:100%; height:100%; object-fit:cover; }
+  .app-name { font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px;letter-spacing:-0.01em; }
+  .app-dev { font-size:0.8rem;color:var(--text3);margin-bottom:10px; }
+  .app-desc { font-size:0.85rem;color:var(--text2);line-height:1.5;margin-bottom:14px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+  .app-footer { display:flex;align-items:center;justify-content:space-between; }
+  .app-rating { display:flex;align-items:center;gap:4px;font-size:0.8rem;color:var(--text2);font-weight:500; }
+  .app-rating .star { color:var(--warn); }
+  .btn-get {
+    padding:7px 18px; border-radius:10px;
+    background:rgba(79,138,255,0.12); color:var(--accent);
+    font-weight:700; font-size:0.8rem; border:1px solid rgba(79,138,255,0.2);
+    cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif;
+  }
+  .btn-get:hover { background:var(--accent); color:#fff; }
+  .btn-get.installed { background:rgba(0,212,170,0.1); color:var(--accent3); border-color:rgba(0,212,170,0.2); }
+  .btn-get.installed:hover { background:var(--accent3); color:#000; }
+  .app-size { font-size:0.75rem;color:var(--text3); }
+
+  /* ===== HORIZONTAL SCROLL ===== */
+  .h-scroll-wrap { overflow-x:auto; scrollbar-width:none; margin:0 -24px; padding:0 24px; }
+  .h-scroll-wrap::-webkit-scrollbar { display:none; }
+  .app-row { display:flex; gap:16px; padding-bottom:8px; }
+  .app-row-card {
+    flex-shrink:0; width:200px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:20px; padding:16px;
+    cursor:pointer; transition:all 0.25s;
+  }
+  .app-row-card:hover { transform:translateY(-3px); border-color:var(--border2); box-shadow:var(--shadow); }
+  .app-row-icon { width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin-bottom:12px;overflow:hidden;}
+  .app-row-icon img { width:100%; height:100%; object-fit:cover; }
+  .app-row-name { font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:2px; }
+  .app-row-cat { font-size:0.75rem;color:var(--text3);margin-bottom:10px; }
+  .app-row-rating { font-size:0.8rem;color:var(--text2); }
+
+  /* ===== TOP CHART ===== */
+  .top-chart { display:flex;flex-direction:column;gap:8px; }
+  .chart-item {
+    display:flex;align-items:center;gap:14px;
+    padding:14px 16px; border-radius:var(--r);
+    background:var(--surface); border:1px solid var(--border);
+    cursor:pointer; transition:all 0.2s;
+    animation: fade-left 0.4s ease both;
+  }
+  .chart-item:hover { border-color:var(--border2); transform:translateX(4px); }
+  .chart-num { font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text3);min-width:30px; }
+  .chart-num.top3 { color:var(--warn); }
+  .chart-info { flex:1; }
+  .chart-name { font-weight:600;font-size:0.9rem;margin-bottom:2px; }
+  .chart-cat { font-size:0.8rem;color:var(--text3); }
+  .chart-icon { width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden; }
+  .chart-icon img { width:100%; height:100%; object-fit:cover; }
+
+  /* ===== APP DETAIL MODAL ===== */
+  .modal-overlay {
+    position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,0.7); backdrop-filter:blur(8px);
+    display:flex;align-items:flex-end;justify-content:center;
+    opacity:0; visibility:hidden; transition:all 0.3s ease;
+  }
+  .modal-overlay.open { opacity:1; visibility:visible; }
+  .modal {
+    width:100%; max-width:720px; max-height:90vh;
+    background:var(--bg2); border:1px solid var(--border);
+    border-radius:28px 28px 0 0; overflow-y:auto;
+    transform:translateY(100%); transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);
+  }
+  .modal-overlay.open .modal { transform:translateY(0); }
+  .modal-handle { width:40px;height:4px;border-radius:2px;background:var(--border2);margin:14px auto 0; }
+  .modal-content { padding:24px 28px 48px; }
+  .modal-header { display:flex;gap:20px;align-items:flex-start;margin-bottom:24px; }
+  .modal-icon { width:88px;height:88px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;overflow:hidden; }
+  .modal-icon img { width:100%;height:100%;object-fit:cover; }
+  .modal-meta { flex:1; }
+  .modal-name { font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:4px; }
+  .modal-dev { color:var(--text2);margin-bottom:10px; }
+  .modal-badges { display:flex;gap:8px;flex-wrap:wrap; }
+  .badge {
+    padding:4px 12px;border-radius:8px;font-size:0.75rem;font-weight:600;
+    background:rgba(79,138,255,0.1);color:var(--accent);
+  }
+  .badge.green { background:rgba(0,212,170,0.1);color:var(--accent3); }
+  .badge.yellow { background:rgba(255,179,0,0.1);color:var(--warn); }
+  .modal-stats { display:flex;gap:24px;padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:20px; }
+  .modal-stat { text-align:center;flex:1; }
+  .modal-stat-val { font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:2px; }
+  .modal-stat-label { font-size:0.75rem;color:var(--text3); }
+  .modal-desc { color:var(--text2);line-height:1.7;margin-bottom:20px; }
+  .modal-actions { display:flex;gap:12px;margin-bottom:28px; }
+  .btn-download {
+    flex:1; padding:14px; border-radius:14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;font-weight:700;font-size:1rem;
+    border:none;cursor:pointer;transition:all 0.25s;
+    font-family:'DM Sans',sans-serif;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn-download:hover { opacity:0.9;transform:translateY(-1px);box-shadow:0 8px 30px var(--glow); }
+  .btn-download.downloading { background:linear-gradient(135deg,var(--accent3),#00a87a); }
+  .btn-share-modal {
+    width:50px;height:50px;border-radius:14px;
+    background:var(--surface);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--text2);transition:all 0.2s;
+    font-size:1.2rem;
+  }
+  .btn-share-modal:hover { border-color:var(--border2);color:var(--text); }
+  .btn-wishlist {
+    width:50px;height:50px;border-radius:14px;
+    background:var(--surface);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--text2);transition:all 0.2s;
+    font-size:1.2rem;
+  }
+  .btn-wishlist:hover { border-color:var(--danger);color:var(--danger); }
+  .btn-wishlist.wishlisted { color:var(--danger);border-color:var(--danger);background:rgba(255,79,123,0.1); }
+
+  /* ===== RATINGS ===== */
+  .ratings-section h3 { font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:16px; }
+  .rating-overview {
+    display:flex;gap:24px;align-items:center;margin-bottom:24px;
+    padding:20px;background:var(--surface);border-radius:16px;border:1px solid var(--border);
+  }
+  .rating-big { text-align:center; }
+  .rating-big .num { font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;line-height:1; }
+  .rating-big .stars { color:var(--warn);font-size:0.9rem;margin:4px 0; }
+  .rating-big .count { font-size:0.75rem;color:var(--text3); }
+  .rating-bars { flex:1; display:flex;flex-direction:column;gap:6px; }
+  .r-bar-row { display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text2); }
+  .r-bar-track { flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden; }
+  .r-bar-fill { height:100%;border-radius:3px;background:linear-gradient(90deg,var(--warn),#ff8a00);transition:width 0.8s ease; }
+  .review { padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:10px; }
+  .review-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:8px; }
+  .review-user { font-weight:600;font-size:0.9rem; }
+  .review-stars { color:var(--warn);font-size:0.85rem; }
+  .review-date { font-size:0.75rem;color:var(--text3); }
+  .review-text { font-size:0.875rem;color:var(--text2);line-height:1.5; }
+  .write-review {
+    margin-top:16px; padding:20px;
+    background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  }
+  .write-review h4 { font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px; }
+  .star-picker { display:flex;gap:6px;margin-bottom:12px; }
+  .star-pick { font-size:1.5rem;cursor:pointer;filter:grayscale(1);transition:all 0.2s; }
+  .star-pick.active,.star-pick:hover { filter:grayscale(0);transform:scale(1.2); }
+  .review-input {
+    width:100%;padding:12px 14px;border-radius:12px;
+    background:var(--bg);border:1px solid var(--border);
+    color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;
+    resize:vertical;min-height:80px;outline:none;
+    transition:border-color 0.2s;
+  }
+  .review-input:focus { border-color:var(--accent); }
+  .btn-submit-review {
+    margin-top:10px; padding:10px 24px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;font-weight:600;font-size:0.875rem;border:none;cursor:pointer;
+    font-family:'DM Sans',sans-serif; transition:all 0.2s;
+  }
+  .btn-submit-review:hover { opacity:0.9; }
+
+  /* ===== SEARCH PAGE ===== */
+  .search-page-bar { padding:0 24px 28px;max-width:900px;margin:0 auto; }
+  .search-results-wrap { max-width:1200px;margin:0 auto;padding:0 24px; }
+  .results-count { font-size:0.875rem;color:var(--text3);margin-bottom:16px; }
+  .no-results { text-align:center;padding:80px 24px; }
+  .no-results .nr-icon { font-size:4rem;margin-bottom:16px; color:var(--text3); }
+  .no-results h3 { font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:8px; }
+  .no-results p { color:var(--text2); }
+
+  /* ===== CATEGORIES PAGE ===== */
+  .cats-hero { text-align:center;padding:40px 24px 32px; }
+  .cats-hero h2 { font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;margin-bottom:8px; }
+  .cats-hero p { color:var(--text2); }
+  .cats-grid {
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:16px;max-width:1200px;margin:0 auto;padding:0 24px 60px;
+  }
+  .cat-card {
+    border-radius:20px;padding:24px;
+    cursor:pointer;transition:all 0.25s;border:1px solid var(--border);
+    background:var(--surface);text-align:center;
+    animation:fade-up 0.4s ease both;
+  }
+  .cat-card:hover { transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--border2); }
+  .cat-card .cat-emoji { font-size:2.5rem;margin-bottom:12px; color: var(--accent); }
+  .cat-card .cat-name { font-family:'Syne',sans-serif;font-weight:700;margin-bottom:4px; }
+  .cat-card .cat-count { font-size:0.8rem;color:var(--text3); }
+
+  /* ===== LOGIN MODAL ===== */
+  .auth-overlay {
+    position:fixed;inset:0;z-index:300;
+    background:rgba(0,0,0,0.8);backdrop-filter:blur(12px);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    opacity:0;visibility:hidden;transition:all 0.3s;
+  }
+  .auth-overlay.open { opacity:1;visibility:visible; }
+  .auth-modal {
+    width:100%;max-width:440px;
+    background:var(--bg2);border:1px solid var(--border2);
+    border-radius:28px;padding:40px;
+    transform:scale(0.95) translateY(20px);
+    transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);
+  }
+  .auth-overlay.open .auth-modal { transform:scale(1) translateY(0); }
+  .auth-logo { text-align:center;margin-bottom:28px; }
+  .auth-logo .logo-wrap {
+    width:64px;height:64px;border-radius:18px;
+    /* background:linear-gradient(135deg,var(--accent),var(--accent2)); */
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 12px; overflow:hidden;
+  }
+  .auth-logo .logo-wrap img { width:100%; height:100%; object-fit:cover; }
+  .auth-logo h2 { font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:4px; }
+  .auth-logo p { font-size:0.875rem;color:var(--text2); }
+  .auth-tabs { display:flex;background:var(--surface);border-radius:12px;padding:4px;margin-bottom:28px; }
+  .auth-tab-btn {
+    flex:1;padding:10px;border-radius:9px;
+    font-weight:600;font-size:0.875rem;cursor:pointer;border:none;
+    background:transparent;color:var(--text2);transition:all 0.2s;
+    font-family:'DM Sans',sans-serif;
+  }
+  .auth-tab-btn.active { background:var(--bg);color:var(--text);box-shadow:var(--shadow2); }
+  .auth-form { display:flex;flex-direction:column;gap:14px; }
+  .form-group { display:flex;flex-direction:column;gap:6px; }
+  .form-group label { font-size:0.85rem;font-weight:600;color:var(--text2); }
+  .form-input {
+    padding:13px 16px;border-radius:13px;
+    background:var(--surface);border:1px solid var(--border);
+    color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;
+    transition:border-color 0.2s;
+  }
+  .form-input:focus { border-color:var(--accent);background:var(--surface2); }
+  .btn-auth {
+    padding:14px;border-radius:14px;margin-top:4px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;font-weight:700;font-size:1rem;border:none;cursor:pointer;
+    font-family:'DM Sans',sans-serif;transition:all 0.25s;
+    box-shadow:0 4px 24px var(--glow);
+  }
+  .btn-auth:hover { opacity:0.9;transform:translateY(-1px); }
+  .auth-divider { display:flex;align-items:center;gap:12px;color:var(--text3);font-size:0.8rem;margin:4px 0; }
+  .auth-divider::before,.auth-divider::after { content:'';flex:1;height:1px;background:var(--border); }
+  .btn-google {
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    padding:13px;border-radius:14px;
+    background:var(--surface);border:1px solid var(--border);
+    color:var(--text);font-weight:600;font-size:0.9rem;cursor:pointer;
+    font-family:'DM Sans',sans-serif;transition:all 0.2s;
+  }
+  .btn-google:hover { border-color:var(--border2);background:var(--surface2); }
+  .auth-error { color:var(--danger);font-size:0.85rem;text-align:center;margin-top:4px;display:none; }
+  .auth-error.show { display:block; }
+  .auth-close { position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;background:var(--surface);border:none;color:var(--text2);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center; }
+  .auth-modal { position:relative; }
+
+  /* ===== PROFILE PAGE ===== */
+  .profile-hero {
+    background:linear-gradient(135deg,#0a1028,#1a0a40);
+    border-bottom:1px solid var(--border);padding:48px 24px;text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .profile-hero::before {
+    content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+    width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle,rgba(79,138,255,0.15),transparent 70%);
+    pointer-events:none;
+  }
+  .profile-avatar {
+    width:96px;height:96px;border-radius:24px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.5rem;font-weight:800;color:#fff;
+    margin:0 auto 16px;border:3px solid rgba(79,138,255,0.3);
+    overflow:hidden;position:relative;z-index:1;
+  }
+  .profile-avatar img { width:100%;height:100%;object-fit:cover; }
+  .profile-name { font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:4px;position:relative;z-index:1; }
+  .profile-email { color:var(--text2);margin-bottom:20px;position:relative;z-index:1; }
+  .profile-stats-row { display:flex;gap:32px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1; }
+  .p-stat { text-align:center; }
+  .p-stat-num { font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800; }
+  .p-stat-label { font-size:0.75rem;color:var(--text3); }
+
+  .profile-tabs {
+    display:flex;gap:0;border-bottom:1px solid var(--border);
+    padding:0 24px;max-width:1200px;margin:0 auto;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  .profile-tabs::-webkit-scrollbar { display:none; }
+  .profile-tab {
+    padding:16px 20px;font-weight:600;font-size:0.875rem;cursor:pointer;
+    color:var(--text2);border-bottom:2px solid transparent;
+    transition:all 0.2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;
+    font-family:'DM Sans',sans-serif;
+  }
+  .profile-tab.active { color:var(--accent);border-bottom-color:var(--accent); }
+  .profile-content { max-width:1200px;margin:0 auto;padding:32px 24px; }
+  .profile-section-tab { display:none; }
+  .profile-section-tab.active { display:block; }
+
+  .edit-profile-card {
+    background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;
+    max-width:500px;
+  }
+  .edit-profile-card h3 { font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px; }
+  .btn-save {
+    padding:12px 28px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+    transition:all 0.2s; margin-top:8px;
+  }
+  .btn-save:hover { opacity:0.9; }
+  .btn-logout {
+    padding:12px 28px;border-radius:12px;margin-left:10px;
+    background:rgba(255,79,123,0.1);border:1px solid rgba(255,79,123,0.2);
+    color:var(--danger);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;
+    transition:all 0.2s;
+  }
+  .btn-logout:hover { background:var(--danger);color:#fff; }
+
+  /* ===== TOAST ===== */
+  .toast-container { position:fixed;bottom:24px;right:24px;z-index:400;display:flex;flex-direction:column;gap:8px; }
+  .toast {
+    background:var(--surface);border:1px solid var(--border2);
+    border-radius:14px;padding:14px 20px;
+    display:flex;align-items:center;gap:10px;
+    box-shadow:var(--shadow);min-width:260px;
+    animation:slide-in-right 0.4s cubic-bezier(0.32,0.72,0,1) both;
+    font-size:0.9rem;font-weight:500;
+  }
+  .toast.success .toast-icon { color:var(--accent3); }
+  .toast.error .toast-icon { color:var(--danger); }
+  .toast.info .toast-icon { color:var(--accent); }
+  .toast.removing { animation:slide-out-right 0.4s ease both; }
+  @keyframes slide-in-right { from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1} }
+  @keyframes slide-out-right { to{transform:translateX(120%);opacity:0} }
+
+  /* ===== DOWNLOAD PROGRESS ===== */
+  .dl-progress {
+    position:fixed;bottom:24px;left:24px;z-index:400;
+    background:var(--surface);border:1px solid var(--border2);
+    border-radius:16px;padding:16px 20px;min-width:280px;
+    box-shadow:var(--shadow);display:none;
+  }
+  .dl-progress.show { display:block;animation:slide-in-left 0.4s ease both; }
+  @keyframes slide-in-left{from{transform:translateX(-120%);opacity:0}to{transform:translateX(0);opacity:1}}
+  .dl-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:10px; }
+  .dl-name { font-weight:600;font-size:0.9rem; }
+  .dl-pct { font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent); }
+  .dl-bar-track { height:6px;background:var(--surface2);border-radius:3px;overflow:hidden; }
+  .dl-bar-fill { height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:3px;transition:width 0.1s; }
+  .dl-speed { font-size:0.75rem;color:var(--text3);margin-top:6px; }
+
+  /* ===== SHARE MODAL ===== */
+  .share-overlay {
+    position:fixed;inset:0;z-index:350;
+    background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);
+    display:flex;align-items:center;justify-content:center;padding:24px;
+    opacity:0;visibility:hidden;transition:all 0.3s;
+  }
+  .share-overlay.open { opacity:1;visibility:visible; }
+  .share-modal {
+    width:100%;max-width:380px;
+    background:var(--bg2);border:1px solid var(--border2);border-radius:24px;padding:28px;
+    transform:scale(0.9);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);
+  }
+  .share-overlay.open .share-modal { transform:scale(1); }
+  .share-modal h3 { font-family:'Syne',sans-serif;font-weight:700;margin-bottom:20px; }
+  .share-link {
+    display:flex;align-items:center;gap:8px;
+    background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;
+    margin-bottom:20px;
+  }
+  .share-link span { flex:1;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+  .btn-copy { padding:6px 14px;border-radius:8px;background:var(--accent);color:#fff;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif; }
+  .share-options { display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px; }
+  .share-opt {
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    padding:14px 8px;border-radius:14px;background:var(--surface);border:1px solid var(--border);
+    cursor:pointer;transition:all 0.2s;font-size:0.75rem;color:var(--text2);
+  }
+  .share-opt:hover { border-color:var(--border2);color:var(--text); }
+  .share-opt .s-icon { font-size:1.4rem; }
+  .btn-share-close { width:100%;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s; }
+  .btn-share-close:hover { background:var(--surface2); }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fade-up {
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  @keyframes fade-left {
+    from{opacity:0;transform:translateX(-20px)}
+    to{opacity:1;transform:translateX(0)}
+  }
+
+  /* ===== RIPPLE ===== */
+  .ripple-container { position:relative;overflow:hidden; }
+  .ripple {
+    position:absolute;border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    transform:scale(0);animation:ripple-anim 0.6s linear;
+    pointer-events:none;
+  }
+  @keyframes ripple-anim{to{transform:scale(4);opacity:0}}
+
+  /* ===== FILTER TAGS ===== */
+  .filter-row { display:flex;gap:8px;padding:0 24px 20px;max-width:1200px;margin:0 auto;flex-wrap:wrap; }
+  .filter-tag {
+    padding:6px 14px;border-radius:8px;
+    background:var(--surface);border:1px solid var(--border);
+    font-size:0.8rem;font-weight:500;color:var(--text2);cursor:pointer;transition:all 0.2s;
+  }
+  .filter-tag.active { background:rgba(79,138,255,0.1);border-color:var(--accent);color:var(--accent); }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:768px) {
+    .nav-center { display:none; }
+    .hamburger { display:flex; }
+    /* Mobile Header adjustments */
+    nav { padding: 0 16px; }
+    .nav-logo span { font-size: 1rem; }
+    
+    .hero { padding:40px 24px 32px; }
+    .feat-app-icon { display:none; }
+    .featured-banner { padding:32px 24px; }
+    .app-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; }
+    .modal { max-height:95vh; }
+    .modal-content { padding:20px 20px 48px; }
+    .modal-stats { gap:12px; }
+    .cats-grid { grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
+    .toast-container { bottom:16px;right:16px;left:16px; }
+    .toast { min-width:unset;width:100%; }
+    .dl-progress { left:16px;right:16px;bottom:80px; }
+  }
+  @media(max-width:480px) {
+    .nav-logo span { display: none; } /* Hide text on very small screens */
+    .app-grid { grid-template-columns:1fr 1fr; gap:10px; }
+    .hero h1 { font-size:2rem; }
+    .auth-modal { padding:28px 20px; }
+    .section { padding: 0 16px 40px; }
+    .h-scroll-wrap { margin: 0 -16px; padding: 0 16px; }
+    .category-row { padding: 0 16px 24px; }
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    border-top:1px solid var(--border);padding:40px 24px;
+    text-align:center;color:var(--text3);font-size:0.85rem;position:relative;z-index:1;
+  }
+  footer .footer-logo { font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text2);margin-bottom:8px; }
+  footer a { color:var(--text2);text-decoration:none;transition:color 0.2s; }
+  footer a:hover { color:var(--accent); }
+  .footer-links { display:flex;gap:20px;justify-content:center;margin-bottom:16px;flex-wrap:wrap; }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-inner">
+    <!-- CHANGED: Logo -->
+    <img src="images/blackgiftlogo.png" class="loader-logo" alt="ExamSidemann" onerror="this.style.display='none'; document.querySelector('.loader-logo-fallback').style.display='flex'">
+    <div class="loader-logo-fallback" style="display:none;width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#4f8aff,#7c4dff);align-items:center;justify-content:center;font-size:2rem;font-weight:800;color:#fff;animation:pulse-logo 1.5s ease-in-out infinite;">ES</div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+  </div>
+</div>
+
+<!-- MESH BG -->
+<div class="mesh-bg">
+  <div class="mesh-blob"></div>
+  <div class="mesh-blob"></div>
+  <div class="mesh-blob"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <!-- CHANGED: Logo -->
+    <img src="images/blackgiftlogo.png" alt="ExamSidemann" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="logo-fallback" style="display:none;">ES</div>
+    <span>ExamSidemann</span>
+  </div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('home',this)">Home</button>
+    <button class="nav-tab" onclick="showPage('categories',this)">Categories</button>
+    <button class="nav-tab" onclick="showPage('top',this)">Top Charts</button>
+    <button class="nav-tab" onclick="showPage('search-page',this)">Search</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search-btn" onclick="showPage('search-page'); focusSearch()">
+      <!-- CHANGED: FA ICON -->
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </div>
+    <div id="authBtnWrap">
+      <button class="btn-login" onclick="openAuth()">Sign In</button>
+    </div>
+    <div class="hamburger" onclick="toggleMobileNav()" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="nav-tab" onclick="showPage('home');closeMobileNav()"><i class="fa fa-home" aria-hidden="true"></i> Home</button>
+  <button class="nav-tab" onclick="showPage('categories');closeMobileNav()"><i class="fa fa-th-large" aria-hidden="true"></i> Categories</button>
+  <button class="nav-tab" onclick="showPage('top');closeMobileNav()"><i class="fa fa-bar-chart" aria-hidden="true"></i> Top Charts</button>
+  <button class="nav-tab" onclick="showPage('search-page');closeMobileNav()"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+  <button class="nav-tab" onclick="showPage('profile');closeMobileNav()"><i class="fa fa-user" aria-hidden="true"></i> Profile</button>
+</div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span> New apps added daily</div>
+    <h1>Discover <span>Amazing</span><br>Apps & Games</h1>
+    <p>The ExamSidemann App Store — your ultimate destination for the best mobile and desktop applications, curated just for you.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('categories')">Browse Categories</button>
+      <button class="btn-ghost" onclick="showPage('top')">View Top Charts</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Apps Available</div></div>
+      <div class="stat"><div class="stat-num" data-count="1240000">0</div><div class="stat-label">Downloads</div></div>
+      <div class="stat"><div class="stat-num" data-count="50000">0</div><div class="stat-label">Active Users</div></div>
+      <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Countries</div></div>
+    </div>
+  </div>
+
+  <div class="search-container">
+    <div class="search-wrap">
+      <div class="search-icon-box"><i class="fa fa-search" aria-hidden="true"></i></div>
+      <input type="text" id="heroSearch" placeholder="Search apps, games, developers..." oninput="liveSearch(this.value)">
+      <button class="search-clear" onclick="clearSearch()">✕</button>
+    </div>
+  </div>
+
+  <div class="category-row" id="catPills"></div>
+
+  <div class="section">
+    <div class="featured-banner">
+      <div class="feat-cat">Editor's Choice</div>
+      <h2 id="featTitle">Sidemann Web Dev</h2>
+      <div class="feat-meta">
+        <div class="feat-rating"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i> <span style="color:var(--text2);margin-left:4px;font-size:0.85rem;">4.8</span></div>
+        <div class="feat-dl">1.2M downloads</div>
+      </div>
+      <p id="featDesc">Sidemann Web Dev — full-featured web development toolkit for creators. Editor, preview, debugging and deployment tools in one compact app.</p>
+      <button class="btn-primary" onclick="openApp(appData[0])">Get App — Free</button>
+      <div class="feat-app-icon" id="featIcon"><img src="images/sidemann.png" alt="Sidemann" style="width:100%;height:100%;object-fit:cover;border-radius:22px;"></div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Featured Apps</div>
+      <div class="section-link" onclick="filterByCategory('all')">See All</div>
+    </div>
+    <div class="app-grid" id="featuredGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">New & Noteworthy</div>
+      <div class="section-link" onclick="filterByCategory('all')">See All</div>
+    </div>
+    <div class="h-scroll-wrap">
+      <div class="app-row" id="newAppsRow"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <!-- CHANGED: Icon -->
+      <div class="section-title"><i class="fa fa-fire" aria-hidden="true" style="color:var(--danger)"></i> Trending Now</div>
+      <div class="section-link" onclick="showPage('top')">Top Charts →</div>
+    </div>
+    <div class="app-grid" id="trendingGrid"></div>
+  </div>
+</div>
+
+<!-- ==================== CATEGORIES PAGE ==================== -->
+<div id="page-categories" class="page">
+  <div class="cats-hero">
+    <h2>Browse Categories</h2>
+    <p>Find apps that fit your lifestyle and interests</p>
+  </div>
+  <div class="cats-grid" id="catsGrid"></div>
+</div>
+
+<!-- ==================== TOP CHARTS ==================== -->
+<div id="page-top" class="page">
+  <div class="hero" style="padding-bottom:20px;">
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:8px;">Top Charts</h2>
+    <p style="color:var(--text2)">The most popular and highest rated apps right now</p>
+  </div>
+  <div class="filter-row">
+    <div class="filter-tag active" onclick="setTopFilter('free',this)">Top Free</div>
+    <div class="filter-tag" onclick="setTopFilter('paid',this)">Top Paid</div>
+    <div class="filter-tag" onclick="setTopFilter('rated',this)">Top Rated</div>
+  </div>
+  <div class="section" style="padding-top:0;">
+    <div class="top-chart" id="topChartList"></div>
+  </div>
+</div>
+
+<!-- ==================== SEARCH PAGE ==================== -->
+<div id="page-search-page" class="page">
+  <div class="search-page-bar">
+    <div class="search-wrap">
+      <div class="search-icon-box"><i class="fa fa-search" aria-hidden="true"></i></div>
+      <input type="text" id="mainSearchInput" placeholder="Search apps, games, developers..." oninput="doSearch(this.value)">
+      <button class="search-clear" onclick="clearMainSearch()">✕</button>
+    </div>
+  </div>
+
+  <div class="category-row" id="searchCatPills"></div>
+
+  <div class="search-results-wrap">
+    <div class="results-count" id="searchCount"></div>
+    <div class="app-grid" id="searchResults"></div>
+    <div class="no-results" id="noResults" style="display:none;">
+      <!-- CHANGED: Icon -->
+      <div class="nr-icon"><i class="fa fa-search" aria-hidden="true"></i></div>
+      <h3>No results found</h3>
+      <p>Try different keywords or browse categories</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PROFILE PAGE ==================== -->
+<div id="page-profile" class="page" style="padding-top:68px;">
+  <div class="profile-hero">
+    <div class="profile-avatar" id="profileAvatar">?</div>
+    <div class="profile-name" id="profileName">Guest User</div>
+    <div class="profile-email" id="profileEmail">Not signed in</div>
+    <div class="profile-stats-row">
+      <div class="p-stat"><div class="p-stat-num" id="pInstalled">0</div><div class="p-stat-label">Installed</div></div>
+      <div class="p-stat"><div class="p-stat-num" id="pWishlist">0</div><div class="p-stat-label">Wishlist</div></div>
+      <div class="p-stat"><div class="p-stat-num" id="pReviews">0</div><div class="p-stat-label">Reviews</div></div>
+    </div>
+  </div>
+  <div class="profile-tabs">
+    <button class="profile-tab active" onclick="switchProfileTab('installed',this)">Installed Apps</button>
+    <button class="profile-tab" onclick="switchProfileTab('wishlist',this)">Wishlist</button>
+    <button class="profile-tab" onclick="switchProfileTab('reviews',this)">My Reviews</button>
+    <button class="profile-tab" onclick="switchProfileTab('settings',this)">Settings</button>
+  </div>
+  <div class="profile-content">
+    <div class="profile-section-tab active" id="ptab-installed">
+      <div class="app-grid" id="installedGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text3)">
+          <div style="font-size:3rem;margin-bottom:12px;"><i class="fa fa-mobile" aria-hidden="true"></i></div>
+          <p>No apps installed yet. Browse and download apps to see them here.</p>
+        </div>
+      </div>
+    </div>
+    <div class="profile-section-tab" id="ptab-wishlist">
+      <div class="app-grid" id="wishlistGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text3)">
+          <div style="font-size:3rem;margin-bottom:12px;"><i class="fa fa-heart" aria-hidden="true"></i></div>
+          <p>Your wishlist is empty. Heart apps to save them here.</p>
+        </div>
+      </div>
+    </div>
+    <div class="profile-section-tab" id="ptab-reviews">
+      <div id="myReviewsList">
+        <div style="text-align:center;padding:60px 0;color:var(--text3)">
+          <div style="font-size:3rem;margin-bottom:12px;"><i class="fa fa-comment" aria-hidden="true"></i></div>
+          <p>You haven't written any reviews yet.</p>
+        </div>
+      </div>
+    </div>
+    <div class="profile-section-tab" id="ptab-settings">
+      <div class="edit-profile-card">
+        <h3>Edit Profile</h3>
+        <div class="auth-form">
+          <div class="form-group">
+            <label>Display Name</label>
+            <input class="form-input" id="editName" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input class="form-input" id="editEmail" placeholder="email@example.com" disabled style="opacity:0.6">
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0;margin-top:4px;">
+            <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+            <button class="btn-logout" onclick="signOut()">Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== AUTH MODAL ==================== -->
+<div class="auth-overlay" id="authOverlay" onclick="closeAuthIfOutside(event)">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo">
+      <div class="logo-wrap">
+        <!-- CHANGED: Logo -->
+        <img src="images/blackgiftlogo.png" alt="Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:1.5rem;font-weight:800;color:#fff;">ES</span>
+      </div>
+      <h2>Welcome Back</h2>
+      <p>Sign in to ExamSidemann App Store</p>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" onclick="switchAuthTab('login',this)">Sign In</button>
+      <button class="auth-tab-btn" onclick="switchAuthTab('register',this)">Create Account</button>
+    </div>
+    <div id="authLogin">
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input class="form-input" id="loginEmail" type="email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input class="form-input" id="loginPass" type="password" placeholder="••••••••">
+        </div>
+        <div class="auth-error" id="loginError"></div>
+        <button class="btn-auth" onclick="doLogin()">Sign In</button>
+      </div>
+      <div class="auth-divider">or continue with</div>
+      <button class="btn-google" onclick="doGoogleLogin()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+    <div id="authRegister" style="display:none;">
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input class="form-input" id="regName" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input class="form-input" id="regEmail" type="email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input class="form-input" id="regPass" type="password" placeholder="Min. 6 characters">
+        </div>
+        <div class="auth-error" id="regError"></div>
+        <button class="btn-auth" onclick="doRegister()">Create Account</button>
+      </div>
+      <div class="auth-divider">or</div>
+      <button class="btn-google" onclick="doGoogleLogin()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Sign up with Google
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- APP DETAIL MODAL -->
+<div class="modal-overlay" id="appModal" onclick="closeModalIfOutside(event)">
+  <div class="modal" id="appModalInner">
+    <div class="modal-handle"></div>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="share-overlay" id="shareOverlay" onclick="closeShareIfOutside(event)">
+  <div class="share-modal">
+    <h3>Share App</h3>
+    <div class="share-link">
+      <span id="shareUrl">https://examside.app/app/12345</span>
+      <button class="btn-copy" onclick="copyShareLink()">Copy</button>
+    </div>
+    <div class="share-options">
+      <div class="share-opt" onclick="shareVia('whatsapp')"><div class="s-icon"><i class="fa fa-whatsapp" aria-hidden="true"></i></div>WhatsApp</div>
+      <div class="share-opt" onclick="shareVia('twitter')"><div class="s-icon"><i class="fa fa-twitter" aria-hidden="true"></i></div>Twitter</div>
+      <div class="share-opt" onclick="shareVia('facebook')"><div class="s-icon"><i class="fa fa-facebook" aria-hidden="true"></i></div>Facebook</div>
+      <div class="share-opt" onclick="shareVia('email')"><div class="s-icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>Email</div>
+      <div class="share-opt" onclick="shareVia('telegram')"><div class="s-icon"><i class="fa fa-paper-plane" aria-hidden="true"></i></div>Telegram</div>
+      <div class="share-opt" onclick="shareVia('linkedin')"><div class="s-icon"><i class="fa fa-linkedin" aria-hidden="true"></i></div>LinkedIn</div>
+      <div class="share-opt" onclick="shareVia('reddit')"><div class="s-icon"><i class="fa fa-reddit" aria-hidden="true"></i></div>Reddit</div>
+      <div class="share-opt" onclick="copyShareLink()"><div class="s-icon"><i class="fa fa-link" aria-hidden="true"></i></div>Copy Link</div>
+    </div>
+    <button class="btn-share-close" onclick="closeShare()">Done</button>
+  </div>
+</div>
+
+<!-- DOWNLOAD PROGRESS -->
+<div class="dl-progress" id="dlProgress">
+  <div class="dl-header">
+    <div class="dl-name" id="dlName">Downloading...</div>
+    <div class="dl-pct" id="dlPct">0%</div>
+  </div>
+  <div class="dl-bar-track"><div class="dl-bar-fill" id="dlFill" style="width:0%"></div></div>
+  <div class="dl-speed" id="dlSpeed">Preparing...</div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ExamSidemann App Store</div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Developer Console</a>
+    <a href="#">Support</a>
+    <a href="#">About</a>
+  </div>
+  <div>© 2025 ExamSidemann. All rights reserved. Powered by passion & code.</div>
+</footer>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as fbSignOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+// ===== FIREBASE CONFIG =====
+// Replace with your Firebase project config
+const firebaseConfig = {
+  apiKey: "AIzaSyBuZOcMBIerJp95bXVLkSjuLsC8oYWUPs4",
+  authDomain: "sidemannstore.firebaseapp.com",
+  projectId: "sidemannstore",
+  storageBucket: "sidemannstore.firebasestorage.app",
+  messagingSenderId: "429241229816",
+  appId: "1:429241229816:web:5415a9c5f59726b1fd760d"
+};
+
+let app, auth, db, googleProvider;
+let firebaseReady = false;
+
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  googleProvider = new GoogleAuthProvider();
+  firebaseReady = true;
+} catch(e) {
+  console.warn('Firebase not configured. Using demo mode.');
+}
+
+// Expose to global scope
+window._fbAuth = auth;
+window._fbDb = db;
+window._fbGoogleProvider = googleProvider;
+window._fbReady = firebaseReady;
+window._fbModules = { createUserWithEmailAndPassword, signInWithEmailAndPassword, fbSignOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy };
+
+if (firebaseReady) {
+  onAuthStateChanged(auth, (user) => {
+    window.currentUser = user;
+    window.onAuthChange(user);
+  });
+}
+
+// If Firebase is available, ensure the provided app data is seeded/read from Firestore
+if(firebaseReady) {
+  try {
+    // Seed/read each app in appData into Firestore (collection: apps)
+    appData.forEach(a => {
+      try {
+        const id = (a.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || String(a.id);
+        const appRef = doc(db, 'apps', id);
+        setDoc(appRef, {
+          name: a.name,
+          downloads: a.downloadsRaw || (Number(String(a.downloads).replace(/[^0-9]/g,''))||0),
+          reviews: a.reviews || 0,
+          rating: a.rating || 0,
+          size: a.size || ''
+        }, { merge: true }).catch(()=>{});
+
+        // read back to keep UI consistent with DB values
+        getDoc(appRef).then(snapshot => {
+          if(snapshot.exists()) {
+            const data = snapshot.data();
+            const idx = appData.findIndex(x=>x.name===a.name);
+            if(idx!==-1) {
+              const dest = appData[idx];
+              if(data.downloads) { dest.downloadsRaw = data.downloads; dest.downloads = data.downloads>=1000000? (data.downloads/1000000).toFixed(1)+'M' : data.downloads.toString(); }
+              if(data.reviews) dest.reviews = data.reviews;
+              if(data.rating) dest.rating = data.rating;
+              renderAll();
+            }
+          }
+        }).catch(()=>{});
+      } catch(e) { /* per-app seed fail */ }
+    });
+  } catch(e) { console.warn('Firestore seed/read failed', e); }
+}
+</script>
+
+<script>
+// ===== APP DATA =====
+// CHANGED: Specific App Data for Sidemann Web Dev with real numbers and file path
+const appData = [
+  {
+    id: 1,
+    name: 'Sidemann Web Dev',
+    dev: 'Sidemann',
+    cat: 'Education',
+    icon: '<img src="images/sidemann.png" alt="Sidemann" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#4f8aff,#7c4dff',
+    rating: 4.8,
+    reviews: 12543,
+    downloads: '1.2M',
+    downloadsRaw: 1240050,
+    size: '5.5 MB',
+    desc: 'Sidemann Web Dev — full-featured web development toolkit for creators. Editor, preview, debugging and deployment tools in one compact app. APK available for direct download.',
+    featured: true,
+    new: true,
+    trending: true,
+    price: 'Free',
+    tags: ['Education'],
+    file: 'apps/sidemannwebdev.apk',
+    displayImage: 'images/sidemann.png'
+  },
+  {
+    id: 2,
+    name: 'VidMate',
+    dev: 'VidMate Inc',
+    cat: 'Entertainment',
+    icon: '<img src="images/vidmate.png" alt="VidMate" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#ff6b35,#ff4f7b',
+    rating: 4.2,
+    reviews: 450000,
+    downloads: '124K',
+    downloadsRaw: 50000000,
+    size: '33.5 MB',
+    desc: 'VidMate — download and stream videos from multiple platforms quickly and easily.',
+    featured: true,
+    new: false,
+    trending: true,
+    price: 'Free',
+    tags: ['Video','Downloader'],
+    file: 'apps/vidmate.apk',
+    displayImage: 'images/vidmate.png'
+  },
+  {
+    id: 3,
+    name: 'Duolingo',
+    dev: 'Duolingo',
+    cat: 'Education',
+    icon: '<img src="images/duolingo.png" alt="Duolingo" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#1db954,#4f8aff',
+    rating: 4.6,
+    reviews: 5000000,
+    downloads: '12.3K',
+    downloadsRaw: 500000000,
+    size: '10.2 MB',
+    desc: 'Duolingo — learn languages for free with bite-sized lessons and playful practice.',
+    featured: true,
+    new: false,
+    trending: true,
+    price: 'Free',
+    tags: ['Education','Language'],
+    file: 'apps/duolingo.apk',
+    displayImage: 'images/duolingo.png'
+  }
+];
+
+// Updated categories for provided apps
+const categories = [
+  { name: 'Education', emoji: '<i class="fa fa-graduation-cap" aria-hidden="true"></i>', count: 2 },
+  { name: 'Entertainment', emoji: '<i class="fa fa-film" aria-hidden="true"></i>', count: 1 }
+];
+
+// ===== STATE =====
+let currentPage = 'home';
+let currentApp = null;
+let currentUser = null;
+let installedApps = JSON.parse(localStorage.getItem('installed') || '[]');
+let wishlistApps = JSON.parse(localStorage.getItem('wishlist') || '[]');
+let reviewsData = JSON.parse(localStorage.getItem('reviews') || '{}');
+let myReviews = JSON.parse(localStorage.getItem('myreviews') || '[]');
+let selectedStars = 0;
+let currentFilter = 'all';
+let currentTopFilter = 'free';
+let shareAppCurrent = null;
+
+// ===== INIT =====
+window.onload = function() {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2000);
+  renderAll();
+  animateCounters();
+  addRippleEffects();
+};
+
+window.onAuthChange = function(user) {
+  currentUser = user;
+  updateAuthUI(user);
+};
+
+function renderAll() {
+  renderCatPills();
+  renderFeatured();
+  renderNewApps();
+  renderTrending();
+  renderTopChart();
+  renderCatsGrid();
+  renderSearchCats();
+  renderSearchResults(appData);
+}
+
+// ===== CATEGORY PILLS =====
+function renderCatPills() {
+  const wrap = document.getElementById('catPills');
+  // CHANGED: Star icon instead of emoji
+  const all = [{name:'All',emoji:'<i class="fa fa-star" aria-hidden="true"></i>'},...categories];
+  wrap.innerHTML = all.map((c,i) => `
+    <div class="cat-pill ${i===0?'active':''}" onclick="filterByCategory('${c.name}',this)">
+      <span class="cat-icon">${c.emoji}</span>${c.name}
+    </div>
+  `).join('');
+
+  const wrap2 = document.getElementById('searchCatPills');
+  wrap2.innerHTML = all.map((c,i) => `
+    <div class="cat-pill ${i===0?'active':''}" onclick="filterSearch('${c.name}',this)">
+      <span class="cat-icon">${c.emoji}</span>${c.name}
+    </div>
+  `).join('');
+}
+
+// ===== FEATURED GRID =====
+function renderFeatured() {
+  const apps = appData.filter(a=>a.featured).slice(0,8);
+  document.getElementById('featuredGrid').innerHTML = apps.map((a,i) => appCard(a,i)).join('');
+  // update featured banner with first featured app
+  const first = apps[0] || appData[0];
+  if(first) {
+    document.getElementById('featTitle').textContent = first.name;
+    document.getElementById('featDesc').textContent = first.desc;
+    const featRatingEl = document.querySelector('.feat-rating');
+    if(featRatingEl) featRatingEl.innerHTML = `<i class="fa fa-star" aria-hidden="true"></i> <span style="color:var(--text2);margin-left:6px;font-size:0.9rem;">${first.rating}</span>`;
+    const featDlEl = document.querySelector('.feat-dl');
+    if(featDlEl) featDlEl.textContent = `${first.downloads} downloads`;
+    const featIcon = document.getElementById('featIcon');
+    if(featIcon) featIcon.innerHTML = `<img src="${first.displayImage||'images/sidemann.png'}" alt="${first.name}" style="width:100%;height:100%;object-fit:cover;border-radius:18px;">`;
+  }
+}
+
+function renderTrending() {
+  const apps = appData.filter(a=>a.trending).slice(0,8);
+  document.getElementById('trendingGrid').innerHTML = apps.map((a,i) => appCard(a,i)).join('');
+}
+
+function renderNewApps() {
+  const apps = appData.filter(a=>a.new);
+  document.getElementById('newAppsRow').innerHTML = apps.map(a => `
+    <div class="app-row-card ripple-container" onclick="openApp(appData.find(x=>x.id===${a.id}))">
+      <div class="app-row-icon" style="background:linear-gradient(135deg,${a.color})">${a.icon}</div>
+      <div class="app-row-name">${a.name}</div>
+      <div class="app-row-cat">${a.cat}</div>
+      <div class="app-row-rating"><i class="fa fa-star" aria-hidden="true"></i> ${a.rating} · ${formatNum(a.reviews)} ratings</div>
+    </div>
+  `).join('');
+}
+
+function appCard(a, i=0) {
+  const installed = installedApps.includes(a.id);
+  return `
+    <div class="app-card ripple-container" onclick="openApp(appData.find(x=>x.id===${a.id}))" style="animation-delay:${i*0.05}s">
+      <div class="app-icon" style="background:linear-gradient(135deg,${a.color})">${a.icon}</div>
+      <div class="app-name">${a.name}</div>
+      <div class="app-dev">${a.dev}</div>
+      <div class="app-desc">${a.desc}</div>
+      <div class="app-footer">
+        <div>
+          <div class="app-rating"><i class="fa fa-star" aria-hidden="true"></i> ${a.rating} <span style="color:var(--text3)">(${formatNum(a.reviews)})</span></div>
+          <div class="app-size">${a.size}</div>
+        </div>
+        <button class="btn-get ${installed?'installed':''}" onclick="event.stopPropagation(); ${installed?'openApp(appData.find(x=>x.id==='+a.id+'))':'downloadApp('+a.id+',event)'}">
+          ${installed ? '<i class="fa fa-check" aria-hidden="true"></i> Open' : a.price==='Free'?'<i class="fa fa-download" aria-hidden="true"></i> Get':'Buy'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// ===== TOP CHART =====
+function renderTopChart(filter='free') {
+  let sorted = [...appData];
+  if(filter==='rated') sorted.sort((a,b)=>b.rating-a.rating);
+  else sorted.sort((a,b)=>{
+    const val = x => Number(x.downloadsRaw || (String(x.downloads).replace(/[^0-9]/g,'')||0));
+    return val(b)-val(a);
+  });
+  document.getElementById('topChartList').innerHTML = sorted.slice(0,15).map((a,i) => `
+    <div class="chart-item ripple-container" onclick="openApp(appData.find(x=>x.id===${a.id}))" style="animation-delay:${i*0.04}s">
+      <div class="chart-num ${i<3?'top3':''}">${i+1}</div>
+      <div class="chart-icon" style="background:linear-gradient(135deg,${a.color})">${a.icon}</div>
+      <div class="chart-info">
+        <div class="chart-name">${a.name}</div>
+        <div class="chart-cat">${a.cat} · ${a.downloads} downloads</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div style="color:var(--warn);font-size:0.8rem"><i class="fa fa-star" aria-hidden="true"></i> ${a.rating}</div>
+        <button class="btn-get ${installedApps.includes(a.id)?'installed':''}" onclick="event.stopPropagation();downloadApp(${a.id},event)">
+          ${installedApps.includes(a.id)?'<i class="fa fa-check" aria-hidden="true"></i> Open':'Get'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== CATS GRID =====
+function renderCatsGrid() {
+  document.getElementById('catsGrid').innerHTML = categories.map((c,i) => `
+    <div class="cat-card ripple-container" onclick="filterByCategory('${c.name}')" style="animation-delay:${i*0.05}s">
+      <div class="cat-emoji">${c.emoji}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.count.toLocaleString()} apps</div>
+    </div>
+  `).join('');
+}
+
+// ===== SEARCH =====
+function renderSearchResults(apps) {
+  const grid = document.getElementById('searchResults');
+  const noRes = document.getElementById('noResults');
+  const count = document.getElementById('searchCount');
+  if(apps.length===0) {
+    grid.style.display='none'; noRes.style.display='block';
+    count.textContent='';
+  } else {
+    grid.style.display='grid'; noRes.style.display='none';
+    count.textContent=`${apps.length} app${apps.length!==1?'s':''} found`;
+    grid.innerHTML = apps.map((a,i)=>appCard(a,i)).join('');
+  }
+}
+
+let searchFilter = 'All';
+function doSearch(val) {
+  const q = val.toLowerCase();
+  let results = appData.filter(a => {
+    const inCat = searchFilter==='All' || a.cat===searchFilter;
+    const match = !q || a.name.toLowerCase().includes(q) || a.dev.toLowerCase().includes(q) || a.cat.toLowerCase().includes(q);
+    return inCat && match;
+  });
+  renderSearchResults(results);
+}
+
+function filterSearch(cat, el) {
+  searchFilter = cat==='All'?'All':cat;
+  document.querySelectorAll('#searchCatPills .cat-pill').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  doSearch(document.getElementById('mainSearchInput').value);
+}
+
+function liveSearch(val) {
+  if(val) { showPage('search-page'); document.getElementById('mainSearchInput').value=val; doSearch(val); }
+}
+
+function clearSearch() { document.getElementById('heroSearch').value=''; }
+function clearMainSearch() { document.getElementById('mainSearchInput').value=''; doSearch(''); }
+
+window.focusSearch = function() { setTimeout(()=>document.getElementById('mainSearchInput').focus(), 100); };
+
+function renderSearchCats() {} // already done in renderCatPills
+
+function filterByCategory(cat, el) {
+  if(cat==='all'||cat==='All') {
+    renderFeatured(); renderTrending();
+    document.querySelectorAll('#catPills .cat-pill').forEach(p=>p.classList.remove('active'));
+    if(el) el.classList.add('active'); else document.querySelector('#catPills .cat-pill').classList.add('active');
+    return;
+  }
+  document.querySelectorAll('#catPills .cat-pill').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const filtered = appData.filter(a=>a.cat===cat);
+  document.getElementById('featuredGrid').innerHTML = filtered.map((a,i)=>appCard(a,i)).join('');
+  document.getElementById('trendingGrid').innerHTML = filtered.map((a,i)=>appCard(a,i)).join('');
+  showPage('home');
+}
+
+function setTopFilter(filter, el) {
+  document.querySelectorAll('.filter-tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTopChart(filter);
+}
+
+// ===== APP MODAL =====
+window.openApp = function(app) {
+  if(!app) return;
+  currentApp = app;
+  const installed = installedApps.includes(app.id);
+  const wishlisted = wishlistApps.includes(app.id);
+  const appReviews = reviewsData[app.id] || [];
+  const avgRating = appReviews.length ? (appReviews.reduce((s,r)=>s+r.stars,0)/appReviews.length).toFixed(1) : app.rating;
+
+  const stars = n => {
+    const full = Math.round(n);
+    const out = [];
+    for(let i=0;i<full;i++) out.push('<i class="fa fa-star" aria-hidden="true"></i>');
+    for(let i=full;i<5;i++) out.push('<i class="fa fa-star-o" aria-hidden="true"></i>');
+    return out.join('');
+  };
+  const bars = [5,4,3,2,1].map(s => {
+    const cnt = appReviews.filter(r=>r.stars===s).length || Math.floor(Math.random()*50);
+    const pct = Math.floor(cnt/Math.max(appReviews.length||1,1)*100);
+    return `<div class="r-bar-row"><span>${s}<i class="fa fa-star" aria-hidden="true"></i></span><div class="r-bar-track"><div class="r-bar-fill" style="width:${pct}%"></div></div><span style="color:var(--text3);font-size:0.75rem;min-width:24px">${pct}%</span></div>`;
+  }).join('');
+
+  const reviewItems = [...(appReviews.slice(-5).reverse()), ...[
+    {user:'Alex M.', stars:5, date:'2 days ago', text:'Absolutely love this app! Changed the way I work daily.'},
+    {user:'Sarah K.', stars:4, date:'1 week ago', text:'Great app with tons of features. Minor UI hiccups but overall excellent.'},
+    {user:'James R.', stars:5, date:'2 weeks ago', text:'Best in its category. Highly recommend to everyone!'},
+  ]].slice(0,4);
+
+  // CHANGED: Removed Screenshots Section per request
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-header">
+      <div class="modal-icon" style="background:linear-gradient(135deg,${app.color})">${app.icon}</div>
+      <div class="modal-meta">
+        <div class="modal-name">${app.name}</div>
+        <div class="modal-dev">${app.dev}</div>
+        <div class="modal-badges">
+          ${app.tags.map(t=>`<span class="badge">${t}</span>`).join('')}
+          <span class="badge green">${app.cat}</span>
+          <span class="badge yellow">${app.price}</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-stats">
+      <div class="modal-stat"><div class="modal-stat-val">${avgRating}</div><div style="color:var(--warn);font-size:0.85rem;"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></div><div class="modal-stat-label">${formatNum(app.reviews)} Ratings</div></div>
+      <div class="modal-stat"><div class="modal-stat-val">${app.downloads}</div><div class="modal-stat-label">Downloads</div></div>
+      <div class="modal-stat"><div class="modal-stat-val">${app.size}</div><div class="modal-stat-label">Size</div></div>
+      <div class="modal-stat"><div class="modal-stat-val">4+</div><div class="modal-stat-label">Age Rating</div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-download ${installed?'downloading':''}" onclick="downloadApp(${app.id}, event)" id="dlBtn${app.id}">
+        ${installed ? '<i class="fa fa-check" aria-hidden="true"></i> Installed — Open' : '<i class="fa fa-download" aria-hidden="true"></i> Download'}
+      </button>
+      <button class="btn-wishlist ${wishlisted?'wishlisted':''}" onclick="toggleWishlist(${app.id})" id="wlBtn${app.id}" title="Wishlist">
+        <i class="fa fa-heart" aria-hidden="true"></i>
+      </button>
+      <button class="btn-share-modal" onclick="openShare(${app.id})" title="Share">
+        <i class="fa fa-share" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-desc">${app.desc}</div>
+    
+    <div class="ratings-section">
+      <h3>Ratings & Reviews</h3>
+      <div class="rating-overview">
+        <div class="rating-big">
+          <div class="num">${avgRating}</div>
+          <div class="stars">${stars(avgRating)}</div>
+          <div class="count">${formatNum(app.reviews+appReviews.length)} reviews</div>
+        </div>
+        <div class="rating-bars">${bars}</div>
+      </div>
+      ${reviewItems.map(r=>`
+        <div class="review">
+          <div class="review-header">
+            <span class="review-user">${r.user}</span>
+            <span class="review-stars">${Array(r.stars).fill('<i class="fa fa-star" aria-hidden="true"></i>').join('')}${Array(5-r.stars).fill('<i class="fa fa-star-o" aria-hidden="true"></i>').join('')}</span>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text3);margin-bottom:6px">${r.date}</div>
+          <div class="review-text">${r.text}</div>
+        </div>
+      `).join('')}
+      <div class="write-review" id="writeReview">
+        <h4>Write a Review</h4>
+        <div class="star-picker" id="starPicker">
+          ${[1,2,3,4,5].map(s=>`<span class="star-pick" onclick="selectStars(${s})" data-val="${s}"><i class="fa fa-star" aria-hidden="true"></i></span>`).join('')}
+        </div>
+        <textarea class="review-input" id="reviewText" placeholder="Share your experience with ${app.name}..."></textarea>
+        <button class="btn-submit-review" onclick="submitReview(${app.id})">Submit Review</button>
+      </div>
+    </div>
+  `;
+  selectedStars = 0;
+  document.getElementById('appModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+function closeModal() {
+  document.getElementById('appModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalIfOutside(e) {
+  if(e.target === document.getElementById('appModal')) closeModal();
+}
+
+// ===== STAR PICKER =====
+window.selectStars = function(n) {
+  selectedStars = n;
+  document.querySelectorAll('.star-pick').forEach((s,i) => {
+    s.classList.toggle('active', i<n);
+  });
+};
+
+// ===== SUBMIT REVIEW =====
+window.submitReview = function(appId) {
+  if(!currentUser) { showToast('Sign in to submit a review','info'); openAuth(); return; }
+  if(!selectedStars) { showToast('Please select a star rating','error'); return; }
+  const text = document.getElementById('reviewText').value.trim();
+  if(!text) { showToast('Please write a review','error'); return; }
+  const review = {
+    user: currentUser.displayName || currentUser.email.split('@')[0],
+    stars: selectedStars,
+    date: 'Just now',
+    text
+  };
+  if(!reviewsData[appId]) reviewsData[appId]=[];
+  reviewsData[appId].push(review);
+  localStorage.setItem('reviews', JSON.stringify(reviewsData));
+  myReviews.push({appId, ...review});
+  localStorage.setItem('myreviews', JSON.stringify(myReviews));
+  showToast('Review submitted! Thank you','success');
+  openApp(appData.find(a=>a.id===appId));
+  updateProfileStats();
+};
+
+// ===== DOWNLOAD =====
+// CHANGED: Download function triggers real file download
+window.downloadApp = function(appId, e) {
+  if(installedApps.includes(appId)) { showToast('App already installed! Opening...','info'); return; }
+  const app = appData.find(a=>a.id===appId);
+  if(!app) return;
+  const dlBtn = document.getElementById('dlBtn'+appId);
+  if(dlBtn) dlBtn.innerHTML = '<i class="fa fa-clock-o" aria-hidden="true"></i> Downloading...';
+  showDownloadProgress(app.name);
+
+  // Trigger real download if file is present
+  if(app.file) {
+    const a = document.createElement('a');
+    a.href = app.file;
+    a.download = app.file.split('/').pop();
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  // Simulate install progress and then mark installed
+  setTimeout(() => {
+    if(!installedApps.includes(appId)) installedApps.push(appId);
+    localStorage.setItem('installed', JSON.stringify(installedApps));
+    hideDownloadProgress();
+    showToast(`${app.name} installed successfully!`,'success');
+    if(dlBtn) { dlBtn.innerHTML='<i class="fa fa-check" aria-hidden="true"></i> Installed — Open'; dlBtn.classList.add('downloading'); }
+    updateProfileStats();
+    renderAll();
+  }, 2800);
+};
+
+function showDownloadProgress(name) {
+  const el = document.getElementById('dlProgress');
+  document.getElementById('dlName').textContent = name;
+  el.classList.add('show');
+  let pct = 0;
+  const interval = setInterval(() => {
+    pct += Math.random()*12+3;
+    if(pct>=100) pct=100;
+    document.getElementById('dlPct').textContent = Math.floor(pct)+'%';
+    document.getElementById('dlFill').style.width = pct+'%';
+    document.getElementById('dlSpeed').textContent = `${(Math.random()*8+2).toFixed(1)} MB/s · ${Math.ceil((100-pct)/10)}s remaining`;
+    if(pct>=100) clearInterval(interval);
+  }, 180);
+}
+
+function hideDownloadProgress() {
+  setTimeout(() => document.getElementById('dlProgress').classList.remove('show'), 500);
+}
+
+// ===== WISHLIST =====
+window.toggleWishlist = function(appId) {
+  if(!currentUser) { showToast('Sign in to save to wishlist','info'); openAuth(); return; }
+  const app = appData.find(a=>a.id===appId);
+  const idx = wishlistApps.indexOf(appId);
+  const btn = document.getElementById('wlBtn'+appId);
+  if(idx===-1) {
+    wishlistApps.push(appId);
+    if(btn) { btn.classList.add('wishlisted'); btn.innerHTML='<i class="fa fa-heart" aria-hidden="true"></i>'; }
+    showToast(`${app.name} added to wishlist`,'success');
+  } else {
+    wishlistApps.splice(idx,1);
+    if(btn) { btn.classList.remove('wishlisted'); btn.innerHTML='<i class="fa fa-heart-o" aria-hidden="true"></i>'; }
+    showToast(`${app.name} removed from wishlist`,'info');
+  }
+  localStorage.setItem('wishlist', JSON.stringify(wishlistApps));
+  updateProfileStats();
+};
+
+// ===== SHARE =====
+window.openShare = function(appId) {
+  shareAppCurrent = appData.find(a=>a.id===appId);
+  document.getElementById('shareUrl').textContent = `https://examside.app/app/${appId}-${shareAppCurrent.name.toLowerCase().replace(/\s+/g,'-')}`;
+  document.getElementById('shareOverlay').classList.add('open');
+};
+
+function closeShare() { document.getElementById('shareOverlay').classList.remove('open'); }
+function closeShareIfOutside(e) { if(e.target===document.getElementById('shareOverlay')) closeShare(); }
+
+window.copyShareLink = function() {
+  const url = document.getElementById('shareUrl').textContent;
+  navigator.clipboard.writeText(url).then(()=>showToast('Link copied to clipboard!','success')).catch(()=>showToast('Copied!','success'));
+};
+
+window.shareVia = function(platform) {
+  const url = encodeURIComponent(document.getElementById('shareUrl').textContent);
+  const text = encodeURIComponent(`Check out ${shareAppCurrent?.name} on ExamSidemann App Store!`);
+  const urls = {
+    whatsapp:`https://wa.me/?text=${text}%20${url}`,
+    twitter:`https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+    facebook:`https://www.facebook.com/sharer/sharer.php?u=${url}`,
+    email:`mailto:?subject=${text}&body=${url}`,
+    telegram:`https://t.me/share/url?url=${url}&text=${text}`,
+    linkedin:`https://www.linkedin.com/shareArticle?url=${url}&title=${text}`,
+    reddit:`https://www.reddit.com/submit?url=${url}&title=${text}`,
+  };
+  if(urls[platform]) window.open(urls[platform],'_blank');
+  showToast('Opening share...','info');
+  closeShare();
+};
+
+// ===== PAGES =====
+window.showPage = function(id, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  currentPage = id;
+  window.scrollTo(0,0);
+  if(id==='profile') updateProfilePage();
+};
+
+// ===== AUTH UI =====
+function updateAuthUI(user) {
+  const wrap = document.getElementById('authBtnWrap');
+  if(user) {
+    const initials = (user.displayName||user.email||'U').charAt(0).toUpperCase();
+    wrap.innerHTML = `
+      <div class="avatar-btn" onclick="showPage('profile')" title="Profile">
+        ${user.photoURL ? `<img src="${user.photoURL}" alt="">` : initials}
+      </div>
+    `;
+  } else {
+    wrap.innerHTML = `<button class="btn-login" onclick="openAuth()">Sign In</button>`;
+  }
+}
+
+// ===== AUTH MODAL =====
+window.openAuth = function() {
+  document.getElementById('authOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.closeAuth = function() {
+  document.getElementById('authOverlay').classList.remove('open');
+  document.body.style.overflow='';
+};
+window.closeAuthIfOutside = function(e) {
+  if(e.target===document.getElementById('authOverlay')) closeAuth();
+};
+
+window.switchAuthTab = function(tab, btn) {
+  document.querySelectorAll('.auth-tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('authLogin').style.display = tab==='login'?'block':'none';
+  document.getElementById('authRegister').style.display = tab==='register'?'block':'none';
+};
+
+// ===== FIREBASE AUTH =====
+window.doLogin = function() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  if(!email||!pass) { showAuthError('loginError','Please fill all fields'); return; }
+
+  if(!window._fbReady) {
+    // Demo mode
+    simulateLogin(email, email.split('@')[0]);
+    return;
+  }
+
+  const {signInWithEmailAndPassword} = window._fbModules;
+  signInWithEmailAndPassword(window._fbAuth, email, pass)
+    .then(cred => { closeAuth(); showToast(`Welcome back, ${cred.user.displayName||email}!`,'success'); })
+    .catch(err => showAuthError('loginError', getFirebaseError(err.code)));
+};
+
+window.doRegister = function() {
+  const name = document.getElementById('regName').value;
+  const email = document.getElementById('regEmail').value;
+  const pass = document.getElementById('regPass').value;
+  if(!name||!email||!pass) { showAuthError('regError','Please fill all fields'); return; }
+  if(pass.length<6) { showAuthError('regError','Password must be at least 6 characters'); return; }
+
+  if(!window._fbReady) {
+    simulateLogin(email, name);
+    return;
+  }
+
+  const {createUserWithEmailAndPassword, updateProfile} = window._fbModules;
+  createUserWithEmailAndPassword(window._fbAuth, email, pass)
+    .then(cred => updateProfile(cred.user, {displayName:name}).then(()=>{
+      closeAuth(); showToast(`Welcome to ExamSidemann, ${name}!`,'success');
+    }))
+    .catch(err => showAuthError('regError', getFirebaseError(err.code)));
+};
+
+window.doGoogleLogin = function() {
+  if(!window._fbReady) { simulateLogin('demo@gmail.com','Google User'); return; }
+  const {signInWithPopup} = window._fbModules;
+  signInWithPopup(window._fbAuth, window._fbGoogleProvider)
+    .then(res => { closeAuth(); showToast(`Welcome, ${res.user.displayName}!`,'success'); })
+    .catch(err => showAuthError('loginError', getFirebaseError(err.code)));
+};
+
+window.signOut = function() {
+  if(window._fbReady && window._fbAuth) {
+    const {fbSignOut} = window._fbModules;
+    fbSignOut(window._fbAuth).then(()=>{ currentUser=null; updateAuthUI(null); showToast('Signed out successfully','info'); showPage('home'); });
+  } else {
+    currentUser = null; updateAuthUI(null); showToast('Signed out','info'); showPage('home');
+  }
+};
+
+function simulateLogin(email, name) {
+  currentUser = {email, displayName:name, photoURL:null, uid:'demo-'+Date.now()};
+  closeAuth();
+  updateAuthUI(currentUser);
+  showToast(`Welcome, ${name}! (Demo mode)`,'success');
+  updateProfilePage();
+}
+
+function showAuthError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3000);
+}
+
+function getFirebaseError(code) {
+  const map = {
+    'auth/user-not-found':'No account found with this email',
+    'auth/wrong-password':'Incorrect password',
+    'auth/email-already-in-use':'Email already registered',
+    'auth/weak-password':'Password is too weak',
+    'auth/invalid-email':'Invalid email address',
+    'auth/too-many-requests':'Too many attempts. Please try again later',
+    'auth/network-request-failed':'Network error. Check your connection',
+  };
+  return map[code] || 'An error occurred. Please try again';
+}
+
+// ===== PROFILE =====
+function updateProfilePage() {
+  const user = currentUser;
+  const pAvatar = document.getElementById('profileAvatar');
+  if(user) {
+    document.getElementById('profileName').textContent = user.displayName || 'User';
+    document.getElementById('profileEmail').textContent = user.email;
+    document.getElementById('editName').value = user.displayName || '';
+    document.getElementById('editEmail').value = user.email;
+    pAvatar.innerHTML = user.photoURL ? `<img src="${user.photoURL}" alt="">` : (user.displayName||user.email||'U').charAt(0).toUpperCase();
+  } else {
+    document.getElementById('profileName').textContent = 'Guest User';
+    document.getElementById('profileEmail').textContent = 'Not signed in';
+    pAvatar.innerHTML = '?';
+  }
+  updateProfileStats();
+}
+
+function updateProfileStats() {
+  document.getElementById('pInstalled').textContent = installedApps.length;
+  document.getElementById('pWishlist').textContent = wishlistApps.length;
+  document.getElementById('pReviews').textContent = myReviews.length;
+
+  const ins = appData.filter(a=>installedApps.includes(a.id));
+  const wl = appData.filter(a=>wishlistApps.includes(a.id));
+
+  document.getElementById('installedGrid').innerHTML = ins.length ? ins.map((a,i)=>appCard(a,i)).join('') : `<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text3)"><div style="font-size:3rem;margin-bottom:12px"><i class="fa fa-mobile" aria-hidden="true"></i></div><p>No apps installed yet.</p></div>`;
+  document.getElementById('wishlistGrid').innerHTML = wl.length ? wl.map((a,i)=>appCard(a,i)).join('') : `<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text3)"><div style="font-size:3rem;margin-bottom:12px"><i class="fa fa-heart" aria-hidden="true"></i></div><p>Your wishlist is empty.</p></div>`;
+
+  document.getElementById('myReviewsList').innerHTML = myReviews.length ? myReviews.map(r=>`
+    <div class="review" style="margin-bottom:10px;">
+      <div class="review-header">
+        <span class="review-user">${appData.find(a=>a.id===r.appId)?.name||'Unknown App'}</span>
+        <span class="review-stars">${Array(r.stars).fill('<i class="fa fa-star" aria-hidden="true"></i>').join('')}${Array(5-r.stars).fill('<i class="fa fa-star-o" aria-hidden="true"></i>').join('')}</span>
+      </div>
+      <div style="font-size:0.75rem;color:var(--text3);margin-bottom:6px">${r.date}</div>
+      <div class="review-text">${r.text}</div>
+    </div>
+  `).join('') : `<div style="text-align:center;padding:60px 0;color:var(--text3)"><div style="font-size:3rem;margin-bottom:12px"><i class="fa fa-comment" aria-hidden="true"></i></div><p>No reviews yet.</p></div>`;
+}
+
+window.saveProfile = function() {
+  if(!currentUser) { showToast('Please sign in first','error'); return; }
+  const name = document.getElementById('editName').value;
+  if(window._fbReady && window._fbAuth?.currentUser) {
+    const {updateProfile} = window._fbModules;
+    updateProfile(window._fbAuth.currentUser, {displayName:name}).then(()=>{
+      showToast('Profile updated!','success');
+      updateAuthUI(window._fbAuth.currentUser);
+      updateProfilePage();
+    });
+  } else {
+    if(currentUser) currentUser.displayName = name;
+    updateAuthUI(currentUser); updateProfilePage();
+    showToast('Profile updated!','success');
+  }
+};
+
+window.switchProfileTab = function(tab, btn) {
+  document.querySelectorAll('.profile-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.profile-section-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('ptab-'+tab).classList.add('active');
+  if(tab!=='settings') updateProfileStats();
+};
+
+// ===== TOAST =====
+function showToast(msg, type='info') {
+  const icons = {success:'<i class="fa fa-check" aria-hidden="true"></i>', error:'<i class="fa fa-times" aria-hidden="true"></i>', info:'<i class="fa fa-info-circle" aria-hidden="true"></i>'};
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(()=>{
+    el.classList.add('removing');
+    setTimeout(()=>el.remove(), 400);
+  }, 3200);
+}
+
+// ===== COUNTERS =====
+function animateCounters() {
+  const counters = document.querySelectorAll('[data-count]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        const target = parseInt(entry.target.dataset.count);
+        animateCount(entry.target, target);
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+  counters.forEach(c=>observer.observe(c));
+}
+
+function animateCount(el, target) {
+  let start = 0; const dur = 2000; const step = 16;
+  const increment = target/(dur/step);
+  const timer = setInterval(()=>{
+    start += increment;
+    if(start>=target) { start=target; clearInterval(timer); }
+    el.textContent = target>=1000000 ? (start/1000000).toFixed(1)+'M+' :
+                     target>=1000 ? (start/1000).toFixed(0)+'K+' : Math.floor(start)+'+';
+  }, step);
+}
+
+// ===== RIPPLE =====
+function addRippleEffects() {
+  document.addEventListener('click', e => {
+    const el = e.target.closest('.ripple-container');
+    if(!el) return;
+    const rect = el.getBoundingClientRect();
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    const size = Math.max(rect.width,rect.height)*2;
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    el.appendChild(r);
+    setTimeout(()=>r.remove(), 600);
+  });
+}
+
+// ===== MOBILE NAV =====
+window.toggleMobileNav = function() {
+  document.getElementById('mobileNav').classList.toggle('open');
+};
+window.closeMobileNav = function() {
+  document.getElementById('mobileNav').classList.remove('open');
+};
+
+// ===== UTILS =====
+function formatNum(n) {
+  if(n>=1000000) return (n/1000000).toFixed(1)+'M';
+  if(n>=1000) return (n/1000).toFixed(1)+'K';
+  return n.toString();
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') { closeModal(); closeAuth(); closeShare(); }
+  if(e.key==='/' && e.target.tagName!=='INPUT' && e.target.tagName!=='TEXTAREA') {
+    e.preventDefault(); showPage('search-page'); focusSearch();
+  }
+});
+
+// Scroll animation observer
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.style.opacity='1'; e.target.style.transform='translateY(0)';
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold:0.1});
+
+setTimeout(()=>{
+  document.querySelectorAll('.app-card,.chart-item,.cat-card').forEach(el=>{
+    if(!el.style.opacity) { el.style.opacity='0'; el.style.transition='opacity 0.5s ease, transform 0.5s ease'; }
+    observer.observe(el);
+  });
+}, 2500);
+</script>
+</body>
+</html>
