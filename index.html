@@ -8,6 +8,8 @@
 <link rel="icon" href="images/blackgiftlogo.png">
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Archivo Black font for hero title -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -179,6 +181,38 @@
     background: linear-gradient(rgba(7,8,15,0.55), rgba(7,8,15,0.55)), url('images/hero.png');
     background-size: cover; background-position: center; border-radius: 16px; padding-top:80px;
   }
+
+  /* Make home hero full-bleed and add spacing below it */
+  .page-home > .hero {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+    padding: 80px 24px 56px !important;
+    box-shadow: none !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    margin-bottom: 48px !important;
+  }
+
+  /* Keep hero content centered inside a constrained inner container */
+  .page-home > .hero > .hero-inner { max-width:1200px; margin:0 auto; padding:0 16px; }
+
+  /* On wider screens ensure the hero background spans the full viewport width */
+  @media (min-width: 900px) {
+    .page-home > .hero {
+      width: 100vw !important;
+      max-width: none !important;
+      margin-left: calc(50% - 50vw) !important;
+      margin-right: calc(50% - 50vw) !important;
+      border-radius: 0 !important;
+      padding: 100px 24px 72px !important;
+      margin-bottom: 64px !important;
+    }
+    .page-home > .hero > .hero-inner { padding: 0 24px; }
+  }
   .hero-badge {
     display:inline-flex; align-items:center; gap:8px;
     background: rgba(79,138,255,0.1);
@@ -191,11 +225,14 @@
   .hero-badge .dot { width:6px;height:6px;border-radius:50%;background:var(--accent3);animation:blink 1.5s ease infinite; }
   @keyframes blink {0%,100%{opacity:1}50%{opacity:0.3}}
   .hero h1 {
-    font-family:'Syne',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
+    font-family:'Archivo Black', 'Syne',sans-serif; font-size:clamp(2.5rem,6vw,4.5rem);
     font-weight:800; line-height:1.05; letter-spacing:-0.03em;
     margin-bottom:20px;
     animation: fade-up 0.6s ease 0.1s both;
   }
+
+  /* hide hero when category selected */
+  .hero.hidden { display:none; }
   .hero h1 span {
     background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent;
@@ -882,18 +919,20 @@
 <!-- ==================== HOME PAGE ==================== -->
 <div id="page-home" class="page active">
   <div class="hero">
-    <div class="hero-badge"><span class="dot"></span> New apps added daily</div>
-    <h1>Discover <span>Amazing</span><br>Apps & Games</h1>
-    <p>The ExamSidemann App Store — your ultimate destination for the best mobile and desktop applications, curated just for you.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="showPage('categories')">Browse Categories</button>
-      <button class="btn-ghost" onclick="showPage('top')">View Top Charts</button>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Apps Available</div></div>
-      <div class="stat"><div class="stat-num" data-count="1240000">0</div><div class="stat-label">Downloads</div></div>
-      <div class="stat"><div class="stat-num" data-count="50000">0</div><div class="stat-label">Active Users</div></div>
-      <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Countries</div></div>
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="dot"></span> New apps added daily</div>
+      <h1>Discover <span>Life Saving</span><br>Educational Apps & Games</h1>
+      <p>The ExamSidemann App Store — your ultimate destination for the best educational mobile and desktop applications, designed just for you.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('categories')">Browse Categories</button>
+        <button class="btn-ghost" onclick="showPage('top')">View Top Charts</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Apps Available</div></div>
+        <div class="stat"><div class="stat-num" data-count="1240000">0</div><div class="stat-label">Downloads</div></div>
+        <div class="stat"><div class="stat-num" data-count="50000">0</div><div class="stat-label">Active Users</div></div>
+        <div class="stat"><div class="stat-num" data-count="1">0</div><div class="stat-label">Countries</div></div>
+      </div>
     </div>
   </div>
 
@@ -944,6 +983,13 @@
       <div class="section-link" onclick="showPage('top')">Top Charts →</div>
     </div>
     <div class="app-grid" id="trendingGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">All Apps</div>
+    </div>
+    <div class="app-grid" id="allAppsGrid"></div>
   </div>
 </div>
 
@@ -1326,6 +1372,70 @@ const appData = [
     file: 'apps/duolingo.apk',
     displayImage: 'images/duolingo.png'
   }
+  ,
+  {
+    id: 4,
+    name: 'English Dictionary - Offline',
+    dev: 'Sidemann',
+    cat: 'Education',
+    icon: '<img src="images/engdict.webp" alt="English Dictionary" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#7c4dff,#4f8aff',
+    rating: 4.1,
+    reviews: 1280,
+    downloads: '65K',
+    downloadsRaw: 65000,
+    size: '65 MB',
+    desc: 'English Dictionary — comprehensive offline dictionary with meanings, synonyms and examples.',
+    featured: false,
+    new: false,
+    trending: false,
+    price: 'Free',
+    tags: ['Education','Dictionary','Offline'],
+    file: 'https://drive.google.com/uc?export=download&id=12wIyjN1BhY1WHbhFc2TgfPpHhSb8CzW1',
+    displayImage: 'images/engdict.webp'
+  },
+  {
+    id: 5,
+    name: 'Oxford Dictionary',
+    dev: 'Oxford',
+    cat: 'Education',
+    icon: '<img src="images/oxforddict.webp" alt="Oxford Dictionary" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#4f8aff,#1db954',
+    rating: 4.3,
+    reviews: 540,
+    downloads: '9K',
+    downloadsRaw: 9000,
+    size: '9 MB',
+    desc: 'Oxford Dictionary — trusted dictionary with clear definitions and pronunciations.',
+    featured: false,
+    new: false,
+    trending: false,
+    price: 'Free',
+    tags: ['Education','Dictionary'],
+    file: 'https://drive.google.com/uc?export=download&id=1XCsOrP7DcgXJGkpZ8N5OJAmrRS-TuGCL',
+    displayImage: 'images/oxforddict.webp'
+  },
+  {
+    id: 6,
+    name: 'Shona Dictionary',
+    dev: 'Community',
+    cat: 'Education',
+    icon: '<img src="images/duramanzwi.avif" alt="Shona Dictionary" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#ff6b35,#ff4f7b',
+    rating: 4.0,
+    reviews: 210,
+    downloads: '2.3K',
+    downloadsRaw: 2300,
+    size: '2.3 MB',
+    desc: 'Shona Dictionary — English-Shona offline dictionary for quick translations.',
+    featured: false,
+    new: false,
+    trending: false,
+    price: 'Free',
+    tags: ['Education','Dictionary','Shona'],
+    file: 'https://drive.google.com/uc?export=download&id=1cVgTpeqyr5N-kcoNKQOYrZPFFrzFGJAH',
+    displayImage: 'images/duramanzwi.avif'
+  }
 ];
 
 // Updated categories for provided apps
@@ -1368,6 +1478,7 @@ function renderAll() {
   renderNewApps();
   renderTrending();
   renderTopChart();
+  renderAllApps();
   renderCatsGrid();
   renderSearchCats();
   renderSearchResults(appData);
@@ -1474,6 +1585,12 @@ function renderTopChart(filter='free') {
   `).join('');
 }
 
+function renderAllApps() {
+  const grid = document.getElementById('allAppsGrid');
+  if(!grid) return;
+  grid.innerHTML = appData.map((a,i) => appCard(a,i)).join('');
+}
+
 // ===== CATS GRID =====
 function renderCatsGrid() {
   document.getElementById('catsGrid').innerHTML = categories.map((c,i) => `
@@ -1530,18 +1647,31 @@ window.focusSearch = function() { setTimeout(()=>document.getElementById('mainSe
 function renderSearchCats() {} // already done in renderCatPills
 
 function filterByCategory(cat, el) {
-  if(cat==='all'||cat==='All') {
+  const heroEl = document.querySelector('.hero');
+  // Normalize category name
+  const c = (cat||'').toString();
+  if(c.toLowerCase()==='all' || c.toLowerCase()==='all') {
+    // show hero and reset grids
+    if(heroEl) heroEl.classList.remove('hidden');
     renderFeatured(); renderTrending();
     document.querySelectorAll('#catPills .cat-pill').forEach(p=>p.classList.remove('active'));
     if(el) el.classList.add('active'); else document.querySelector('#catPills .cat-pill').classList.add('active');
+    // scroll to top so hero is visible
+    window.scrollTo({top:0,behavior:'smooth'});
     return;
   }
+
+  // Hide hero and present filtered results starting from the search bar
+  if(heroEl) heroEl.classList.add('hidden');
   document.querySelectorAll('#catPills .cat-pill').forEach(p=>p.classList.remove('active'));
   if(el) el.classList.add('active');
   const filtered = appData.filter(a=>a.cat===cat);
   document.getElementById('featuredGrid').innerHTML = filtered.map((a,i)=>appCard(a,i)).join('');
   document.getElementById('trendingGrid').innerHTML = filtered.map((a,i)=>appCard(a,i)).join('');
   showPage('home');
+  // scroll to the search bar so view starts from there
+  const sc = document.querySelector('.search-container');
+  if(sc) sc.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function setTopFilter(filter, el) {
