@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-adsense-account" content="ca-pub-1348757097125886">
 <title>ExamSidemann App Store</title>
 <!-- CHANGED: Favicon to blackgiftlogo.png -->
 <link rel="icon" href="images/blackgiftlogo.png">
@@ -40,10 +41,15 @@
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
+  /* Apply Archivo Black globally across the app */
+  html, body, input, textarea, select, button, label, a, p, span, div,
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Archivo Black', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  }
+
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -1229,7 +1235,7 @@
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut as fbSignOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy, updateDoc, increment, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // ===== FIREBASE CONFIG =====
 // Replace with your Firebase project config
@@ -1260,7 +1266,7 @@ window._fbAuth = auth;
 window._fbDb = db;
 window._fbGoogleProvider = googleProvider;
 window._fbReady = firebaseReady;
-window._fbModules = { createUserWithEmailAndPassword, signInWithEmailAndPassword, fbSignOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy };
+window._fbModules = { createUserWithEmailAndPassword, signInWithEmailAndPassword, fbSignOut, onAuthStateChanged, updateProfile, GoogleAuthProvider, signInWithPopup, doc, setDoc, getDoc, collection, addDoc, getDocs, query, where, orderBy, updateDoc, increment, serverTimestamp };
 
 if (firebaseReady) {
   onAuthStateChanged(auth, (user) => {
@@ -1800,19 +1806,62 @@ window.submitReview = function(appId) {
   const text = document.getElementById('reviewText').value.trim();
   if(!text) { showToast('Please write a review','error'); return; }
   const review = {
-    user: currentUser.displayName || currentUser.email.split('@')[0],
+    user: currentUser.displayName || (currentUser.email? currentUser.email.split('@')[0] : 'Anonymous'),
     stars: selectedStars,
-    date: 'Just now',
-    text
+    date: new Date().toISOString(),
+    text,
+    uid: currentUser.uid || null,
+    createdAt: window._fbReady ? serverTimestamp() : null
   };
-  if(!reviewsData[appId]) reviewsData[appId]=[];
-  reviewsData[appId].push(review);
-  localStorage.setItem('reviews', JSON.stringify(reviewsData));
-  myReviews.push({appId, ...review});
-  localStorage.setItem('myreviews', JSON.stringify(myReviews));
-  showToast('Review submitted! Thank you','success');
-  openApp(appData.find(a=>a.id===appId));
-  updateProfileStats();
+
+  (async () => {
+    try {
+      if(window._fbReady && window._fbDb) {
+        const appObj = appData.find(a=>a.id===appId);
+        const id = (appObj.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+        const appRef = doc(window._fbDb, 'apps', id);
+        // add review to subcollection
+        await addDoc(collection(window._fbDb, 'apps', id, 'reviews'), review);
+
+        // recompute aggregates from reviews subcollection
+        const snaps = await getDocs(collection(window._fbDb, 'apps', id, 'reviews'));
+        const count = snaps.size;
+        let sum = 0;
+        snaps.forEach(d => { const data = d.data(); sum += Number(data.stars)||0; });
+        const avg = count ? (sum/count) : 0;
+
+        // update app doc with new aggregates
+        await updateDoc(appRef, { reviews: count, rating: avg });
+
+        // reflect updated values in client appData
+        const snap = await getDoc(appRef);
+        if(snap.exists()) {
+          const data = snap.data();
+          const idx = appData.findIndex(x=>x.id===appId);
+          if(idx!==-1) {
+            appData[idx].reviews = data.reviews || count;
+            appData[idx].rating = data.rating || avg;
+          }
+        }
+      } else {
+        // local fallback
+        if(!reviewsData[appId]) reviewsData[appId]=[];
+        reviewsData[appId].push({ user: review.user, stars: review.stars, date: 'Just now', text: review.text });
+        localStorage.setItem('reviews', JSON.stringify(reviewsData));
+        myReviews.push({ appId, user: review.user, stars: review.stars, date: 'Just now', text: review.text });
+        localStorage.setItem('myreviews', JSON.stringify(myReviews));
+      }
+
+      showToast('Review submitted! Thank you','success');
+      document.getElementById('reviewText').value = '';
+      selectedStars = 0;
+      openApp(appData.find(a=>a.id===appId));
+      updateProfileStats();
+    } catch(err) {
+      console.error('submitReview error', err);
+      showToast('Failed to submit review. Please try again.','error');
+    }
+  })();
 };
 
 // ===== DOWNLOAD =====
@@ -1834,6 +1883,31 @@ window.downloadApp = function(appId, e) {
     a.click();
     a.remove();
   }
+
+  // If Firebase enabled, increment downloads in Firestore
+  try {
+    if(window._fbReady && window._fbDb) {
+      const id = (app.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+      const appRef = doc(window._fbDb, 'apps', id);
+      // increment by 1
+      await (async () => { try { await updateDoc(appRef, { downloads: increment(1) }); } catch(e) { /* ignore */ } })();
+      // refresh local copy from DB
+      try {
+        const snap = await getDoc(appRef);
+        if(snap.exists()) {
+          const data = snap.data();
+          const idx = appData.findIndex(x=>x.id===appId);
+          if(idx!==-1) {
+            const dest = appData[idx];
+            if(data.downloads) { dest.downloadsRaw = data.downloads; dest.downloads = data.downloads>=1000000? (data.downloads/1000000).toFixed(1)+'M' : data.downloads.toString(); }
+            if(data.reviews) dest.reviews = data.reviews;
+            if(data.rating) dest.rating = data.rating;
+            renderAll();
+          }
+        }
+      } catch(e) { /* ignore */ }
+    }
+  } catch(e) { console.warn('Failed to update downloads in Firestore', e); }
 
   // Simulate install progress and then mark installed
   setTimeout(() => {
