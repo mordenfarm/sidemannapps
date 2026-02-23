@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — ExamSidemann App Store</title>
+<link rel="icon" href="images/blackgiftlogo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+	:root {
+		--bg: #07080f;
+		--bg2: #0d0f1a;
+		--bg3: #13162a;
+		--surface: #181c2e;
+		--surface2: #1e2340;
+		--border: rgba(255,255,255,0.07);
+		--border2: rgba(255,255,255,0.12);
+		--text: #e8eaf6;
+		--text2: #9fa8c7;
+		--text3: #5c6591;
+		--accent: #4f8aff;
+		--accent2: #7c4dff;
+		--accent3: #00d4aa;
+		--danger: #ff4f7b;
+		--warn: #ffb300;
+		--glow: rgba(79,138,255,0.25);
+		--glow2: rgba(124,77,255,0.2);
+		--r: 16px;
+		--r2: 24px;
+		--shadow: 0 8px 40px rgba(0,0,0,0.5);
+		--shadow2: 0 2px 12px rgba(0,0,0,0.3);
+	}
+
+	* { margin:0; padding:0; box-sizing:border-box; }
+
+	html, body, input, textarea, select, button, label, a, p, span, div,
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Archivo Black', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+	}
+
+	html { scroll-behavior: smooth; }
+
+	body {
+		background: var(--bg);
+		color: var(--text);
+		min-height: 100vh;
+		overflow-x: hidden;
+	}
+
+	nav {
+		position: fixed; top:0; left:0; right:0; z-index:100;
+		background: rgba(7,8,15,0.85);
+		backdrop-filter: blur(20px);
+		border-bottom: 1px solid var(--border);
+		padding: 0 24px;
+		height: 68px;
+		display: flex; align-items:center; justify-content:space-between;
+	}
+	.nav-logo { display:flex; align-items:center; gap:10px; font-family:'Syne',sans-serif; font-weight:800; font-size:1.15rem; color: var(--text); text-decoration:none; cursor:pointer; }
+	.nav-logo img { width:40px; height:40px; border-radius:10px; object-fit:cover; }
+	.nav-right { display:flex; align-items:center; gap:10px; }
+	.btn-login { padding:8px 20px; border-radius:12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; font-weight:600; border:none; cursor:pointer; }
+
+	/* Progress bar */
+	#progress-bar {
+		position: fixed; top: 68px; left:0; height:3px; background: linear-gradient(90deg, var(--accent), var(--accent3));
+		z-index:99; width:0%; transition: width 0.1s linear;
+		box-shadow: 0 0 8px var(--accent);
+	}
+
+	/* TOC Sidebar */
+	.toc-sidebar {
+		position: fixed;
+		top: 100px;
+		left: 20px;
+		width: 220px;
+		max-height: calc(100vh - 120px);
+		overflow-y: auto;
+		background: rgba(13,15,26,0.9);
+		backdrop-filter: blur(12px);
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		padding: 16px;
+		z-index: 50;
+		scrollbar-width: thin;
+		scrollbar-color: var(--border2) transparent;
+	}
+	.toc-sidebar::-webkit-scrollbar { width:4px; }
+	.toc-sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius:4px; }
+	.toc-title { font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; color:var(--text3); margin-bottom:10px; }
+	.toc-item { display:block; padding:5px 8px; border-radius:8px; color:var(--text3); font-size:0.72rem; text-decoration:none; transition:all .2s; cursor:pointer; margin-bottom:2px; border-left:2px solid transparent; }
+	.toc-item:hover, .toc-item.active { color:var(--accent); background:rgba(79,138,255,0.08); border-left-color:var(--accent); }
+	.toc-item.h3 { padding-left: 20px; font-size:0.66rem; }
+
+	main { max-width:860px; margin: 100px auto 80px; padding: 24px 24px 24px 260px; }
+
+	@media(max-width:1100px){ .toc-sidebar { display:none; } main { padding: 24px; margin-top:100px; } }
+
+	.policy-header {
+		background: linear-gradient(135deg, var(--surface) 0%, var(--bg3) 100%);
+		border: 1px solid var(--border);
+		border-radius: 20px;
+		padding: 40px;
+		margin-bottom: 32px;
+		position: relative;
+		overflow: hidden;
+	}
+	.policy-header::before {
+		content:'';
+		position:absolute; top:-80px; right:-80px;
+		width:300px; height:300px;
+		background: radial-gradient(circle, rgba(79,138,255,0.15) 0%, transparent 70%);
+		pointer-events:none;
+	}
+	.policy-header h1 { font-family:'Syne',sans-serif; font-size:2.2rem; color:var(--text); margin-bottom:8px; }
+	.policy-header .meta { color:var(--text3); font-size:0.85rem; display:flex; gap:20px; flex-wrap:wrap; margin-top:12px; }
+	.meta-chip { background: var(--surface2); border:1px solid var(--border); border-radius:8px; padding:4px 12px; font-size:0.78rem; color:var(--text2); }
+
+	.section-card {
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		padding: 32px;
+		margin-bottom: 20px;
+		scroll-margin-top: 90px;
+		transition: border-color .3s;
+	}
+	.section-card:hover { border-color: var(--border2); }
+	.section-card.highlight { border-color: rgba(79,138,255,0.3); }
+	.section-card.danger-zone { border-color: rgba(255,79,123,0.2); }
+	.section-card.safe-zone { border-color: rgba(0,212,170,0.2); }
+	.section-card.warn-zone { border-color: rgba(255,179,0,0.2); }
+
+	.section-num {
+		display: inline-flex; align-items:center; justify-content:center;
+		width:32px; height:32px; border-radius:10px;
+		background: linear-gradient(135deg, var(--accent), var(--accent2));
+		color:#fff; font-size:0.8rem; font-weight:700;
+		margin-bottom:14px;
+	}
+	.section-card h2 {
+		font-family:'Syne',sans-serif;
+		font-size:1.25rem;
+		color:var(--text);
+		margin-bottom:14px;
+		display:flex; align-items:center; gap:10px;
+	}
+	.section-card h3 {
+		font-family:'Syne',sans-serif;
+		font-size:1rem;
+		color:var(--accent);
+		margin: 18px 0 8px;
+		padding-left:12px;
+		border-left: 3px solid var(--accent);
+	}
+	.section-card h4 {
+		font-family:'Syne',sans-serif;
+		font-size:0.9rem;
+		color:var(--text2);
+		margin: 14px 0 6px;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+	}
+	.section-card p, .section-card li {
+		color: var(--text2);
+		line-height: 1.7;
+		margin-bottom: 10px;
+		font-size:0.93rem;
+	}
+	.section-card ul, .section-card ol {
+		margin-left: 20px;
+		margin-bottom:12px;
+	}
+	.section-card li { margin-bottom:6px; }
+
+	.tag { display:inline-block; padding:2px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; margin-left:8px; }
+	.tag.new { background:rgba(0,212,170,0.15); color:var(--accent3); border:1px solid rgba(0,212,170,0.3); }
+	.tag.important { background:rgba(255,179,0,0.15); color:var(--warn); border:1px solid rgba(255,179,0,0.3); }
+	.tag.gdpr { background:rgba(79,138,255,0.15); color:var(--accent); border:1px solid rgba(79,138,255,0.3); }
+	.tag.popia { background:rgba(124,77,255,0.15); color:var(--accent2); border:1px solid rgba(124,77,255,0.3); }
+	.tag.ccpa { background:rgba(255,79,123,0.15); color:var(--danger); border:1px solid rgba(255,79,123,0.3); }
+
+	.info-box {
+		background: rgba(79,138,255,0.06);
+		border: 1px solid rgba(79,138,255,0.2);
+		border-radius: 12px;
+		padding: 14px 18px;
+		margin: 14px 0;
+		font-size:0.88rem;
+		color:var(--text2);
+	}
+	.info-box.warn { background:rgba(255,179,0,0.06); border-color:rgba(255,179,0,0.2); }
+	.info-box.danger { background:rgba(255,79,123,0.06); border-color:rgba(255,79,123,0.2); }
+	.info-box.success { background:rgba(0,212,170,0.06); border-color:rgba(0,212,170,0.2); }
+	.info-box strong { color:var(--text); }
+
+	.data-table {
+		width:100%; border-collapse:collapse; margin:14px 0; font-size:0.85rem;
+	}
+	.data-table th {
+		background:var(--surface2); color:var(--text); padding:10px 14px;
+		text-align:left; border-bottom:1px solid var(--border2);
+		font-size:0.78rem; text-transform:uppercase; letter-spacing:1px;
+	}
+	.data-table td {
+		padding:10px 14px; border-bottom:1px solid var(--border);
+		color:var(--text2); vertical-align:top;
+	}
+	.data-table tr:last-child td { border-bottom:none; }
+	.data-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+	code {
+		font-family:'JetBrains Mono', monospace !important;
+		background:var(--surface2);
+		border:1px solid var(--border);
+		border-radius:6px;
+		padding:2px 8px;
+		font-size:0.82rem;
+		color:var(--accent3);
+	}
+
+	.divider {
+		border:none;
+		border-top:1px solid var(--border);
+		margin:28px 0;
+	}
+
+	.definition-grid {
+		display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0;
+	}
+	.def-item {
+		background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:14px;
+	}
+	.def-item .def-term { color:var(--accent); font-size:0.85rem; margin-bottom:4px; }
+	.def-item .def-desc { color:var(--text2); font-size:0.82rem; line-height:1.5; }
+
+	@media(max-width:600px){ .definition-grid { grid-template-columns:1fr; } }
+
+	.timeline { position:relative; padding-left:28px; }
+	.timeline::before { content:''; position:absolute; left:6px; top:0; bottom:0; width:2px; background:var(--border); }
+	.timeline-item { position:relative; margin-bottom:18px; }
+	.timeline-item::before { content:''; position:absolute; left:-25px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+	.timeline-item .tl-date { font-size:0.75rem; color:var(--text3); margin-bottom:3px; }
+	.timeline-item .tl-title { font-size:0.9rem; color:var(--text); margin-bottom:3px; }
+	.timeline-item .tl-desc { font-size:0.82rem; color:var(--text2); line-height:1.5; }
+
+	.rights-grid {
+		display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:12px; margin:14px 0;
+	}
+	.right-item {
+		background:var(--bg3); border:1px solid var(--border); border-radius:12px; padding:16px;
+		transition:border-color .3s, transform .2s;
+	}
+	.right-item:hover { border-color:var(--accent); transform:translateY(-2px); }
+	.right-item .ri-icon { font-size:1.4rem; margin-bottom:8px; }
+	.right-item .ri-title { color:var(--text); font-size:0.88rem; margin-bottom:5px; }
+	.right-item .ri-desc { color:var(--text3); font-size:0.78rem; line-height:1.4; }
+
+	.contact-grid {
+		display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; margin:14px 0;
+	}
+	.contact-card {
+		background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:20px;
+		text-align:center;
+	}
+	.contact-card .cc-icon { font-size:2rem; margin-bottom:10px; }
+	.contact-card .cc-label { color:var(--text3); font-size:0.75rem; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px; }
+	.contact-card .cc-value { color:var(--accent); font-size:0.9rem; }
+
+	.back-to-top {
+		position:fixed; bottom:30px; right:30px;
+		width:44px; height:44px; border-radius:12px;
+		background:var(--surface); border:1px solid var(--border2);
+		color:var(--text2); font-size:1rem; cursor:pointer;
+		display:flex; align-items:center; justify-content:center;
+		transition:all .2s; z-index:50;
+		opacity:0; pointer-events:none;
+	}
+	.back-to-top.visible { opacity:1; pointer-events:all; }
+	.back-to-top:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+	footer { border-top:1px solid var(--border); padding:40px 24px; text-align:center; color:var(--text3); font-size:0.85rem; position:relative; z-index:1; }
+	footer .footer-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; color:var(--text2); margin-bottom:8px; }
+</style>
+</head>
+<body>
+
+<nav>
+	<div class="nav-logo" onclick="location.href='index.html'">
+		<img src="images/blackgiftlogo.png" alt="ExamSidemann">
+		<span>ExamSidemann</span>
+	</div>
+	<div class="nav-right">
+		<button class="btn-login" onclick="location.href='index.html'">Home</button>
+	</div>
+</nav>
+
+<div id="progress-bar"></div>
+
+<!-- TABLE OF CONTENTS SIDEBAR -->
+<nav class="toc-sidebar" aria-label="Table of Contents">
+	<div class="toc-title">Contents</div>
+	<a class="toc-item" href="#section-intro">Introduction</a>
+	<a class="toc-item" href="#section-definitions">1. Definitions</a>
+	<a class="toc-item" href="#section-scope">2. Scope &amp; Applicability</a>
+	<a class="toc-item" href="#section-controller">3. Data Controller</a>
+	<a class="toc-item" href="#section-collection">4. Information We Collect</a>
+	<a class="toc-item h3" href="#section-collection-identity">4.1 Identity Data</a>
+	<a class="toc-item h3" href="#section-collection-contact">4.2 Contact Data</a>
+	<a class="toc-item h3" href="#section-collection-technical">4.3 Technical Data</a>
+	<a class="toc-item h3" href="#section-collection-usage">4.4 Usage Data</a>
+	<a class="toc-item h3" href="#section-collection-content">4.5 Content Data</a>
+	<a class="toc-item h3" href="#section-collection-transaction">4.6 Transaction Data</a>
+	<a class="toc-item h3" href="#section-collection-comms">4.7 Communications Data</a>
+	<a class="toc-item h3" href="#section-collection-inferred">4.8 Inferred Data</a>
+	<a class="toc-item" href="#section-sources">5. Sources of Data</a>
+	<a class="toc-item" href="#section-legal-basis">6. Legal Bases</a>
+	<a class="toc-item" href="#section-purposes">7. Purposes of Processing</a>
+	<a class="toc-item h3" href="#section-purposes-service">7.1 Service Delivery</a>
+	<a class="toc-item h3" href="#section-purposes-security">7.2 Security</a>
+	<a class="toc-item h3" href="#section-purposes-analytics">7.3 Analytics</a>
+	<a class="toc-item h3" href="#section-purposes-comms">7.4 Communications</a>
+	<a class="toc-item h3" href="#section-purposes-legal">7.5 Legal Compliance</a>
+	<a class="toc-item" href="#section-sharing">8. Sharing &amp; Disclosure</a>
+	<a class="toc-item" href="#section-processors">9. Sub-Processors</a>
+	<a class="toc-item" href="#section-transfers">10. International Transfers</a>
+	<a class="toc-item" href="#section-retention">11. Data Retention</a>
+	<a class="toc-item" href="#section-security">12. Security Measures</a>
+	<a class="toc-item" href="#section-cookies">13. Cookies &amp; Tracking</a>
+	<a class="toc-item h3" href="#section-cookies-types">13.1 Cookie Types</a>
+	<a class="toc-item h3" href="#section-cookies-manage">13.2 Managing Cookies</a>
+	<a class="toc-item" href="#section-rights">14. Your Rights</a>
+	<a class="toc-item h3" href="#section-rights-gdpr">14.1 GDPR Rights</a>
+	<a class="toc-item h3" href="#section-rights-popia">14.2 POPIA Rights</a>
+	<a class="toc-item h3" href="#section-rights-ccpa">14.3 CCPA Rights</a>
+	<a class="toc-item h3" href="#section-rights-other">14.4 Other Jurisdictions</a>
+	<a class="toc-item" href="#section-children">15. Children's Privacy</a>
+	<a class="toc-item" href="#section-thirdparty">16. Third-Party Links</a>
+	<a class="toc-item" href="#section-ai">17. Automated Decisions &amp; AI</a>
+	<a class="toc-item" href="#section-breach">18. Data Breach Procedures</a>
+	<a class="toc-item" href="#section-california">19. California Residents</a>
+	<a class="toc-item" href="#section-eea">20. EEA / UK Residents</a>
+	<a class="toc-item" href="#section-africa">21. African Jurisdiction Notice</a>
+	<a class="toc-item" href="#section-accessibility">22. Accessibility</a>
+	<a class="toc-item" href="#section-do-not-sell">23. Do Not Sell or Share</a>
+	<a class="toc-item" href="#section-biometric">24. Biometric Data</a>
+	<a class="toc-item" href="#section-sensitive">25. Sensitive Categories</a>
+	<a class="toc-item" href="#section-anonymisation">26. Anonymisation &amp; Pseudonymisation</a>
+	<a class="toc-item" href="#section-analytics-detail">27. Analytics in Detail</a>
+	<a class="toc-item" href="#section-firebase">28. Firebase &amp; Google Services</a>
+	<a class="toc-item" href="#section-mobile">29. Mobile Applications</a>
+	<a class="toc-item" href="#section-api">30. API &amp; Developer Access</a>
+	<a class="toc-item" href="#section-logs">31. Log Data &amp; Diagnostics</a>
+	<a class="toc-item" href="#section-marketing">32. Marketing &amp; Communications</a>
+	<a class="toc-item" href="#section-profiling">33. Profiling</a>
+	<a class="toc-item" href="#section-research">34. Research &amp; Aggregated Insights</a>
+	<a class="toc-item" href="#section-legal-hold">35. Legal Hold</a>
+	<a class="toc-item" href="#section-dpia">36. Data Protection Impact Assessments</a>
+	<a class="toc-item" href="#section-dpo">37. Data Protection Officer</a>
+	<a class="toc-item" href="#section-complaints">38. Complaints &amp; Supervisory Authorities</a>
+	<a class="toc-item" href="#section-changes">39. Changes to This Policy</a>
+	<a class="toc-item" href="#section-history">40. Version History</a>
+	<a class="toc-item" href="#section-contact">41. Contact Us</a>
+</nav>
+
+<main>
+
+	<!-- HEADER -->
+	<div class="policy-header" id="section-intro">
+		<h1>Privacy Policy</h1>
+		<p style="color:var(--text2); line-height:1.6; max-width:700px; margin-top:10px;">
+			This Privacy Policy is a comprehensive, legally-grounded document that describes in full detail how ExamSidemann App Store collects, processes, stores, shares, and protects personal information across all of its platforms, services, and interactions. We are committed to transparency, user empowerment, and compliance with applicable data protection laws worldwide.
+		</p>
+		<div class="meta">
+			<span class="meta-chip">📅 Last Updated: 23 February 2026</span>
+			<span class="meta-chip">📄 Version: 4.2.1</span>
+			<span class="meta-chip">⚖️ GDPR Compliant</span>
+			<span class="meta-chip">🌍 POPIA Compliant</span>
+			<span class="meta-chip">🇺🇸 CCPA Compliant</span>
+			<span class="meta-chip">~41 Sections</span>
+		</div>
+		<div class="info-box" style="margin-top:20px;">
+			<strong>Summary:</strong> We collect only what we need, use it only for legitimate purposes, protect it with industry-standard security, and never sell your personal data. You have meaningful rights over your information at all times.
+		</div>
+	</div>
+
+	<!-- SECTION 1: DEFINITIONS -->
+	<div class="section-card" id="section-definitions">
+		<div class="section-num">1</div>
+		<h2>Definitions <span class="tag gdpr">GDPR Art. 4</span></h2>
+		<p>Throughout this Privacy Policy, the following terms carry the meanings set out below unless the context requires otherwise. These definitions are intended to be consistent with applicable data protection legislation, including the GDPR, POPIA, CCPA, and equivalent statutes.</p>
+		<div class="definition-grid">
+			<div class="def-item"><div class="def-term">Personal Data / Personal Information</div><div class="def-desc">Any information relating to an identified or identifiable natural person ("data subject"), directly or indirectly, by reference to identifiers such as name, identification number, location data, online identifiers, or factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person.</div></div>
+			<div class="def-item"><div class="def-term">Processing</div><div class="def-desc">Any operation or set of operations performed on personal data, whether by automated means or not — including collection, recording, organisation, structuring, storage, adaptation, retrieval, consultation, use, disclosure, dissemination, restriction, erasure, or destruction.</div></div>
+			<div class="def-item"><div class="def-term">Data Controller / Responsible Party</div><div class="def-desc">ExamSidemann App Store, which alone or jointly with others determines the purposes and means of the processing of personal data. In South Africa, referred to as the "Responsible Party" under POPIA.</div></div>
+			<div class="def-item"><div class="def-term">Data Processor / Operator</div><div class="def-desc">A natural or legal person, public authority, agency, or other body which processes personal data on behalf of the controller. In South Africa, referred to as the "Operator" under POPIA.</div></div>
+			<div class="def-item"><div class="def-term">Data Subject</div><div class="def-desc">An identified or identifiable natural person whose personal data is processed. This includes you, as a user of our services.</div></div>
+			<div class="def-item"><div class="def-term">Consent</div><div class="def-desc">Any freely given, specific, informed and unambiguous indication of the data subject's wishes, by a statement or a clear affirmative action, signifying agreement to the processing of personal data relating to them.</div></div>
+			<div class="def-item"><div class="def-term">Supervisory Authority</div><div class="def-desc">An independent public authority established by a Member State or competent jurisdiction to supervise application of data protection law. Examples include the ICO (UK), CNIL (France), and the Information Regulator (South Africa).</div></div>
+			<div class="def-item"><div class="def-term">Third Country</div><div class="def-desc">A country outside the European Economic Area (EEA), or a country not recognised as providing an adequate level of protection by the European Commission, from or to which personal data may be transferred.</div></div>
+			<div class="def-item"><div class="def-term">Pseudonymisation</div><div class="def-desc">The processing of personal data in such a manner that it can no longer be attributed to a specific data subject without the use of additional information, where such additional information is kept separately and is subject to technical and organisational measures.</div></div>
+			<div class="def-item"><div class="def-term">Anonymisation</div><div class="def-desc">The process of altering personal data so that it cannot be attributed to a specific individual, either directly or indirectly, even with the use of additional information.</div></div>
+			<div class="def-item"><div class="def-term">Special Category Data / Sensitive Information</div><div class="def-desc">Data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, trade union membership, genetic data, biometric data processed for the purpose of uniquely identifying a natural person, health data, or data concerning a person's sex life or sexual orientation.</div></div>
+			<div class="def-item"><div class="def-term">Cookie</div><div class="def-desc">A small text file placed on a device by a website or app, used to identify the device, remember preferences, track usage patterns, and enable certain functionalities. Cookies may be first-party (set by us) or third-party (set by external services).</div></div>
+			<div class="def-item"><div class="def-term">Services</div><div class="def-desc">All products, features, websites, mobile applications, APIs, and related services operated by ExamSidemann App Store, including but not limited to the web-based app store, review system, download manager, developer portal, and support channels.</div></div>
+			<div class="def-item"><div class="def-term">Business Day</div><div class="def-desc">Any day other than a Saturday, Sunday, or public holiday in the Republic of South Africa or, where relevant to the applicable law, in the relevant jurisdiction.</div></div>
+			<div class="def-item"><div class="def-term">Aggregate Data</div><div class="def-desc">Statistical or summarised information derived from personal data that does not identify any individual and cannot be used alone or in combination with other data to identify a specific person.</div></div>
+			<div class="def-item"><div class="def-term">Profiling</div><div class="def-desc">Any form of automated processing of personal data consisting of the use of personal data to evaluate certain personal aspects relating to a natural person, in particular to analyse or predict aspects concerning that natural person's performance, behaviour, preferences, interests, reliability, location, or movements.</div></div>
+		</div>
+	</div>
+
+	<!-- SECTION 2: SCOPE -->
+	<div class="section-card" id="section-scope">
+		<div class="section-num">2</div>
+		<h2>Scope &amp; Applicability</h2>
+		<p>This Privacy Policy applies to all personal data collected, stored, used, or otherwise processed by ExamSidemann App Store in connection with the Services. It applies regardless of the means by which the Services are accessed — whether via desktop browser, mobile browser, native mobile application, API, or any other interface.</p>
+		<h3>2.1 Who This Policy Applies To</h3>
+		<ul>
+			<li><strong>Registered Users:</strong> Individuals who have created an account on the platform, including students, educators, developers, and general consumers.</li>
+			<li><strong>Visitors:</strong> Individuals who browse the website without registering or logging in.</li>
+			<li><strong>App Developers &amp; Publishers:</strong> Individuals or entities that submit, manage, or monetise applications through the platform's developer program.</li>
+			<li><strong>API Consumers:</strong> Third-party developers or organisations accessing our data or functionality via the ExamSidemann API.</li>
+			<li><strong>Support Requesters:</strong> Individuals who contact our support team, regardless of whether they hold an account.</li>
+			<li><strong>Beta Testers &amp; Research Participants:</strong> Individuals participating in product testing programs, surveys, or research studies conducted by us.</li>
+		</ul>
+		<h3>2.2 What This Policy Does Not Cover</h3>
+		<p>This Policy does not govern:</p>
+		<ul>
+			<li>The privacy practices of third-party applications listed on the platform — each application is subject to its own developer's privacy policy.</li>
+			<li>Information collected by third-party websites or services that may be linked from our platform.</li>
+			<li>Employment or recruitment data relating to job applicants (covered by a separate HR Privacy Notice).</li>
+			<li>Business-to-business data where individuals are acting solely in a corporate capacity and no personal data of natural persons is involved.</li>
+		</ul>
+		<h3>2.3 Territorial Scope</h3>
+		<p>This Policy applies globally. Where specific regional provisions apply — including but not limited to the GDPR (EEA/UK), POPIA (South Africa), CCPA/CPRA (California), PDPA (Thailand), PDPB (India), LGPD (Brazil), and PIPEDA (Canada) — those provisions are set out in dedicated sections below and supplement (but do not replace) this general Policy.</p>
+		<div class="info-box">
+			<strong>Note:</strong> In cases of conflict between a regional provision and the general terms of this Policy, the more protective provision shall prevail.
+		</div>
+	</div>
+
+	<!-- SECTION 3: DATA CONTROLLER -->
+	<div class="section-card" id="section-controller">
+		<div class="section-num">3</div>
+		<h2>Data Controller / Responsible Party</h2>
+		<p>For the purposes of applicable data protection legislation, the data controller and responsible party is:</p>
+		<div class="info-box success">
+			<strong>ExamSidemann App Store</strong><br>
+			Email: <code>privacy@examsidemann.example</code><br>
+			Support: <code>support@examsidemann.example</code><br>
+			Website: <code>https://examsidemann.example</code>
+		</div>
+		<p>The data controller is responsible for ensuring that all personal data processing activities carried out by or on behalf of ExamSidemann comply with applicable data protection laws. All inquiries relating to data protection, privacy rights, or this Policy should be directed to the contact details above, or to our Data Protection Officer as described in Section 37.</p>
+		<h3>3.1 Joint Controllers</h3>
+		<p>In limited circumstances, we may act as a joint controller with third parties — for example, where a developer integrates our platform with their own service and both parties jointly determine the purposes and means of processing. In such cases, we will make available the essence of our joint controller arrangements, including which party is responsible for exercising data subject rights.</p>
+		<h3>3.2 Processing on Behalf of Others</h3>
+		<p>Where we process personal data on behalf of developers or enterprise customers (for example, in the context of white-label or API integrations), we do so as a data processor / operator and are bound by contractual data processing terms agreed with those controllers.</p>
+	</div>
+
+	<!-- SECTION 4: INFORMATION WE COLLECT -->
+	<div class="section-card" id="section-collection">
+		<div class="section-num">4</div>
+		<h2>Information We Collect</h2>
+		<p>We collect personal data across several categories, which are described in detail below. We only collect data that is necessary, relevant, and proportionate to the purposes for which it is processed.</p>
+
+		<h3 id="section-collection-identity">4.1 Identity Data</h3>
+		<p>This includes information that identifies you as an individual user:</p>
+		<ul>
+			<li>Display name or username chosen at registration</li>
+			<li>Profile picture or avatar (if uploaded)</li>
+			<li>First name and surname (optional, where provided voluntarily)</li>
+			<li>Gender (if voluntarily disclosed in profile settings)</li>
+			<li>Date of birth or age range (for age verification purposes)</li>
+			<li>Unique user identifier (UUID) assigned by our system</li>
+			<li>Authentication provider identifiers (e.g., Google UID, Apple ID) where sign-in is via a third-party identity provider</li>
+		</ul>
+
+		<h3 id="section-collection-contact">4.2 Contact Data</h3>
+		<ul>
+			<li>Email address (primary account contact)</li>
+			<li>Secondary or recovery email address (if provided)</li>
+			<li>Phone number (if provided for 2FA or account recovery)</li>
+			<li>Physical mailing address (only if required for billing or legal notices)</li>
+		</ul>
+
+		<h3 id="section-collection-technical">4.3 Technical Data</h3>
+		<p>Technical data is collected automatically when you interact with our Services:</p>
+		<ul>
+			<li>IP address (IPv4 and IPv6)</li>
+			<li>Browser type, name, and version (e.g., Chrome 121.0, Firefox 123)</li>
+			<li>Operating system name and version (e.g., Windows 11, macOS Sonoma, Android 14, iOS 17)</li>
+			<li>Device type (desktop, mobile, tablet)</li>
+			<li>Device hardware model (e.g., iPhone 15 Pro)</li>
+			<li>Screen resolution and colour depth</li>
+			<li>Time zone setting and locale / language preference</li>
+			<li>Referring URL (the page you came from before visiting ours)</li>
+			<li>Connection type (WiFi, 4G, 5G, broadband)</li>
+			<li>Cookie identifiers and session tokens</li>
+			<li>HTTP request headers and response codes</li>
+			<li>TLS / SSL protocol version and cipher suite</li>
+			<li>User agent string</li>
+			<li>WebRTC fingerprint (collected only where strictly necessary for security)</li>
+			<li>Canvas fingerprint hash (used solely for fraud detection, never for tracking)</li>
+		</ul>
+
+		<h3 id="section-collection-usage">4.4 Usage Data</h3>
+		<p>Usage data records how you interact with our platform and its content:</p>
+		<ul>
+			<li>Pages visited and sequence of navigation (clickstream)</li>
+			<li>App detail pages viewed, and time spent on each</li>
+			<li>Apps downloaded, including timestamp, version, and download source</li>
+			<li>Search queries entered into the platform search bar</li>
+			<li>Category browsing and filter usage patterns</li>
+			<li>Button clicks, link clicks, and UI interactions</li>
+			<li>Scroll depth and content engagement metrics</li>
+			<li>Session duration and frequency of visits</li>
+			<li>App launch events (if integrated via our SDK)</li>
+			<li>Error events, crash reports, and performance anomalies</li>
+			<li>Feature usage data (e.g., which settings you toggle)</li>
+			<li>Wishlist additions and removals</li>
+		</ul>
+
+		<h3 id="section-collection-content">4.5 Content Data</h3>
+		<p>Content data is information you actively submit or create on the platform:</p>
+		<ul>
+			<li>App reviews, including text, star ratings, and attached media</li>
+			<li>Replies to other users' reviews (if the feature is enabled)</li>
+			<li>Developer-submitted app metadata (descriptions, screenshots, changelogs)</li>
+			<li>Support tickets, bug reports, and feature requests submitted via our help portal</li>
+			<li>Community posts, comments, or forum contributions (where applicable)</li>
+			<li>Survey or feedback form responses</li>
+			<li>Beta testing notes or reports</li>
+		</ul>
+		<div class="info-box warn">
+			<strong>Public Content Warning:</strong> Reviews, ratings, display names, and other content you submit publicly are visible to all users of the platform, including unauthenticated visitors. Please do not include personal information in public reviews or comments that you do not wish to share broadly.
+		</div>
+
+		<h3 id="section-collection-transaction">4.6 Transaction Data</h3>
+		<p>Where the platform offers any paid services or premium features:</p>
+		<ul>
+			<li>Transaction identifiers and timestamps</li>
+			<li>Purchase amounts and currency</li>
+			<li>Payment method type (e.g., credit card, PayPal) — we do not store full card numbers</li>
+			<li>Billing address (where required by payment processors)</li>
+			<li>Subscription tier and renewal history</li>
+			<li>Refund and dispute records</li>
+			<li>Tax identification numbers (where required for legal compliance)</li>
+		</ul>
+
+		<h3 id="section-collection-comms">4.7 Communications Data</h3>
+		<ul>
+			<li>Emails sent to our support or privacy teams (including content and metadata)</li>
+			<li>In-app messages or chat records (where applicable)</li>
+			<li>Records of marketing communications sent to you and your interaction with them (opens, clicks, unsubscribes)</li>
+			<li>Records of consent provided for specific communications</li>
+		</ul>
+
+		<h3 id="section-collection-inferred">4.8 Inferred &amp; Derived Data</h3>
+		<p>We may derive data from other data we hold, for the purpose of improving relevance and service quality:</p>
+		<ul>
+			<li>Inferred preferences and interests based on apps viewed or downloaded</li>
+			<li>Estimated geographic region based on IP address (country / city level — not precise location)</li>
+			<li>User segments or cohorts assigned for analytical purposes (never used for discriminatory targeting)</li>
+			<li>Risk scores computed for fraud and abuse prevention</li>
+		</ul>
+		<div class="info-box">
+			We do not collect precise geolocation (GPS coordinates) from your device unless you explicitly grant permission within a specific feature that requires it.
+		</div>
+	</div>
+
+	<!-- SECTION 5: SOURCES -->
+	<div class="section-card" id="section-sources">
+		<div class="section-num">5</div>
+		<h2>Sources of Personal Data</h2>
+		<p>We receive personal data from a variety of sources:</p>
+		<h3>5.1 Directly from You</h3>
+		<p>When you register an account, complete a profile, submit a review, contact support, fill in a form, or otherwise interact with our Services.</p>
+		<h3>5.2 Automatically</h3>
+		<p>Via cookies, tracking pixels, SDKs, server logs, and other passive collection mechanisms when you use our platform, as described in Sections 4.3, 4.4, and 13.</p>
+		<h3>5.3 From Third-Party Identity Providers</h3>
+		<p>If you sign in using Google, Apple, or another third-party authentication provider, we receive the data those providers share with us as part of the authentication flow. We encourage you to review the privacy policies of those providers.</p>
+		<h3>5.4 From Third-Party Analytics &amp; Monitoring Providers</h3>
+		<p>We use Firebase Analytics, Crashlytics, and similar tools that may provide us with additional usage and diagnostic information. These providers are listed in Section 9.</p>
+		<h3>5.5 From Other Users</h3>
+		<p>Other users may mention you in reviews or reports, which may result in your information being associated with that content in our records.</p>
+		<h3>5.6 From Publicly Available Sources</h3>
+		<p>In limited circumstances, for developer verification purposes, we may consult publicly available information (e.g., a developer's public website, app store listing, or company registration details).</p>
+		<h3>5.7 From Payment Processors</h3>
+		<p>Where you make a purchase, our payment processors (e.g., Stripe, PayPal) may share confirmation and fraud-prevention signals with us. We do not receive full payment card details from these processors.</p>
+	</div>
+
+	<!-- SECTION 6: LEGAL BASES -->
+	<div class="section-card highlight" id="section-legal-basis">
+		<div class="section-num">6</div>
+		<h2>Legal Bases for Processing <span class="tag gdpr">GDPR Art. 6</span></h2>
+		<p>We process personal data only where we have a valid legal basis to do so. The legal bases we rely on are described in the table below. Where processing is based on consent, you have the right to withdraw that consent at any time without affecting the lawfulness of processing prior to withdrawal.</p>
+		<table class="data-table">
+			<thead>
+				<tr><th>Legal Basis</th><th>Description</th><th>Examples</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><strong>Contract</strong></td><td>Processing necessary for the performance of a contract to which you are party, or to take steps at your request prior to entering into a contract.</td><td>Creating your account; processing downloads; providing access to purchased features.</td></tr>
+				<tr><td><strong>Legal Obligation</strong></td><td>Processing necessary for compliance with a legal obligation to which we are subject.</td><td>Retaining transaction records for tax compliance; responding to court orders or regulatory requests.</td></tr>
+				<tr><td><strong>Legitimate Interests</strong></td><td>Processing necessary for our legitimate interests (or those of a third party), where those interests are not overridden by your rights and freedoms.</td><td>Fraud detection and security monitoring; improving our Services; conducting business analytics.</td></tr>
+				<tr><td><strong>Consent</strong></td><td>You have given specific, informed, and unambiguous consent to processing for one or more specific purposes.</td><td>Marketing emails; optional analytics; personalised recommendations.</td></tr>
+				<tr><td><strong>Vital Interests</strong></td><td>Processing necessary to protect the vital interests of a natural person.</td><td>Sharing information with emergency services in life-threatening situations (rare and exceptional).</td></tr>
+				<tr><td><strong>Public Task</strong></td><td>Processing necessary for the performance of a task carried out in the public interest or in the exercise of official authority.</td><td>Not typically applicable; reserved for edge cases.</td></tr>
+			</tbody>
+		</table>
+		<h3>6.1 Legitimate Interests Assessment</h3>
+		<p>Where we rely on legitimate interests, we conduct a balancing test (Legitimate Interests Assessment) to ensure that our interests do not override your fundamental rights and freedoms. Records of these assessments are maintained by our Data Protection Officer and are available on request.</p>
+		<h3>6.2 POPIA Grounds (South Africa)</h3>
+		<p>Under POPIA, the corresponding conditions for lawful processing include: consent of the data subject; necessity for conclusion or performance of a contract; compliance with an obligation imposed by law; necessity to protect a legitimate interest of the data subject; necessity for the proper performance of a public law duty; and the pursuit of the legitimate interests of the responsible party or a third party to whom the information is supplied.</p>
+	</div>
+
+	<!-- SECTION 7: PURPOSES -->
+	<div class="section-card" id="section-purposes">
+		<div class="section-num">7</div>
+		<h2>Purposes of Processing</h2>
+		<p>We process personal data for a range of specific, explicit, and legitimate purposes. We do not process your data in a manner incompatible with the purposes for which it was originally collected.</p>
+
+		<h3 id="section-purposes-service">7.1 Service Delivery &amp; Account Management</h3>
+		<ul>
+			<li>Creating, managing, and maintaining your account</li>
+			<li>Authenticating your identity at sign-in</li>
+			<li>Enabling app browsing, searching, and downloading</li>
+			<li>Displaying download counts, review statistics, and other platform metrics</li>
+			<li>Processing transactions and managing subscriptions</li>
+			<li>Providing customer support and handling complaints</li>
+			<li>Sending essential transactional communications (account confirmations, password resets, security alerts)</li>
+			<li>Personalising your dashboard and content recommendations based on your activity</li>
+			<li>Syncing preferences and settings across devices (where applicable)</li>
+		</ul>
+
+		<h3 id="section-purposes-security">7.2 Security, Fraud Prevention &amp; Abuse Control</h3>
+		<ul>
+			<li>Detecting and preventing unauthorised access, account takeovers, and credential stuffing attacks</li>
+			<li>Identifying and blocking fake reviews, spam, and artificial inflation of app metrics</li>
+			<li>Monitoring for violations of our Terms of Service</li>
+			<li>Rate-limiting and DDoS mitigation</li>
+			<li>Generating risk scores and alerting on anomalous behaviour</li>
+			<li>Preserving audit logs for incident investigation</li>
+			<li>Enforcing bans, suspensions, and content moderation decisions</li>
+			<li>Reporting suspected illegal activity to law enforcement where required by law</li>
+		</ul>
+
+		<h3 id="section-purposes-analytics">7.3 Analytics, Research &amp; Product Improvement</h3>
+		<ul>
+			<li>Measuring platform usage, engagement, and feature adoption</li>
+			<li>Conducting A/B tests and UI experiments to improve the user experience</li>
+			<li>Generating aggregated statistical reports on app popularity and user behaviour</li>
+			<li>Identifying bugs, performance bottlenecks, and reliability issues</li>
+			<li>Researching user needs and pain points to guide product roadmap decisions</li>
+			<li>Benchmarking our platform against industry standards</li>
+		</ul>
+
+		<h3 id="section-purposes-comms">7.4 Communications &amp; Marketing</h3>
+		<ul>
+			<li>Sending newsletters, product announcements, and feature updates (only with your consent)</li>
+			<li>Notifying you about updates to apps you have downloaded</li>
+			<li>Sending personalised recommendations based on your download and browsing history (only with your consent)</li>
+			<li>Conducting surveys and requesting feedback</li>
+			<li>Delivering targeted promotional content via our platform interface (not via third-party ad networks)</li>
+		</ul>
+
+		<h3 id="section-purposes-legal">7.5 Legal Compliance &amp; Regulatory Obligations</h3>
+		<ul>
+			<li>Complying with applicable laws, regulations, and binding governmental orders</li>
+			<li>Maintaining records required by tax, accounting, and financial regulations</li>
+			<li>Responding to lawful requests from courts, regulators, and law enforcement agencies</li>
+			<li>Defending ourselves in legal proceedings</li>
+			<li>Exercising or protecting our legal rights</li>
+			<li>Conducting internal investigations into policy violations</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 8: SHARING -->
+	<div class="section-card" id="section-sharing">
+		<div class="section-num">8</div>
+		<h2>Sharing &amp; Disclosure of Personal Data <span class="tag important">Read Carefully</span></h2>
+		<p>We do not sell your personal data. We do not share your personal data with third parties for their own independent marketing purposes. We may share personal data in the following limited circumstances:</p>
+		<h3>8.1 Service Providers &amp; Sub-Processors</h3>
+		<p>We share data with trusted third-party service providers (listed in Section 9) who perform functions on our behalf, such as hosting, database management, analytics, email delivery, and payment processing. These providers are contractually bound to process personal data only on our documented instructions, to maintain confidentiality, and to implement adequate security measures.</p>
+		<h3>8.2 App Developers (Aggregated Only)</h3>
+		<p>Developers who publish apps on our platform may receive aggregated, anonymised statistics about how their apps are used — including download counts, average ratings, and geographic distribution (at country level). We do not share individual users' personally identifiable information with developers without explicit consent.</p>
+		<h3>8.3 Business Transfers</h3>
+		<p>In the event of a merger, acquisition, asset sale, restructuring, or insolvency proceeding involving ExamSidemann, personal data held by us may be transferred to the acquiring entity. We will provide notice to affected users prior to any such transfer where required by law, and will ensure that any successor entity is bound by equivalent privacy commitments.</p>
+		<h3>8.4 Legal Obligations &amp; Law Enforcement</h3>
+		<p>We may disclose personal data where required to do so by applicable law, regulation, court order, subpoena, regulatory investigation, or at the request of a competent authority. Where permitted, we will notify the affected user before complying. We carefully evaluate such requests and disclose the minimum data necessary.</p>
+		<h3>8.5 Protection of Rights &amp; Safety</h3>
+		<p>We may disclose personal data where we believe in good faith that disclosure is necessary to:</p>
+		<ul>
+			<li>Protect the rights, property, or safety of ExamSidemann, our users, or the public</li>
+			<li>Prevent or detect fraud, security incidents, or illegal activity</li>
+			<li>Enforce our Terms of Service or other agreements</li>
+			<li>Respond to emergency situations involving risk of death or serious bodily harm</li>
+		</ul>
+		<h3>8.6 With Your Consent</h3>
+		<p>We may share your personal data with third parties in other circumstances where you have given your explicit prior consent. You may withdraw such consent at any time.</p>
+		<div class="info-box danger">
+			<strong>We will never:</strong> Sell your personal data to data brokers, advertisers, or marketing companies. Share your personal information with a third party for their own marketing purposes without your explicit opt-in consent.
+		</div>
+	</div>
+
+	<!-- SECTION 9: SUB-PROCESSORS -->
+	<div class="section-card" id="section-processors">
+		<div class="section-num">9</div>
+		<h2>Sub-Processors &amp; Third-Party Service Providers</h2>
+		<p>The following table lists the key sub-processors and service providers we currently use. We update this list as our sub-processor landscape changes. Any significant additions are communicated to affected users with adequate notice.</p>
+		<table class="data-table">
+			<thead>
+				<tr><th>Provider</th><th>Service</th><th>Data Processed</th><th>Location</th><th>Safeguard</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><strong>Google Firebase</strong></td><td>Authentication, Realtime Database, Firestore, Cloud Functions, Hosting</td><td>User IDs, email addresses, session tokens, app data, logs</td><td>USA / Multi-region</td><td>SCCs; Google Cloud DPA</td></tr>
+				<tr><td><strong>Firebase Crashlytics</strong></td><td>Crash reporting &amp; diagnostics</td><td>Device info, stack traces, app state at crash time</td><td>USA</td><td>SCCs; Google Cloud DPA</td></tr>
+				<tr><td><strong>Firebase Analytics</strong></td><td>Usage analytics &amp; event tracking</td><td>Anonymised usage events, session data</td><td>USA</td><td>SCCs; Google Cloud DPA</td></tr>
+				<tr><td><strong>Google Cloud Storage</strong></td><td>File storage (app assets, user uploads)</td><td>App images, screenshots, user avatars</td><td>Multi-region</td><td>SCCs; Google Cloud DPA</td></tr>
+				<tr><td><strong>Mailgun / SendGrid</strong></td><td>Transactional email delivery</td><td>Email address, email content, delivery metadata</td><td>USA / EU</td><td>SCCs; DPA</td></tr>
+				<tr><td><strong>Stripe</strong></td><td>Payment processing (if applicable)</td><td>Transaction data, billing address, payment method type</td><td>USA / EU</td><td>PCI-DSS; SCCs</td></tr>
+				<tr><td><strong>Cloudflare</strong></td><td>CDN, DDoS mitigation, DNS, WAF</td><td>IP addresses, HTTP request headers</td><td>Global</td><td>SCCs; Cloudflare DPA</td></tr>
+				<tr><td><strong>Sentry</strong></td><td>Error monitoring</td><td>Stack traces, anonymised user context</td><td>USA / EU</td><td>SCCs; DPA</td></tr>
+				<tr><td><strong>Intercom / Freshdesk</strong></td><td>Customer support</td><td>Email, name, support conversation content</td><td>USA / EU</td><td>SCCs; DPA</td></tr>
+			</tbody>
+		</table>
+		<div class="info-box">
+			You may request our full, up-to-date list of sub-processors by contacting <code>privacy@examsidemann.example</code>. We will respond within 15 business days.
+		</div>
+	</div>
+
+	<!-- SECTION 10: INTERNATIONAL TRANSFERS -->
+	<div class="section-card" id="section-transfers">
+		<div class="section-num">10</div>
+		<h2>International Data Transfers <span class="tag gdpr">GDPR Ch. V</span></h2>
+		<p>As an online platform, we operate globally and our infrastructure is distributed across multiple countries. This means that personal data may be transferred to, stored in, and processed in countries other than your country of residence.</p>
+		<h3>10.1 Transfers from the EEA / UK</h3>
+		<p>Where we transfer personal data from the EEA or UK to countries that have not received an adequacy decision from the European Commission or UK Secretary of State, we implement appropriate safeguards, including:</p>
+		<ul>
+			<li><strong>Standard Contractual Clauses (SCCs):</strong> The EU Standard Contractual Clauses (2021/914) are incorporated into our data processing agreements with all relevant sub-processors in third countries.</li>
+			<li><strong>UK International Data Transfer Agreements (IDTAs):</strong> Used for transfers from the UK following Brexit.</li>
+			<li><strong>Binding Corporate Rules (BCRs):</strong> Where applicable for intra-group transfers within multinational processor organisations.</li>
+			<li><strong>Adequacy Decisions:</strong> Where a country has received an adequacy decision (e.g., Japan, Canada, Argentina), we rely on that decision as the basis for the transfer.</li>
+		</ul>
+		<h3>10.2 Transfers from South Africa</h3>
+		<p>Under POPIA Section 72, personal information may only be transferred to a foreign country if that country has equivalent protection or if the data subject consents, or if the transfer is necessary for the performance of a contract. We rely on contractual protections consistent with these requirements for all cross-border transfers from South Africa.</p>
+		<h3>10.3 Transfer Impact Assessments</h3>
+		<p>Where required by law or our internal data governance framework, we conduct Transfer Impact Assessments before initiating new categories of data transfers to third countries. These assessments evaluate the legal environment in the destination country and the technical and organisational measures in place to supplement any contractual safeguards.</p>
+		<h3>10.4 Copies of Safeguards</h3>
+		<p>A copy of the relevant safeguards we rely upon for international transfers may be obtained by contacting our Data Protection Officer at <code>dpo@examsidemann.example</code>.</p>
+	</div>
+
+	<!-- SECTION 11: RETENTION -->
+	<div class="section-card" id="section-retention">
+		<div class="section-num">11</div>
+		<h2>Data Retention</h2>
+		<p>We retain personal data for no longer than is necessary for the purposes for which it is processed, or as required by applicable law. Our retention periods are determined by balancing operational necessity, legal obligations, and data minimisation principles.</p>
+		<table class="data-table">
+			<thead>
+				<tr><th>Data Category</th><th>Retention Period</th><th>Rationale</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>Account identity data</td><td>Duration of account + 3 years post-closure</td><td>Legal obligation; legitimate interests (dispute resolution)</td></tr>
+				<tr><td>Login &amp; session logs</td><td>90 days</td><td>Security monitoring; incident investigation</td></tr>
+				<tr><td>Access logs (server-level)</td><td>12 months</td><td>Security &amp; forensics; regulatory requirements</td></tr>
+				<tr><td>Reviews &amp; ratings</td><td>Duration of account; anonymised thereafter for 5 years</td><td>Platform integrity; dispute records</td></tr>
+				<tr><td>Support tickets</td><td>3 years from ticket closure</td><td>Quality assurance; legal protection</td></tr>
+				<tr><td>Transaction records</td><td>7 years</td><td>Tax &amp; financial compliance (SARS, HMRC, IRS)</td></tr>
+				<tr><td>Marketing preferences</td><td>Until withdrawal of consent + 3 years</td><td>Evidence of consent</td></tr>
+				<tr><td>Analytics events (raw)</td><td>26 months (Firebase default)</td><td>Trend analysis; configurable by user opt-out</td></tr>
+				<tr><td>Crash &amp; error reports</td><td>90 days</td><td>Bug fixing; performance improvement</td></tr>
+				<tr><td>Deleted account data</td><td>30 days (grace period) then permanent deletion</td><td>Account recovery window; then erasure</td></tr>
+				<tr><td>Legal hold data</td><td>Until hold is lifted</td><td>Legal obligation (see Section 35)</td></tr>
+				<tr><td>Anonymised aggregate data</td><td>Indefinitely</td><td>Research &amp; historical analytics; not personal data</td></tr>
+			</tbody>
+		</table>
+		<h3>11.1 Retention Review</h3>
+		<p>We conduct periodic reviews of our data retention schedules to ensure that data is not held beyond its necessary retention period. Where the retention period has expired, data is securely deleted or anonymised in accordance with our data destruction procedures.</p>
+		<h3>11.2 Exceptions</h3>
+		<p>Retention periods may be extended where:</p>
+		<ul>
+			<li>A legal hold is in effect (see Section 35)</li>
+			<li>An active dispute, complaint, or litigation requires data to be preserved</li>
+			<li>A specific legal or regulatory requirement mandates a longer period</li>
+			<li>You have requested that we retain certain data for your own purposes (e.g., to maintain a record of a purchase)</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 12: SECURITY -->
+	<div class="section-card safe-zone" id="section-security">
+		<div class="section-num">12</div>
+		<h2>Security Measures</h2>
+		<p>We implement a comprehensive and layered security programme designed to protect personal data against accidental or unlawful destruction, loss, alteration, unauthorised disclosure, or access.</p>
+		<h3>12.1 Technical Measures</h3>
+		<ul>
+			<li><strong>Encryption in transit:</strong> All communications between your browser/app and our servers are encrypted using TLS 1.2 or TLS 1.3.</li>
+			<li><strong>Encryption at rest:</strong> Stored personal data is encrypted using AES-256 or equivalent strong encryption in all production databases and object stores.</li>
+			<li><strong>Password hashing:</strong> User passwords are stored as hashed values using bcrypt with an adaptive cost factor; we never store plaintext passwords.</li>
+			<li><strong>Multi-factor authentication (MFA):</strong> MFA is available and encouraged for all user accounts; it is mandatory for all administrative and developer accounts.</li>
+			<li><strong>Access controls:</strong> Role-based access control (RBAC) ensures that employees and systems have access only to the data necessary for their specific functions (principle of least privilege).</li>
+			<li><strong>Network segmentation:</strong> Our production environment is isolated from development and staging environments, and internal network traffic is segmented to limit the impact of any breach.</li>
+			<li><strong>Web Application Firewall (WAF):</strong> Deployed at the network perimeter to detect and block common web attacks including SQL injection, XSS, and CSRF.</li>
+			<li><strong>DDoS mitigation:</strong> Cloudflare and equivalent services provide continuous protection against distributed denial-of-service attacks.</li>
+			<li><strong>Automated vulnerability scanning:</strong> Our infrastructure and codebase are subject to regular automated scans using industry-standard tools.</li>
+			<li><strong>Penetration testing:</strong> We engage independent security professionals to conduct penetration tests at least annually.</li>
+		</ul>
+		<h3>12.2 Organisational Measures</h3>
+		<ul>
+			<li>All staff with access to personal data receive mandatory data protection and security training upon onboarding and annually thereafter.</li>
+			<li>Background checks are conducted on employees who have access to sensitive personal data.</li>
+			<li>Confidentiality agreements are signed by all employees, contractors, and third-party service providers.</li>
+			<li>A formal information security policy is maintained and reviewed annually.</li>
+			<li>An incident response plan is in place and tested regularly via tabletop exercises.</li>
+			<li>A data breach notification procedure ensures timely response and notification in the event of a breach (see Section 18).</li>
+		</ul>
+		<h3>12.3 Physical Measures</h3>
+		<p>Our primary infrastructure is hosted in certified data centres (managed by Google Cloud) that maintain ISO 27001 certification, SOC 2 Type II attestation, and appropriate physical security controls including 24/7 surveillance, biometric access, and environmental monitoring.</p>
+		<div class="info-box warn">
+			<strong>Important:</strong> Despite our comprehensive security measures, no system is completely impenetrable. We encourage you to use a strong, unique password, to enable MFA, and to contact us immediately if you suspect any unauthorised activity on your account.
+		</div>
+	</div>
+
+	<!-- SECTION 13: COOKIES -->
+	<div class="section-card" id="section-cookies">
+		<div class="section-num">13</div>
+		<h2>Cookies &amp; Tracking Technologies</h2>
+		<p>We use cookies and similar tracking technologies to operate and improve our Services. This section explains what we use, why, and how you can manage your preferences.</p>
+
+		<h3 id="section-cookies-types">13.1 Types of Cookies We Use</h3>
+		<table class="data-table">
+			<thead>
+				<tr><th>Category</th><th>Purpose</th><th>Examples</th><th>Duration</th><th>Can Decline?</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><strong>Strictly Necessary</strong></td><td>Required for the website to function; cannot be disabled</td><td>Session tokens, CSRF protection, authentication cookies</td><td>Session / Short-term</td><td>No</td></tr>
+				<tr><td><strong>Functional / Preference</strong></td><td>Remember your settings and preferences</td><td>Language preference, dark/light mode, cookie consent choices</td><td>Up to 1 year</td><td>Yes</td></tr>
+				<tr><td><strong>Analytics</strong></td><td>Help us understand how users interact with the platform</td><td>Firebase Analytics, Google Analytics (if enabled)</td><td>Up to 26 months</td><td>Yes</td></tr>
+				<tr><td><strong>Performance</strong></td><td>Monitor platform performance and availability</td><td>Sentry session replay (anonymised), uptime monitoring</td><td>Session</td><td>Yes</td></tr>
+				<tr><td><strong>Security</strong></td><td>Fraud prevention and abuse detection signals</td><td>Rate-limiting tokens, bot detection hashes</td><td>Session / 24h</td><td>Partially</td></tr>
+			</tbody>
+		</table>
+		<div class="info-box">
+			We do not currently use third-party advertising cookies. Our platform is free of advertising trackers, tracking pixels from ad networks, and retargeting cookies.
+		</div>
+
+		<h3 id="section-cookies-manage">13.2 Managing &amp; Disabling Cookies</h3>
+		<p>You can manage your cookie preferences using the Cookie Preferences Centre accessible from the footer of every page. In addition:</p>
+		<ul>
+			<li><strong>Browser settings:</strong> Most browsers allow you to block or delete cookies via their settings menus. Note that blocking strictly necessary cookies will prevent the platform from functioning.</li>
+			<li><strong>Opt-out tools:</strong> For Google Analytics, you may install the Google Analytics Opt-Out Browser Add-On.</li>
+			<li><strong>Do Not Track (DNT):</strong> We respect the DNT browser signal where technically feasible; however, note that DNT is not a binding standard and its implementation varies.</li>
+			<li><strong>Global Privacy Control (GPC):</strong> We support and honour the GPC signal in jurisdictions where it carries legal weight (e.g., California under CCPA/CPRA).</li>
+		</ul>
+		<h3>13.3 Similar Technologies</h3>
+		<p>In addition to cookies, we may use:</p>
+		<ul>
+			<li><strong>Local storage &amp; session storage:</strong> For caching UI state client-side to improve performance.</li>
+			<li><strong>Web beacons / tracking pixels:</strong> Used in email communications to detect opens and clicks; you may opt out of email tracking by adjusting your notification preferences.</li>
+			<li><strong>Server-side events:</strong> Our backend may record user-triggered events server-side (not reliant on client-side cookies) to ensure analytics accuracy even where cookies are blocked.</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 14: YOUR RIGHTS -->
+	<div class="section-card highlight" id="section-rights">
+		<div class="section-num">14</div>
+		<h2>Your Rights <span class="tag important">Your Entitlements</span></h2>
+		<p>Depending on the applicable law in your jurisdiction, you have a range of rights in relation to your personal data. We are committed to enabling you to exercise these rights promptly and free of charge.</p>
+
+		<div class="rights-grid">
+			<div class="right-item">
+				<div class="ri-icon">📋</div>
+				<div class="ri-title">Right to Access</div>
+				<div class="ri-desc">Request a copy of the personal data we hold about you, and information about how it is processed.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">✏️</div>
+				<div class="ri-title">Right to Rectification</div>
+				<div class="ri-desc">Request correction of any inaccurate or incomplete personal data we hold about you.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">🗑️</div>
+				<div class="ri-title">Right to Erasure</div>
+				<div class="ri-desc">Request deletion of your personal data ("right to be forgotten") in certain circumstances.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">⏸️</div>
+				<div class="ri-title">Right to Restriction</div>
+				<div class="ri-desc">Request that we restrict processing of your data while a dispute is resolved or a complaint is pending.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">📦</div>
+				<div class="ri-title">Right to Portability</div>
+				<div class="ri-desc">Receive your personal data in a structured, machine-readable format and transfer it to another controller.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">🚫</div>
+				<div class="ri-title">Right to Object</div>
+				<div class="ri-desc">Object to processing based on legitimate interests or for direct marketing purposes.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">🤖</div>
+				<div class="ri-title">Rights re: Automated Decisions</div>
+				<div class="ri-desc">Not to be subject to decisions based solely on automated processing that produce significant effects.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">↩️</div>
+				<div class="ri-title">Right to Withdraw Consent</div>
+				<div class="ri-desc">Withdraw any consent you have given at any time, without affecting prior lawful processing.</div>
+			</div>
+			<div class="right-item">
+				<div class="ri-icon">📣</div>
+				<div class="ri-title">Right to Lodge a Complaint</div>
+				<div class="ri-desc">File a complaint with a supervisory authority in your jurisdiction if you believe your rights have been violated.</div>
+			</div>
+		</div>
+
+		<h3 id="section-rights-gdpr">14.1 GDPR Rights (EEA &amp; UK Residents)</h3>
+		<p>As an EEA or UK resident, you have all the rights listed above under Chapter III of the GDPR (EU) or the UK GDPR. You have the right to:</p>
+		<ul>
+			<li>Obtain confirmation of whether and how your data is processed (Art. 15)</li>
+			<li>Have inaccurate data rectified without undue delay (Art. 16)</li>
+			<li>Obtain erasure ("right to be forgotten") in specific circumstances (Art. 17)</li>
+			<li>Restrict processing (Art. 18)</li>
+			<li>Data portability where processing is based on consent or contract and carried out by automated means (Art. 20)</li>
+			<li>Object to processing based on legitimate interests or for direct marketing (Art. 21)</li>
+			<li>Not be subject to solely automated decisions including profiling with significant effects (Art. 22)</li>
+		</ul>
+		<p>To exercise these rights, submit a request via <code>privacy@examsidemann.example</code>. We will respond within <strong>one month</strong> (with the possibility of a 2-month extension for complex requests, with notice). We may ask you to verify your identity before processing your request.</p>
+
+		<h3 id="section-rights-popia">14.2 POPIA Rights (South African Residents)</h3>
+		<p>South African data subjects have the following rights under POPIA:</p>
+		<ul>
+			<li>Section 23 — Right to be notified that personal information about you is being collected</li>
+			<li>Section 24 — Right to establish whether we hold personal information about you and to request access to that information</li>
+			<li>Section 24(1)(b) — Right to request correction, destruction, or deletion of personal information that is inaccurate, irrelevant, excessive, out of date, incomplete, misleading, or unlawfully obtained</li>
+			<li>Section 11 — Right to object to the processing of personal information on reasonable grounds</li>
+			<li>Right to submit a complaint to the Information Regulator of South Africa</li>
+		</ul>
+		<p>Requests by South African data subjects should be submitted to <code>privacy@examsidemann.example</code>, clearly stating that the request is made under POPIA. We will respond within <strong>15 business days</strong> of verifying your identity.</p>
+
+		<h3 id="section-rights-ccpa">14.3 CCPA / CPRA Rights (California Residents)</h3>
+		<p>California residents have the following rights under the CCPA as amended by the CPRA:</p>
+		<ul>
+			<li><strong>Right to Know:</strong> Request disclosure of the categories and specific pieces of personal information collected about you, the sources, the business purposes, and the categories of third parties with whom we share it.</li>
+			<li><strong>Right to Delete:</strong> Request deletion of personal information collected from you, subject to certain exceptions.</li>
+			<li><strong>Right to Correct:</strong> Request correction of inaccurate personal information we hold about you.</li>
+			<li><strong>Right to Opt-Out of Sale / Sharing:</strong> Opt out of the sale or sharing of personal information for cross-context behavioural advertising (we do not sell personal data, but you may still exercise this right via our Do Not Sell page — see Section 23).</li>
+			<li><strong>Right to Limit Sensitive Personal Information Use:</strong> Limit our use of sensitive personal information to what is necessary to provide the requested services.</li>
+			<li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising your CCPA rights — we will not deny services, charge different prices, or provide a lower quality of service.</li>
+		</ul>
+		<p>California residents may submit requests via <code>privacy@examsidemann.example</code> or via our designated interactive webform at our Privacy Centre. We respond within <strong>45 days</strong> (extendable by a further 45 days with notice). You may designate an authorised agent to submit requests on your behalf.</p>
+
+		<h3 id="section-rights-other">14.4 Other Jurisdictions</h3>
+		<p>Users in other jurisdictions — including Brazil (LGPD), Canada (PIPEDA), Thailand (PDPA), India (DPDP Act), and Australia (Privacy Act) — also have rights over their personal data under their applicable local laws. We honour equivalent rights for all users regardless of jurisdiction. Contact <code>privacy@examsidemann.example</code> to exercise your rights under applicable local law.</p>
+
+		<h3>14.5 How to Submit a Request</h3>
+		<p>To exercise any of the rights listed above:</p>
+		<ul>
+			<li>Email us at <code>privacy@examsidemann.example</code> with the subject line "Data Rights Request"</li>
+			<li>Include: your full name, email address associated with your account, the specific right(s) you wish to exercise, and sufficient detail to identify your request</li>
+			<li>We may ask you to verify your identity by confirming information associated with your account, or by providing a government-issued ID (processed and then deleted)</li>
+			<li>We will acknowledge your request within 5 business days and complete our response within the applicable timeframe</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 15: CHILDREN -->
+	<div class="section-card danger-zone" id="section-children">
+		<div class="section-num">15</div>
+		<h2>Children's Privacy <span class="tag important">Age Restrictions</span></h2>
+		<p>Our Services are not directed at, or intended for use by, children under the age of 13 (or under 16 in EEA countries, or such other age as may be applicable under local law).</p>
+		<h3>15.1 Age Verification</h3>
+		<p>We do not knowingly collect personal information from children under the applicable minimum age. During registration, users confirm that they meet the minimum age requirement. Where we have reason to believe that a user may be under the applicable minimum age, we will not process their personal data and will take steps to remove any data collected.</p>
+		<h3>15.2 COPPA (USA)</h3>
+		<p>We comply with the Children's Online Privacy Protection Act (COPPA). We do not knowingly collect personal information from children under 13 in the United States without verifiable parental consent. If we become aware that we have collected personal information from a child under 13 without parental consent, we will delete that information promptly.</p>
+		<h3>15.3 POPIA (South Africa)</h3>
+		<p>Under POPIA, personal information of children (persons under 18 years of age who are not legally emancipated) is classified as a special category requiring enhanced protection. We do not process personal information of children without the prior consent of a competent person (parent or legal guardian) except where otherwise permitted by law.</p>
+		<h3>15.4 UK Age Appropriate Design Code</h3>
+		<p>We apply appropriate protections consistent with the UK ICO's Age Appropriate Design Code (Children's Code) to ensure that features, default settings, and data processing practices take into account the best interests of child users who may access the platform.</p>
+		<h3>15.5 Parental / Guardian Requests</h3>
+		<p>If you are a parent or legal guardian and believe that your child has provided us with personal information without your consent, please contact us at <code>privacy@examsidemann.example</code>. We will review your request and take appropriate action, including deletion of the child's data, within 15 business days.</p>
+	</div>
+
+	<!-- SECTION 16: THIRD-PARTY LINKS -->
+	<div class="section-card" id="section-thirdparty">
+		<div class="section-num">16</div>
+		<h2>Third-Party Links &amp; External Services</h2>
+		<p>Our platform may contain links to third-party websites, applications, or services that are not operated or controlled by ExamSidemann. This includes:</p>
+		<ul>
+			<li>Links to developers' own websites or product pages</li>
+			<li>Links to third-party app stores (e.g., Google Play, Apple App Store) for complementary downloads</li>
+			<li>Links to external documentation, tutorials, or resources</li>
+			<li>Social sharing buttons (these may load third-party scripts if clicked)</li>
+		</ul>
+		<p>This Privacy Policy does not apply to such third-party websites or services. We have no control over, and assume no responsibility for, the content, privacy policies, or data practices of those third parties. We strongly encourage you to review the privacy policy of any third-party site you visit.</p>
+		<p>The presence of a link on our platform does not constitute an endorsement of, or affiliation with, the linked site or service.</p>
+	</div>
+
+	<!-- SECTION 17: AUTOMATED DECISIONS & AI -->
+	<div class="section-card" id="section-ai">
+		<div class="section-num">17</div>
+		<h2>Automated Decision-Making &amp; Artificial Intelligence</h2>
+		<p>We use automated systems and machine learning algorithms in limited ways to support the delivery of our Services. We are committed to transparency and human oversight in all automated processing.</p>
+		<h3>17.1 Fraud &amp; Abuse Detection</h3>
+		<p>Automated systems analyse usage patterns to detect and prevent fraudulent activity, fake reviews, bot traffic, and account abuse. Where our systems flag an account or action as suspicious, a human review is conducted before any significant adverse action is taken (such as account suspension or content removal).</p>
+		<h3>17.2 Content Recommendation</h3>
+		<p>Our recommendation engine analyses your download history, search queries, and browsing behaviour to suggest relevant apps. This processing is based on consent where required and you may disable personalised recommendations in your account settings.</p>
+		<h3>17.3 Search Ranking</h3>
+		<p>The ranking of search results and featured content on the platform is determined by an algorithm that considers factors including relevance, download volume, average rating, recency, and developer engagement. This ranking does not constitute automated decision-making with significant legal or similarly significant effects.</p>
+		<h3>17.4 No Significant Automated Decisions</h3>
+		<p>We do not currently make decisions that produce significant legal effects or similarly significant effects concerning data subjects solely by automated means, without human oversight. Should this change, we will update this Policy and put in place appropriate safeguards as required by applicable law, including the right to obtain human review and to challenge the decision.</p>
+		<h3>17.5 AI-Assisted Content Moderation</h3>
+		<p>AI tools may assist in the initial screening of submitted reviews and content for potential policy violations (e.g., hate speech, spam). All AI-flagged content is reviewed by a human moderator before any moderation action is finalised.</p>
+	</div>
+
+	<!-- SECTION 18: DATA BREACH -->
+	<div class="section-card danger-zone" id="section-breach">
+		<div class="section-num">18</div>
+		<h2>Data Breach Procedures &amp; Notification</h2>
+		<p>Despite our extensive security measures, no system is entirely immune to security incidents. In the event of a personal data breach, we have a robust incident response plan to minimise harm and ensure timely, transparent notification.</p>
+		<h3>18.1 Detection &amp; Containment</h3>
+		<p>Upon becoming aware of a potential data breach, our security team will immediately:</p>
+		<ul>
+			<li>Activate the incident response plan and assemble the incident response team</li>
+			<li>Contain the breach to prevent further unauthorised access or data loss</li>
+			<li>Preserve evidence for forensic investigation</li>
+			<li>Assess the nature, scope, and likely consequences of the breach</li>
+		</ul>
+		<h3>18.2 Regulatory Notification</h3>
+		<p>Where a breach is likely to result in a risk to the rights and freedoms of natural persons, we will notify the relevant supervisory authority:</p>
+		<ul>
+			<li>Within <strong>72 hours</strong> of becoming aware of the breach (GDPR / UK GDPR requirement)</li>
+			<li>As soon as reasonably possible, or within <strong>5 days</strong>, under POPIA</li>
+			<li>Within applicable timelines under CCPA, PIPEDA, and other relevant laws</li>
+		</ul>
+		<h3>18.3 Individual Notification</h3>
+		<p>Where a breach is likely to result in a high risk to the rights and freedoms of individuals, we will notify affected users without undue delay. Notification will include:</p>
+		<ul>
+			<li>A description of the nature of the breach</li>
+			<li>The likely consequences of the breach</li>
+			<li>The categories and approximate number of records affected</li>
+			<li>The measures taken or proposed to address the breach and mitigate its possible adverse effects</li>
+			<li>Contact details of our Data Protection Officer for further information</li>
+			<li>Recommended steps for affected individuals to protect themselves (e.g., changing passwords, monitoring account activity)</li>
+		</ul>
+		<h3>18.4 Remediation &amp; Post-Incident Review</h3>
+		<p>Following any breach, we will conduct a root cause analysis, implement remediation measures, and review our security controls to prevent recurrence. Lessons learned are incorporated into our security programme.</p>
+	</div>
+
+	<!-- SECTION 19: CALIFORNIA -->
+	<div class="section-card" id="section-california">
+		<div class="section-num">19</div>
+		<h2>Notice for California Residents <span class="tag ccpa">CCPA / CPRA</span></h2>
+		<p>This section supplements the general Privacy Policy for California residents and is provided in accordance with the California Consumer Privacy Act (CCPA) as amended by the California Privacy Rights Act (CPRA).</p>
+		<h3>19.1 Categories of Personal Information Collected (Past 12 Months)</h3>
+		<table class="data-table">
+			<thead><tr><th>Category</th><th>Collected?</th><th>Sold?</th><th>Shared?</th><th>Disclosed for Business Purpose?</th></tr></thead>
+			<tbody>
+				<tr><td>Identifiers (name, email, IP, UID)</td><td>Yes</td><td>No</td><td>No</td><td>Yes (service providers)</td></tr>
+				<tr><td>Personal Info (contact details)</td><td>Yes</td><td>No</td><td>No</td><td>Yes (service providers)</td></tr>
+				<tr><td>Protected Characteristics (age)</td><td>Limited (age range)</td><td>No</td><td>No</td><td>No</td></tr>
+				<tr><td>Commercial Info (purchase records)</td><td>If purchases made</td><td>No</td><td>No</td><td>Yes (payment processors)</td></tr>
+				<tr><td>Internet / Network Activity</td><td>Yes</td><td>No</td><td>No</td><td>Yes (analytics providers)</td></tr>
+				<tr><td>Geolocation (IP-derived, coarse)</td><td>Yes</td><td>No</td><td>No</td><td>Yes (analytics)</td></tr>
+				<tr><td>Inferences / Preferences</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+				<tr><td>Sensitive Personal Information</td><td>No (not collected)</td><td>No</td><td>No</td><td>No</td></tr>
+			</tbody>
+		</table>
+		<h3>19.2 Shine the Light</h3>
+		<p>California Civil Code Section 1798.83 allows California customers to request information about personal information we have shared with third parties for their own direct marketing purposes during the prior calendar year. We do not share personal information with third parties for their own direct marketing purposes.</p>
+	</div>
+
+	<!-- SECTION 20: EEA / UK -->
+	<div class="section-card" id="section-eea">
+		<div class="section-num">20</div>
+		<h2>Notice for EEA &amp; UK Residents <span class="tag gdpr">GDPR</span></h2>
+		<p>If you are located in the European Economic Area or the United Kingdom, additional rights and protections apply under the GDPR and UK GDPR respectively.</p>
+		<h3>20.1 Representative</h3>
+		<p>If we are required under Article 27 GDPR to appoint an EU representative, such appointment details will be published here. UK residents may contact our DPO directly for UK GDPR matters.</p>
+		<h3>20.2 Supervisory Authority</h3>
+		<p>EEA residents have the right to lodge a complaint with their local supervisory authority. Examples include:</p>
+		<ul>
+			<li>Ireland: Data Protection Commission (DPC) — <code>https://www.dataprotection.ie</code></li>
+			<li>Germany: Der Bundesbeauftragte für den Datenschutz (BfDI)</li>
+			<li>France: Commission Nationale de l'Informatique et des Libertés (CNIL)</li>
+			<li>Netherlands: Autoriteit Persoonsgegevens (AP)</li>
+		</ul>
+		<p>UK residents may contact: Information Commissioner's Office (ICO) — <code>https://ico.org.uk</code></p>
+		<h3>20.3 Legal Basis Table</h3>
+		<p>We maintain a Record of Processing Activities (RoPA) as required by GDPR Article 30, which documents each processing activity, its purpose, legal basis, data categories, and retention period. The RoPA is available to supervisory authorities on request.</p>
+	</div>
+
+	<!-- SECTION 21: AFRICA -->
+	<div class="section-card" id="section-africa">
+		<div class="section-num">21</div>
+		<h2>African Jurisdiction Notice <span class="tag popia">POPIA</span></h2>
+		<p>ExamSidemann is developed and operated with a primary focus on the South African and broader African market. We are committed to full compliance with the Protection of Personal Information Act, 2013 (POPIA) of South Africa.</p>
+		<h3>21.1 Information Regulator (South Africa)</h3>
+		<p>South African data subjects have the right to lodge a complaint with the Information Regulator of South Africa:</p>
+		<div class="info-box">
+			<strong>Information Regulator (South Africa)</strong><br>
+			Website: <code>https://www.inforegulator.org.za</code><br>
+			Email: <code>inforegulator@justice.gov.za</code><br>
+			Physical: JD House, 27 Stiemens Street, Braamfontein, Johannesburg
+		</div>
+		<h3>21.2 Lawful Grounds under POPIA</h3>
+		<p>All processing of personal information by ExamSidemann is conducted on the basis of one or more of the lawful grounds prescribed in Section 11 of POPIA. We do not process special personal information of South African data subjects without satisfying the heightened conditions in Section 26 of POPIA.</p>
+		<h3>21.3 Transborder Information Flows</h3>
+		<p>As required by Section 72 of POPIA, we ensure that personal information is only transferred to foreign countries that provide an adequate level of protection, or where appropriate contractual protections are in place.</p>
+		<h3>21.4 Other African Jurisdictions</h3>
+		<p>We are monitoring and will comply with emerging data protection frameworks across the African continent, including:</p>
+		<ul>
+			<li>Kenya: Data Protection Act (2019)</li>
+			<li>Nigeria: Nigeria Data Protection Regulation (NDPR) and the Data Protection Act (2023)</li>
+			<li>Ghana: Data Protection Act (2012)</li>
+			<li>Rwanda: Law No. 058/2021 relating to the protection of personal data and privacy</li>
+			<li>Uganda: Data Protection and Privacy Act (2019)</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 22: ACCESSIBILITY -->
+	<div class="section-card" id="section-accessibility">
+		<div class="section-num">22</div>
+		<h2>Accessibility of This Policy</h2>
+		<p>We are committed to making this Privacy Policy accessible to all users, including those with disabilities. This Policy is available in:</p>
+		<ul>
+			<li>Standard web format on this page, with semantic HTML and ARIA attributes for screen reader compatibility</li>
+			<li>Plain language summary available on request</li>
+			<li>Large print format available on request</li>
+			<li>Alternative languages on request (subject to availability)</li>
+		</ul>
+		<p>If you require this Policy in an alternative format or have accessibility concerns, please contact us at <code>accessibility@examsidemann.example</code>.</p>
+	</div>
+
+	<!-- SECTION 23: DO NOT SELL -->
+	<div class="section-card" id="section-do-not-sell">
+		<div class="section-num">23</div>
+		<h2>Do Not Sell or Share My Personal Information</h2>
+		<p>In accordance with the CCPA/CPRA and other applicable laws, we provide the following information and opt-out mechanism.</p>
+		<div class="info-box success">
+			<strong>ExamSidemann does not sell personal data.</strong> We do not sell your personal information to data brokers, advertisers, or any third parties for monetary or other valuable consideration.
+		</div>
+		<p>We also do not share personal information for cross-context behavioural advertising purposes. There are no tracking pixels from third-party ad networks present on our platform.</p>
+		<p>If you wish to formally exercise your right to opt out of any sale or sharing (including as a precautionary measure), you may do so by:</p>
+		<ul>
+			<li>Contacting us at <code>privacy@examsidemann.example</code> with the subject line "Do Not Sell My Personal Information"</li>
+			<li>Enabling the Global Privacy Control (GPC) signal in your browser</li>
+		</ul>
+		<p>We will confirm receipt of your request within 10 business days and confirm that no selling or sharing has occurred or will occur within 15 business days of your request.</p>
+	</div>
+
+	<!-- SECTION 24: BIOMETRIC -->
+	<div class="section-card" id="section-biometric">
+		<div class="section-num">24</div>
+		<h2>Biometric Data</h2>
+		<p>We currently do not collect, process, or store biometric data as part of our standard Services. Biometric data includes, but is not limited to, fingerprints, facial geometry, retinal scans, voiceprints, or any other biological or behavioural characteristic that can be used to uniquely identify a natural person.</p>
+		<p>If in the future we introduce features that involve biometric data (for example, biometric authentication), we will:</p>
+		<ul>
+			<li>Update this Privacy Policy with full details of the processing</li>
+			<li>Provide you with clear and prominent notice before any collection</li>
+			<li>Obtain your explicit prior consent</li>
+			<li>Comply with all applicable biometric data laws, including the Illinois Biometric Information Privacy Act (BIPA) and equivalent statutes</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 25: SENSITIVE CATEGORIES -->
+	<div class="section-card" id="section-sensitive">
+		<div class="section-num">25</div>
+		<h2>Sensitive Categories of Personal Data</h2>
+		<p>We do not intentionally collect or process special category data or sensitive personal information as part of our standard Services. This includes:</p>
+		<ul>
+			<li>Racial or ethnic origin</li>
+			<li>Political opinions or affiliations</li>
+			<li>Religious or philosophical beliefs</li>
+			<li>Trade union membership</li>
+			<li>Genetic data</li>
+			<li>Biometric data for identification purposes</li>
+			<li>Health or medical data</li>
+			<li>Data concerning sexual orientation or sex life</li>
+			<li>Criminal convictions or offences</li>
+		</ul>
+		<p>In the event that a user voluntarily discloses such information in a review, support ticket, or other user-generated content, we will process it only to the extent necessary to provide the requested service and will take reasonable steps to minimise processing of such data. We encourage users not to include sensitive personal information in public-facing content submissions.</p>
+		<div class="info-box warn">
+			<strong>Developer Notice:</strong> Developers submitting apps to the platform must not design their apps to collect sensitive personal information from users without explicit disclosure and consent. Violation of this requirement may result in app removal and account suspension.
+		</div>
+	</div>
+
+	<!-- SECTION 26: ANONYMISATION -->
+	<div class="section-card" id="section-anonymisation">
+		<div class="section-num">26</div>
+		<h2>Anonymisation &amp; Pseudonymisation</h2>
+		<p>We apply pseudonymisation and anonymisation techniques wherever appropriate to reduce privacy risks while enabling continued use of data for analytical and operational purposes.</p>
+		<h3>26.1 Anonymisation</h3>
+		<p>Where data is no longer needed in identifiable form, we apply irreversible anonymisation techniques — such as data aggregation, generalisation, noise addition, and suppression — to produce datasets that can no longer be attributed to any individual. Anonymised data falls outside the scope of data protection legislation and may be retained and used indefinitely for research, analytics, and product development.</p>
+		<h3>26.2 Pseudonymisation</h3>
+		<p>Where data needs to be retained in a form that can be re-linked to an individual (for example, to allow you to request deletion of your data), we apply pseudonymisation by replacing direct identifiers with tokens or hashes. Pseudonymised data remains personal data and is subject to all applicable data protection requirements; the re-identification key is stored separately with access strictly controlled.</p>
+		<h3>26.3 K-Anonymity &amp; Differential Privacy</h3>
+		<p>For certain analytics outputs and developer-facing statistics, we apply k-anonymity principles to ensure that no individual can be identified within a published dataset. We are also exploring the application of differential privacy techniques to further enhance privacy protections in aggregate reporting.</p>
+	</div>
+
+	<!-- SECTION 27: ANALYTICS IN DETAIL -->
+	<div class="section-card" id="section-analytics-detail">
+		<div class="section-num">27</div>
+		<h2>Analytics in Detail</h2>
+		<p>Analytics are central to our ability to improve the platform. This section provides a more granular explanation of our analytics practices.</p>
+		<h3>27.1 What We Measure</h3>
+		<ul>
+			<li><strong>Session analytics:</strong> Session start and end times, session duration, number of screens viewed per session, bounce rate</li>
+			<li><strong>Event analytics:</strong> User-triggered events including button clicks, navigation actions, search queries, filter applications, and download initiations</li>
+			<li><strong>Funnel analytics:</strong> Conversion rates at each step of user journeys (e.g., from app listing view to download)</li>
+			<li><strong>Retention analytics:</strong> Day-1, day-7, and day-30 retention rates (cohort analysis)</li>
+			<li><strong>Performance analytics:</strong> Page load times, API response times, error rates, and uptime metrics</li>
+			<li><strong>Crash analytics:</strong> Crash rate by app version, device, OS, and user cohort</li>
+		</ul>
+		<h3>27.2 Consent-Gated Analytics</h3>
+		<p>Analytics beyond strictly necessary operational monitoring are subject to your consent. If you decline analytics cookies or use opt-out controls, your activity will not contribute to usage reports or product analytics. We accept a degree of data incompleteness as the cost of respecting user choice.</p>
+		<h3>27.3 Privacy-by-Design in Analytics</h3>
+		<ul>
+			<li>We use event-level data rather than raw page view logs wherever possible</li>
+			<li>User IDs in analytics systems are pseudonymised and not directly linked to email addresses</li>
+			<li>IP addresses in analytics are truncated to the /24 subnet (last octet removed) before storage</li>
+			<li>We have disabled Google Signals and advertising features in Firebase Analytics</li>
+			<li>Retention windows are configured at the shortest practical period (see Section 11)</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 28: FIREBASE -->
+	<div class="section-card" id="section-firebase">
+		<div class="section-num">28</div>
+		<h2>Firebase &amp; Google Services</h2>
+		<p>Our platform makes extensive use of Google Firebase and associated Google Cloud services. This section provides transparency about how those services interact with your data.</p>
+		<h3>28.1 Firebase Authentication</h3>
+		<p>Used to create and manage user accounts. Firebase stores your email address and hashed password (or OAuth token). Firebase Authentication data is stored in Google's data centres, primarily in the USA. Data processing is governed by the Google Cloud Data Processing Addendum.</p>
+		<h3>28.2 Cloud Firestore</h3>
+		<p>Our primary database for user profiles, app listings, reviews, and platform configuration. Firestore data is encrypted at rest and in transit. We configure Firestore security rules to ensure that users can only access their own data.</p>
+		<h3>28.3 Firebase Analytics</h3>
+		<p>Collects anonymised usage events. We have configured Firebase Analytics to: (a) disable Google Signals, (b) disable advertising personalisation, (c) set data retention to 14 months, and (d) honour user opt-outs. Firebase Analytics data is processed in the USA.</p>
+		<h3>28.4 Firebase Crashlytics</h3>
+		<p>Collects crash reports including device metadata, OS version, app version, and stack traces. Crash reports are linked to installation IDs (not directly to user accounts) and are retained for 90 days.</p>
+		<h3>28.5 Google's Own Privacy Practices</h3>
+		<p>Google's use of data as a processor is governed by the Google Cloud Privacy Notice and the applicable DPA. Google does not use personal data processed through Firebase to personalise Google's own advertising. For more information, see Google's Privacy Policy at <code>https://policies.google.com/privacy</code>.</p>
+	</div>
+
+	<!-- SECTION 29: MOBILE -->
+	<div class="section-card" id="section-mobile">
+		<div class="section-num">29</div>
+		<h2>Mobile Applications</h2>
+		<p>If ExamSidemann offers a native mobile application, the following additional considerations apply.</p>
+		<h3>29.1 Platform Permissions</h3>
+		<p>Our mobile app may request the following device permissions, each of which you can grant or deny:</p>
+		<table class="data-table">
+			<thead><tr><th>Permission</th><th>Purpose</th><th>Optional?</th></tr></thead>
+			<tbody>
+				<tr><td>Internet access</td><td>Core functionality — connecting to our servers</td><td>No (required)</td></tr>
+				<tr><td>Push notifications</td><td>Optional notifications about app updates and account activity</td><td>Yes</td></tr>
+				<tr><td>Storage / Files</td><td>Saving downloaded content or cached app data locally</td><td>Yes</td></tr>
+				<tr><td>Camera</td><td>Uploading a profile picture (if feature available)</td><td>Yes</td></tr>
+				<tr><td>Biometric authentication</td><td>Faster login using fingerprint or Face ID (device-side only; biometric data never leaves your device)</td><td>Yes</td></tr>
+			</tbody>
+		</table>
+		<h3>29.2 App Tracking Transparency (iOS)</h3>
+		<p>On iOS 14.5 and later, we request App Tracking Transparency (ATT) permission before tracking your activity across other companies' apps and websites. We do not engage in cross-app tracking for advertising purposes. Any ATT prompt you see is for analytics improvement purposes only, and you may decline without any loss of core functionality.</p>
+		<h3>29.3 Push Notifications</h3>
+		<p>If you enable push notifications, your device token will be stored and used solely to deliver notifications to you. You may disable push notifications at any time via your device's notification settings or via our in-app notification preferences.</p>
+	</div>
+
+	<!-- SECTION 30: API -->
+	<div class="section-card" id="section-api">
+		<div class="section-num">30</div>
+		<h2>API &amp; Developer Access</h2>
+		<p>ExamSidemann provides an API for developers and integrators to programmatically access platform data. This section outlines the data privacy obligations of API users.</p>
+		<h3>30.1 API Access &amp; Authentication</h3>
+		<p>API access requires authentication via API keys or OAuth 2.0 tokens. API credentials are tied to a registered developer account and must not be shared. We log all API requests including the endpoint, timestamp, originating IP, and response code for security and rate-limiting purposes.</p>
+		<h3>30.2 Data Available via API</h3>
+		<p>The public API exposes:</p>
+		<ul>
+			<li>Public app listings, metadata, and screenshots</li>
+			<li>Aggregated download counts and average ratings</li>
+			<li>Public review content (display name, rating, text — as submitted by users who accepted that their reviews would be public)</li>
+		</ul>
+		<p>The API does not expose individual users' email addresses, IP addresses, or any non-public personal data.</p>
+		<h3>30.3 Developer Obligations</h3>
+		<p>By accessing our API, developers agree to:</p>
+		<ul>
+			<li>Process any data received from the API only in accordance with applicable data protection laws</li>
+			<li>Not attempt to re-identify anonymised or pseudonymised data</li>
+			<li>Not use data for purposes incompatible with those disclosed in this Policy</li>
+			<li>Implement appropriate technical and organisational security measures</li>
+			<li>Notify us promptly of any security incident involving API-sourced data</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 31: LOG DATA -->
+	<div class="section-card" id="section-logs">
+		<div class="section-num">31</div>
+		<h2>Log Data &amp; Diagnostics</h2>
+		<p>Our servers automatically record certain information when you use our Services. This log data may include:</p>
+		<ul>
+			<li>IP address (or CGNAT address) of the requesting client</li>
+			<li>Date and time of the request (UTC)</li>
+			<li>HTTP method (GET, POST, etc.) and URL path</li>
+			<li>HTTP response code and response size in bytes</li>
+			<li>User agent string</li>
+			<li>Referring URL</li>
+			<li>Time taken to process the request (server-side latency)</li>
+			<li>Authenticated user ID (if logged in)</li>
+		</ul>
+		<p>Log data is retained for up to 12 months for security and diagnostic purposes, and is not used for any other purpose. Access to logs is restricted to authorised personnel. Logs are periodically reviewed by our security team for anomalous activity.</p>
+		<h3>31.1 Diagnostic Data from App SDKs</h3>
+		<p>If a developer integrates our SDK into their application, diagnostic events may be reported back to our platform. Such events are processed under the terms of the developer's agreement with us. We do not use developer-SDK-sourced diagnostic data to build individual user profiles beyond what is necessary for the developer's own dashboard.</p>
+	</div>
+
+	<!-- SECTION 32: MARKETING -->
+	<div class="section-card" id="section-marketing">
+		<div class="section-num">32</div>
+		<h2>Marketing &amp; Communications</h2>
+		<p>We respect your right to control the communications you receive from us. Our marketing practices are consent-based and transparent.</p>
+		<h3>32.1 Types of Communications</h3>
+		<table class="data-table">
+			<thead><tr><th>Type</th><th>Description</th><th>Opt-Out?</th><th>Legal Basis</th></tr></thead>
+			<tbody>
+				<tr><td>Transactional / Account emails</td><td>Password resets, account confirmations, security alerts, download receipts</td><td>No (required for account)</td><td>Contract</td></tr>
+				<tr><td>Product update notifications</td><td>Notifications about updates to apps you have downloaded</td><td>Yes (in-app settings)</td><td>Legitimate interests</td></tr>
+				<tr><td>Newsletter / Platform updates</td><td>New features, blog posts, community highlights</td><td>Yes (unsubscribe link)</td><td>Consent</td></tr>
+				<tr><td>Personalised recommendations</td><td>App suggestions based on your usage</td><td>Yes (account settings)</td><td>Consent</td></tr>
+				<tr><td>Promotional campaigns</td><td>Seasonal promotions, featured app spotlights</td><td>Yes (unsubscribe link)</td><td>Consent</td></tr>
+				<tr><td>Surveys &amp; feedback requests</td><td>NPS surveys, feature feedback</td><td>Yes (per survey)</td><td>Legitimate interests</td></tr>
+			</tbody>
+		</table>
+		<h3>32.2 Email Consent &amp; Opt-Out</h3>
+		<p>All marketing emails include an unsubscribe link in the footer. You may also manage your communication preferences from your account settings page. Opt-out requests will be processed within 10 business days. Note that even after opting out of marketing communications, you will continue to receive transactional emails necessary for account management and security.</p>
+		<h3>32.3 No Third-Party Marketing</h3>
+		<p>We do not pass your personal data to third parties for their own marketing purposes, and we do not engage in co-registration practices or list rental arrangements.</p>
+	</div>
+
+	<!-- SECTION 33: PROFILING -->
+	<div class="section-card" id="section-profiling">
+		<div class="section-num">33</div>
+		<h2>Profiling</h2>
+		<p>We engage in limited profiling to improve the relevance of content shown to you on the platform. All profiling activities are transparent, proportionate, and consistent with your rights.</p>
+		<h3>33.1 What We Profile</h3>
+		<ul>
+			<li><strong>Category preferences:</strong> We infer your preferred app categories from your browsing and download history to improve content recommendations.</li>
+			<li><strong>Engagement level:</strong> We segment users by engagement level (e.g., active daily users vs. occasional visitors) for purposes of platform analytics.</li>
+			<li><strong>Geographic segment:</strong> Based on IP-derived country, used to surface regionally relevant content.</li>
+		</ul>
+		<h3>33.2 What We Do Not Profile</h3>
+		<p>We do not build profiles based on:</p>
+		<ul>
+			<li>Political opinions or religious beliefs</li>
+			<li>Financial status or creditworthiness</li>
+			<li>Health or mental well-being</li>
+			<li>Race or ethnicity</li>
+			<li>Any sensitive category of information</li>
+		</ul>
+		<h3>33.3 Your Right to Object to Profiling</h3>
+		<p>You have the right to object to profiling in certain circumstances under GDPR Article 21. To do so, contact us at <code>privacy@examsidemann.example</code>. We will consider your objection and cease profiling where we cannot demonstrate compelling legitimate grounds that override your interests and rights.</p>
+	</div>
+
+	<!-- SECTION 34: RESEARCH -->
+	<div class="section-card" id="section-research">
+		<div class="section-num">34</div>
+		<h2>Research &amp; Aggregated Insights</h2>
+		<p>We may produce aggregated statistical insights derived from platform data for research, product development, and public interest purposes. Such insights are fully anonymised and do not identify any individual user.</p>
+		<h3>34.1 Internal Research</h3>
+		<p>We use aggregated, anonymised data to conduct internal research including trend analysis, market research, and user experience research. Research outputs may inform product development decisions and business strategy.</p>
+		<h3>34.2 Published Reports</h3>
+		<p>We may publish aggregated, anonymised statistics about app download trends, category popularity, and platform growth. These reports contain no personal data and are produced at an aggregated level that makes re-identification impossible.</p>
+		<h3>34.3 Academic &amp; Third-Party Research</h3>
+		<p>Where we collaborate with academic institutions or third-party researchers, we provide only anonymised, aggregated datasets. Any such collaboration is subject to appropriate data sharing agreements and ethics review where required.</p>
+	</div>
+
+	<!-- SECTION 35: LEGAL HOLD -->
+	<div class="section-card" id="section-legal-hold">
+		<div class="section-num">35</div>
+		<h2>Legal Hold</h2>
+		<p>In the event of actual or anticipated litigation, regulatory investigation, audit, or other legal proceeding, we may place a "legal hold" on certain data that would otherwise be deleted or anonymised under our standard retention schedule.</p>
+		<p>A legal hold suspends normal retention and deletion procedures for the affected data categories until the hold is lifted by our legal team, upon resolution of the relevant proceeding. Legal hold notices are documented in our data governance system.</p>
+		<p>Where a legal hold prevents us from honouring a deletion or erasure request, we will inform you that your request cannot be fulfilled at this time, the reason (to the extent permitted by law), and the expected timeframe for the hold to be lifted.</p>
+	</div>
+
+	<!-- SECTION 36: DPIA -->
+	<div class="section-card" id="section-dpia">
+		<div class="section-num">36</div>
+		<h2>Data Protection Impact Assessments (DPIAs) <span class="tag gdpr">GDPR Art. 35</span></h2>
+		<p>We conduct Data Protection Impact Assessments (DPIAs) before initiating any new processing activity that is likely to result in a high risk to the rights and freedoms of data subjects. DPIAs are required in particular for:</p>
+		<ul>
+			<li>Systematic and extensive evaluation or scoring of natural persons, including profiling, with significant effects</li>
+			<li>Large-scale processing of special category data or personal data relating to criminal convictions and offences</li>
+			<li>Systematic monitoring of a publicly accessible area on a large scale</li>
+			<li>Use of new technologies or significant changes to existing processing activities</li>
+		</ul>
+		<p>Our DPIAs are conducted by our Data Protection Officer in collaboration with engineering, product, and legal teams. DPIA records are maintained internally and are available to supervisory authorities on request. Where a DPIA indicates a residual high risk that cannot be mitigated, we consult with the relevant supervisory authority prior to commencing processing.</p>
+	</div>
+
+	<!-- SECTION 37: DPO -->
+	<div class="section-card" id="section-dpo">
+		<div class="section-num">37</div>
+		<h2>Data Protection Officer <span class="tag gdpr">GDPR Art. 37</span></h2>
+		<p>We have designated a Data Protection Officer (DPO) responsible for overseeing our data protection strategy, ensuring compliance with applicable data protection laws, and acting as a point of contact for data subjects and supervisory authorities.</p>
+		<div class="info-box success">
+			<strong>Data Protection Officer</strong><br>
+			Email: <code>dpo@examsidemann.example</code><br>
+			Response time: Within 5 business days for routine enquiries; within 24 hours for security incidents or high-priority matters.
+		</div>
+		<h3>37.1 DPO Independence</h3>
+		<p>Our DPO operates independently and is not subject to instructions regarding the exercise of their tasks. The DPO reports directly to senior management and has access to all necessary resources to carry out their duties effectively.</p>
+		<h3>37.2 DPO Tasks</h3>
+		<p>The DPO's responsibilities include:</p>
+		<ul>
+			<li>Informing and advising on data protection obligations</li>
+			<li>Monitoring compliance with data protection laws and internal policies</li>
+			<li>Providing advice on DPIAs and monitoring their performance</li>
+			<li>Cooperating with supervisory authorities</li>
+			<li>Acting as a contact point for supervisory authorities and data subjects</li>
+			<li>Maintaining the Record of Processing Activities (RoPA)</li>
+			<li>Overseeing data breach response and notification</li>
+		</ul>
+	</div>
+
+	<!-- SECTION 38: COMPLAINTS -->
+	<div class="section-card" id="section-complaints">
+		<div class="section-num">38</div>
+		<h2>Complaints &amp; Supervisory Authorities</h2>
+		<p>We take privacy concerns seriously. If you have a complaint about how we handle your personal data, we encourage you to contact us first so that we can address the issue:</p>
+		<ul>
+			<li>Email: <code>privacy@examsidemann.example</code></li>
+			<li>Subject line: "Privacy Complaint"</li>
+			<li>We will acknowledge your complaint within 5 business days and aim to resolve it within 30 days</li>
+		</ul>
+		<p>If you are not satisfied with our response, or if you believe your rights have been violated, you have the right to lodge a complaint with your local data protection supervisory authority:</p>
+		<table class="data-table">
+			<thead><tr><th>Jurisdiction</th><th>Authority</th><th>Website</th></tr></thead>
+			<tbody>
+				<tr><td>South Africa</td><td>Information Regulator</td><td>inforegulator.org.za</td></tr>
+				<tr><td>European Union</td><td>Your local DPA (see EDPB website)</td><td>edpb.europa.eu</td></tr>
+				<tr><td>United Kingdom</td><td>Information Commissioner's Office (ICO)</td><td>ico.org.uk</td></tr>
+				<tr><td>USA (California)</td><td>California Privacy Protection Agency (CPPA)</td><td>cppa.ca.gov</td></tr>
+				<tr><td>Canada</td><td>Office of the Privacy Commissioner (OPC)</td><td>priv.gc.ca</td></tr>
+				<tr><td>Australia</td><td>Office of the Australian Information Commissioner (OAIC)</td><td>oaic.gov.au</td></tr>
+				<tr><td>Brazil</td><td>Autoridade Nacional de Proteção de Dados (ANPD)</td><td>gov.br/anpd</td></tr>
+				<tr><td>Nigeria</td><td>Nigeria Data Protection Commission (NDPC)</td><td>ndpc.gov.ng</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- SECTION 39: CHANGES -->
+	<div class="section-card" id="section-changes">
+		<div class="section-num">39</div>
+		<h2>Changes to This Policy</h2>
+		<p>We may update this Privacy Policy from time to time to reflect changes in our practices, applicable law, or operational requirements. We are committed to providing meaningful notice of material changes.</p>
+		<h3>39.1 How We Notify You</h3>
+		<ul>
+			<li><strong>Minor changes</strong> (clarifications, corrections, formatting): Updated date posted at the top of this page; no direct notification.</li>
+			<li><strong>Moderate changes</strong> (new processing purposes, new data categories, changes to retention periods): In-app notification and/or email notification to registered users at least 14 days before the change takes effect.</li>
+			<li><strong>Material changes</strong> (fundamental changes to how we collect, use, or share personal data): Prominent in-app notice and email notification at least 30 days before changes take effect. Where required by law, we will seek renewed consent.</li>
+		</ul>
+		<h3>39.2 Your Options Upon Change</h3>
+		<p>If you disagree with material changes to this Policy, you may close your account before the changes take effect. Your continued use of the Services after the effective date of any changes constitutes your acceptance of the updated Policy.</p>
+		<h3>39.3 Archived Versions</h3>
+		<p>We maintain an archive of previous versions of this Privacy Policy. If you wish to access a previous version, please contact us at <code>privacy@examsidemann.example</code>.</p>
+	</div>
+
+	<!-- SECTION 40: VERSION HISTORY -->
+	<div class="section-card" id="section-history">
+		<div class="section-num">40</div>
+		<h2>Version History</h2>
+		<p>The following is a record of material updates to this Privacy Policy:</p>
+		<div class="timeline">
+			<div class="timeline-item">
+				<div class="tl-date">23 February 2026 — v4.2.1 (Current)</div>
+				<div class="tl-title">Comprehensive expansion &amp; compliance update</div>
+				<div class="tl-desc">Full rewrite to expand coverage to 41 sections; added POPIA, CCPA/CPRA, LGPD, NDPA compliance sections; added sub-processor table; added cookie table; added DPO section; expanded rights section; added version history; improved accessibility.</div>
+			</div>
+			<div class="timeline-item">
+				<div class="tl-date">1 September 2025 — v3.1.0</div>
+				<div class="tl-title">AI &amp; automated decision-making section added</div>
+				<div class="tl-desc">Added dedicated section on automated decision-making and AI-assisted moderation following introduction of recommendation engine. Updated legal bases table.</div>
+			</div>
+			<div class="timeline-item">
+				<div class="tl-date">15 March 2025 — v3.0.0</div>
+				<div class="tl-title">POPIA compliance update</div>
+				<div class="tl-desc">Comprehensive update to align with POPIA requirements following the POPIA enforcement commencement. Added Information Regulator contact details. Added cross-border transfer section.</div>
+			</div>
+			<div class="timeline-item">
+				<div class="tl-date">1 November 2024 — v2.2.0</div>
+				<div class="tl-title">CCPA / CPRA update</div>
+				<div class="tl-desc">Updated California residents section to reflect CPRA amendments. Added Do Not Sell / Do Not Share section. Added GPC signal support.</div>
+			</div>
+			<div class="timeline-item">
+				<div class="tl-date">10 June 2024 — v2.1.0</div>
+				<div class="tl-title">Mobile app &amp; cookie policy update</div>
+				<div class="tl-desc">Added dedicated sections for mobile application data collection and cookie management. Updated sub-processor list. Added cookie preference centre information.</div>
+			</div>
+			<div class="timeline-item">
+				<div class="tl-date">1 January 2024 — v2.0.0</div>
+				<div class="tl-title">Major rewrite — GDPR alignment</div>
+				<div class="tl-desc">Complete rewrite of the Privacy Policy to align with GDPR requirements. Added legal bases table, DPO designation, international transfer safeguards, and data subject rights procedures.</div>
+			</div>
+			<div class="timeline-item">
+				<div class="tl-date">1 July 2023 — v1.0.0</div>
+				<div class="tl-title">Initial Privacy Policy</div>
+				<div class="tl-desc">Initial version of the Privacy Policy published at platform launch.</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- SECTION 41: CONTACT -->
+	<div class="section-card safe-zone" id="section-contact">
+		<div class="section-num">41</div>
+		<h2>Contact Us</h2>
+		<p>If you have any questions, concerns, or requests relating to this Privacy Policy or our data processing practices, please reach out through any of the following channels:</p>
+		<div class="contact-grid">
+			<div class="contact-card">
+				<div class="cc-icon">📧</div>
+				<div class="cc-label">General Privacy Enquiries</div>
+				<div class="cc-value">privacy@examsidemann.example</div>
+			</div>
+			<div class="contact-card">
+				<div class="cc-icon">🛡️</div>
+				<div class="cc-label">Data Protection Officer</div>
+				<div class="cc-value">dpo@examsidemann.example</div>
+			</div>
+			<div class="contact-card">
+				<div class="cc-icon">🆘</div>
+				<div class="cc-label">General Support</div>
+				<div class="cc-value">support@examsidemann.example</div>
+			</div>
+			<div class="contact-card">
+				<div class="cc-icon">🔒</div>
+				<div class="cc-label">Security Issues</div>
+				<div class="cc-value">security@examsidemann.example</div>
+			</div>
+			<div class="contact-card">
+				<div class="cc-icon">♿</div>
+				<div class="cc-label">Accessibility</div>
+				<div class="cc-value">accessibility@examsidemann.example</div>
+			</div>
+			<div class="contact-card">
+				<div class="cc-icon">⚖️</div>
+				<div class="cc-label">Legal &amp; Compliance</div>
+				<div class="cc-value">legal@examsidemann.example</div>
+			</div>
+		</div>
+		<div class="info-box" style="margin-top:20px;">
+			<strong>Response Times:</strong> We aim to respond to all privacy-related enquiries within 5 business days for routine matters, and within 24 hours for urgent security or breach-related issues. Data subject rights requests will be handled within the statutory timeframes applicable to your jurisdiction (see Section 14).
+		</div>
+		<hr class="divider">
+		<p style="text-align:center; color:var(--text3); font-size:0.85rem;">
+			© 2026 ExamSidemann App Store. All rights reserved.<br>
+			This Privacy Policy was last updated on 23 February 2026 (v4.2.1).
+		</p>
+	</div>
+
+</main>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+	<i class="fa fa-chevron-up"></i>
+</button>
+
+<!-- FOOTER -->
+<footer>
+	<div class="footer-logo">ExamSidemann App Store</div>
+	<div style="margin-bottom:10px;">
+		<a href="privacy-policy.html" style="color:var(--text2);margin-right:12px;">Privacy Policy</a>
+		<a href="index.html" style="color:var(--text2);">Home</a>
+	</div>
+	<div>© 2026 ExamSidemann. All rights reserved.</div>
+</footer>
+
+<script>
+	// Progress bar
+	window.addEventListener('scroll', () => {
+		const scrollTop = document.documentElement.scrollTop;
+		const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+		const progress = (scrollTop / scrollHeight) * 100;
+		document.getElementById('progress-bar').style.width = progress + '%';
+
+		// Back to top button
+		const btn = document.getElementById('backToTop');
+		if (scrollTop > 400) btn.classList.add('visible');
+		else btn.classList.remove('visible');
+	});
+
+	// Active TOC highlighting
+	const sections = document.querySelectorAll('[id^="section-"]');
+	const tocLinks = document.querySelectorAll('.toc-item');
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				tocLinks.forEach(link => link.classList.remove('active'));
+				const activeLink = document.querySelector(`.toc-item[href="#${entry.target.id}"]`);
+				if (activeLink) {
+					activeLink.classList.add('active');
+					activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+				}
+			}
+		});
+	}, { rootMargin: '-10% 0px -80% 0px' });
+
+	sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

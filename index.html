@@ -1222,7 +1222,7 @@
 <footer>
   <div class="footer-logo">ExamSidemann App Store</div>
   <div class="footer-links">
-    <a href="#">Privacy Policy</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
     <a href="#">Terms of Service</a>
     <a href="#">Developer Console</a>
     <a href="#">Support</a>
@@ -1271,43 +1271,8 @@ window._fbModules = { createUserWithEmailAndPassword, signInWithEmailAndPassword
 if (firebaseReady) {
   onAuthStateChanged(auth, (user) => {
     window.currentUser = user;
-    window.onAuthChange(user);
+    if (typeof window.onAuthChange === 'function') window.onAuthChange(user);
   });
-}
-
-// If Firebase is available, ensure the provided app data is seeded/read from Firestore
-if(firebaseReady) {
-  try {
-    // Seed/read each app in appData into Firestore (collection: apps)
-    appData.forEach(a => {
-      try {
-        const id = (a.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || String(a.id);
-        const appRef = doc(db, 'apps', id);
-        setDoc(appRef, {
-          name: a.name,
-          downloads: a.downloadsRaw || (Number(String(a.downloads).replace(/[^0-9]/g,''))||0),
-          reviews: a.reviews || 0,
-          rating: a.rating || 0,
-          size: a.size || ''
-        }, { merge: true }).catch(()=>{});
-
-        // read back to keep UI consistent with DB values
-        getDoc(appRef).then(snapshot => {
-          if(snapshot.exists()) {
-            const data = snapshot.data();
-            const idx = appData.findIndex(x=>x.name===a.name);
-            if(idx!==-1) {
-              const dest = appData[idx];
-              if(data.downloads) { dest.downloadsRaw = data.downloads; dest.downloads = data.downloads>=1000000? (data.downloads/1000000).toFixed(1)+'M' : data.downloads.toString(); }
-              if(data.reviews) dest.reviews = data.reviews;
-              if(data.rating) dest.rating = data.rating;
-              renderAll();
-            }
-          }
-        }).catch(()=>{});
-      } catch(e) { /* per-app seed fail */ }
-    });
-  } catch(e) { console.warn('Firestore seed/read failed', e); }
 }
 </script>
 
@@ -1442,6 +1407,28 @@ const appData = [
     file: 'https://drive.google.com/uc?export=download&id=1cVgTpeqyr5N-kcoNKQOYrZPFFrzFGJAH',
     displayImage: 'images/duramanzwi.avif'
   }
+  ,
+  {
+    id: 7,
+    name: 'MovieBox Pro Unlocked',
+    dev: 'MovieBox',
+    cat: 'Entertainment',
+    icon: '<img src="images/moviebox.png" alt="MovieBox" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">',
+    color: '#000000,#ff4f7b',
+    rating: 4.5,
+    reviews: 1240,
+    downloads: '65K',
+    downloadsRaw: 65000,
+    size: '65 MB',
+    desc: 'MovieBox Pro Unlocked — premium unlocked version for offline viewing and downloads.',
+    featured: false,
+    new: true,
+    trending: true,
+    price: 'Free',
+    tags: ['Video','Streaming'],
+    file: 'https://drive.google.com/file/d/1vPx5geDDN3yqZM8fByr1auAlzjV_r2MQ/view?usp=drive_link',
+    displayImage: 'images/moviebox.png'
+  }
 ];
 
 // Updated categories for provided apps
@@ -1464,10 +1451,19 @@ let currentTopFilter = 'free';
 let shareAppCurrent = null;
 
 // ===== INIT =====
-window.onload = function() {
+window.onload = async function() {
   setTimeout(() => {
     document.getElementById('loader').classList.add('hidden');
   }, 2000);
+
+  // If Firebase is enabled, seed missing apps then load authoritative values
+  if (window._fbReady && window._fbDb) {
+    try {
+      await seedAppsIfMissing();
+      await loadAppsFromFirestore();
+    } catch(e) { console.warn('Firestore init/load failed', e); }
+  }
+
   renderAll();
   animateCounters();
   addRippleEffects();
@@ -1866,7 +1862,7 @@ window.submitReview = function(appId) {
 
 // ===== DOWNLOAD =====
 // CHANGED: Download function triggers real file download
-window.downloadApp = function(appId, e) {
+window.downloadApp = async function(appId, e) {
   if(installedApps.includes(appId)) { showToast('App already installed! Opening...','info'); return; }
   const app = appData.find(a=>a.id===appId);
   if(!app) return;
@@ -1890,7 +1886,8 @@ window.downloadApp = function(appId, e) {
       const id = (app.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       const appRef = doc(window._fbDb, 'apps', id);
       // increment by 1
-      await (async () => { try { await updateDoc(appRef, { downloads: increment(1) }); } catch(e) { /* ignore */ } })();
+      // increment downloads
+      try { await updateDoc(appRef, { downloads: increment(1) }); } catch(e) { /* ignore */ }
       // refresh local copy from DB
       try {
         const snap = await getDoc(appRef);
@@ -2253,6 +2250,80 @@ function formatNum(n) {
   if(n>=1000000) return (n/1000000).toFixed(1)+'M';
   if(n>=1000) return (n/1000).toFixed(1)+'K';
   return n.toString();
+}
+
+// ===== FIRESTORE SEED (runs after appData exists) =====
+if (window._fbReady) {
+  (async () => {
+    try {
+      const { setDoc, getDoc, doc, collection } = window._fbModules;
+      for (const a of appData) {
+        try {
+          const id = (a.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || String(a.id);
+          const appRef = doc(window._fbDb, 'apps', id);
+          await setDoc(appRef, {
+            name: a.name,
+            downloads: a.downloadsRaw || (Number(String(a.downloads).replace(/[^0-9]/g,''))||0),
+            reviews: a.reviews || 0,
+            rating: a.rating || 0,
+            size: a.size || ''
+          }, { merge: true }).catch(()=>{});
+
+          const snap = await getDoc(appRef);
+          if(snap.exists()) {
+            const data = snap.data();
+            const idx = appData.findIndex(x=>x.name===a.name);
+            if(idx!==-1) {
+              const dest = appData[idx];
+              if(data.downloads) { dest.downloadsRaw = data.downloads; dest.downloads = data.downloads>=1000000? (data.downloads/1000000).toFixed(1)+'M' : data.downloads.toString(); }
+              if(data.reviews) dest.reviews = data.reviews;
+              if(data.rating) dest.rating = data.rating;
+            }
+          }
+        } catch(e) { /* per-app seed fail */ }
+      }
+      renderAll();
+    } catch(e) { console.warn('Firestore seed/read failed', e); }
+  })();
+}
+
+// Seed only if missing and load authoritative values
+async function seedAppsIfMissing() {
+  if(!window._fbReady || !window._fbDb) return;
+  try {
+    for (const a of appData) {
+      const id = (a.name||'app').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || String(a.id);
+      const appRef = doc(window._fbDb, 'apps', id);
+      const snap = await getDoc(appRef);
+      if(!snap.exists()) {
+        await setDoc(appRef, {
+          name: a.name,
+          downloads: a.downloadsRaw || (Number(String(a.downloads).replace(/[^0-9]/g,''))||0),
+          reviews: a.reviews || 0,
+          rating: a.rating || 0,
+          size: a.size || ''
+        }, { merge: true }).catch(()=>{});
+      }
+    }
+  } catch(e) { console.warn('seedAppsIfMissing failed', e); }
+}
+
+async function loadAppsFromFirestore() {
+  if(!window._fbReady || !window._fbDb) return;
+  try {
+    const snaps = await getDocs(collection(window._fbDb, 'apps'));
+    snaps.forEach(d => {
+      const data = d.data();
+      const slug = d.id;
+      const idx = appData.findIndex(a => ((a.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')) === slug || String(a.id) === slug);
+      if(idx!==-1) {
+        const dest = appData[idx];
+        if(typeof data.downloads === 'number') { dest.downloadsRaw = data.downloads; dest.downloads = data.downloads>=1000000? (data.downloads/1000000).toFixed(1)+'M' : data.downloads.toString(); }
+        if(typeof data.reviews === 'number') dest.reviews = data.reviews;
+        if(typeof data.rating === 'number') dest.rating = data.rating;
+      }
+    });
+  } catch(e) { console.warn('loadAppsFromFirestore failed', e); }
 }
 
 // ===== KEYBOARD SHORTCUTS =====
